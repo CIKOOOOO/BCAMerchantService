@@ -103,18 +103,6 @@ public class ShowcaseAdapter extends RecyclerView.Adapter<ShowcaseAdapter.ViewHo
             Picasso.get()
                     .load(showCases.get(i - 1).getStory_picture())
                     .into(viewHolder.imageView);
-//            if (showCases.get(i).getImage() != 0) {
-//                DecodeBitmap.setScaledImageView(viewHolder.imageView, showCases.get(i).getImage(), context);
-////                Glide.with(context)
-////                        .load(showCases.get(i).getImage())
-////                        .placeholder(context.getDrawable(R.drawable.placeholder))
-////                        .into(viewHolder.imageView);
-//            } else {
-//                Glide.with(context)
-//                        .load(DecodeBitmap.compressBitmap(showCases.get(i).getImgBitmap()))
-//                        .placeholder(DecodeBitmap.setScaleDrawable(context, R.drawable.placeholder))
-//                        .into(viewHolder.imageView);
-//            }
             viewHolder.imageButton.setEnabled(false);
             viewHolder.frameLayout.setVisibility(View.GONE);
             viewHolder.imageView.setVisibility(View.VISIBLE);

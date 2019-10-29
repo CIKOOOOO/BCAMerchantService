@@ -128,6 +128,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         super.onUserInteraction();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frame);
         if (fragment instanceof MainForum) {
+            bottomNavigationView.setVisibility(View.VISIBLE);
             floatingActionButton.show();
         } else floatingActionButton.hide();
     }

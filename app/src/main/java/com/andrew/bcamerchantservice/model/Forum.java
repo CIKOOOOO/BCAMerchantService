@@ -4,21 +4,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Forum implements Parcelable {
-    private String fid, mid, forum_content, forum_date, forum_title, forum_category_id;
+    private String fid, mid, forum_content, forum_date, forum_title, fcid, forum_thumbnail;
     private int forum_like, view_count;
     private boolean isLike;
 
     public Forum() {
     }
 
-    public Forum(String fid, String mid, String forum_content, String forum_date
-            , String forum_title, String forum_category_id, int forum_like, int view_count, boolean isLike) {
+    public Forum(String fid, String mid, String forum_content, String forum_date, String forum_title
+            , String fcid, String forum_thumbnail, int forum_like, int view_count, boolean isLike) {
         this.fid = fid;
-        this.forum_category_id = forum_category_id;
         this.mid = mid;
         this.forum_content = forum_content;
         this.forum_date = forum_date;
         this.forum_title = forum_title;
+        this.fcid = fcid;
+        this.forum_thumbnail = forum_thumbnail;
         this.forum_like = forum_like;
         this.view_count = view_count;
         this.isLike = isLike;
@@ -30,7 +31,8 @@ public class Forum implements Parcelable {
         forum_content = in.readString();
         forum_date = in.readString();
         forum_title = in.readString();
-        forum_category_id = in.readString();
+        fcid = in.readString();
+        forum_thumbnail = in.readString();
         forum_like = in.readInt();
         view_count = in.readInt();
         isLike = in.readByte() != 0;
@@ -48,8 +50,12 @@ public class Forum implements Parcelable {
         }
     };
 
-    public String getForum_category_id() {
-        return forum_category_id;
+    public String getForum_thumbnail() {
+        return forum_thumbnail;
+    }
+
+    public String getFcid() {
+        return fcid;
     }
 
     public void setForum_like(int forum_like) {
@@ -104,7 +110,8 @@ public class Forum implements Parcelable {
         parcel.writeString(forum_content);
         parcel.writeString(forum_date);
         parcel.writeString(forum_title);
-        parcel.writeString(forum_category_id);
+        parcel.writeString(fcid);
+        parcel.writeString(forum_thumbnail);
         parcel.writeInt(forum_like);
         parcel.writeInt(view_count);
         parcel.writeByte((byte) (isLike ? 1 : 0));
@@ -266,7 +273,7 @@ public class Forum implements Parcelable {
         }
     }
 
-    public static class ForumCategory {
+    public static class ForumCategory implements Parcelable {
         private String fcid, category_name, category_url;
 
         public ForumCategory() {
@@ -278,6 +285,24 @@ public class Forum implements Parcelable {
             this.category_url = category_url;
         }
 
+        protected ForumCategory(Parcel in) {
+            fcid = in.readString();
+            category_name = in.readString();
+            category_url = in.readString();
+        }
+
+        public static final Creator<ForumCategory> CREATOR = new Creator<ForumCategory>() {
+            @Override
+            public ForumCategory createFromParcel(Parcel in) {
+                return new ForumCategory(in);
+            }
+
+            @Override
+            public ForumCategory[] newArray(int size) {
+                return new ForumCategory[size];
+            }
+        };
+
         public String getFcid() {
             return fcid;
         }
@@ -288,6 +313,18 @@ public class Forum implements Parcelable {
 
         public String getCategory_url() {
             return category_url;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(fcid);
+            parcel.writeString(category_name);
+            parcel.writeString(category_url);
         }
     }
 }

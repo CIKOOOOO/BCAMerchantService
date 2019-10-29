@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,18 +20,23 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -58,6 +64,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+import com.tomergoldst.tooltips.ToolTip;
+import com.tomergoldst.tooltips.ToolTipsManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,7 +80,8 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class NewThread extends Fragment implements View.OnClickListener, View.OnTouchListener
-        , ImagePickerAdapter.onItemClick, INewThreadView, MainActivity.onBackPressFragment, CategoryAdapter.onCategoryClick {
+        , ImagePickerAdapter.onItemClick, INewThreadView, MainActivity.onBackPressFragment
+        , CategoryAdapter.onCategoryClick {
     public static final String EDIT_THREAD = "EDIT_THREAD";
     public static final String EDIT_THREAD_SELECTED = "EDIT_THREAD_SELECTED";
     public static final String EDIT_THREAD_REPLY = "EDIT_THREAD_REPLY";
@@ -85,11 +94,13 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private static final int REQUEST_CAMERA_THUMBNAIL = 193, REQUEST_GALLERY_THUMBNAIL = 194;
 
     public static String THREAD_CONDITION;
+    public static int categoryPosition;
 
     private static PrefConfig prefConfig;
     private static Forum forum;
     private static Forum.ForumReply forumReply;
     private static Forum.ForumCategory forumCategory;
+
 
     private View v;
     private RecyclerView recyclerView, recycler_category;
@@ -105,6 +116,8 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private Merchant merchant;
     private CategoryAdapter categoryAdapter;
     private RoundedImageView image_thumbnail;
+    private ImageButton question_mark;
+    private ToolTipsManager toolTipsManager;
 
     private INewThreadPresenter presenter;
 
@@ -113,6 +126,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private List<Forum.ForumCategory> categoryList;
 
     private Bitmap thumbnail_bitmap;
+    private boolean isTooltipAppear;
 
     public NewThread() {
         // Required empty public constructor
@@ -134,6 +148,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     }
 
     private void initVar() {
+        isTooltipAppear = false;
         THREAD_CONDITION = "";
         thumbnail_bitmap = null;
         mContext = v.getContext();
@@ -142,6 +157,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         dbRef = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference(Constant.DB_REFERENCE_FORUM_IMAGE);
         strRef = FirebaseStorage.getInstance().getReference(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY);
+        toolTipsManager = new ToolTipsManager();
 
         TextView tvTitle = v.findViewById(R.id.title_new_thread);
         TextView title_only = v.findViewById(R.id.tvTitle_NewThread);
@@ -151,10 +167,12 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         ImageButton camera = v.findViewById(R.id.camera_taker_new_thread);
         ImageButton camera_thumbnail = v.findViewById(R.id.camera_thumbnail_new_thread);
         ImageButton gallery_thumbnail = v.findViewById(R.id.gallery_thumbnail_new_thread);
+        NestedScrollView nested_scroll = v.findViewById(R.id.nested_scroll_new_thread);
 
+        question_mark = v.findViewById(R.id.image_button_question_mark_new_thread);
         recycler_category = v.findViewById(R.id.recycler_category_new_thread);
         recyclerView = v.findViewById(R.id.recycler_image_new_thread);
-        title = v.findViewById(R.id.etTitle_NewThread);
+        title = v.findViewById(R.id.edit_title_new_thread);
         content = v.findViewById(R.id.edit_text_content_new_thread);
         error_content = v.findViewById(R.id.show_error_content_new_thread);
         error_title = v.findViewById(R.id.show_error_title_new_thread);
@@ -166,6 +184,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         categoryList = new ArrayList<>();
 
         setRecyclerView();
+
         presenter.onLoadCategory();
         frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
 
@@ -173,11 +192,13 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         photo.setOnClickListener(this);
         camera_thumbnail.setOnClickListener(this);
         gallery_thumbnail.setOnClickListener(this);
+        question_mark.setOnClickListener(this);
 //        it will appear when we know how to upload pdf file to firebase storage
 //        file.setOnClickListener(this);
         camera.setOnClickListener(this);
         frame_loading.setOnClickListener(this);
         content.setOnTouchListener(this);
+        nested_scroll.setOnTouchListener(this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -196,6 +217,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE;
                     presenter.onLoadImage(path);
                 }
+                tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
             } else if (bundle.getParcelable(EDIT_THREAD_REPLY) != null) {
                 THREAD_CONDITION = EDIT_THREAD_REPLY;
                 title.setVisibility(View.GONE);
@@ -208,8 +230,29 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                         + Constant.DB_REFERENCE_FORUM_REPLY + "/" + forumReply.getFrid() + "/"
                         + Constant.DB_REFERENCE_FORUM_IMAGE_REPLY;
                 presenter.onLoadImage(path);
+                tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
+            } else if (bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD) != null) {
+                forum = bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD);
+
+                title.setText(forum.getForum_title());
+                content.setText(forum.getForum_content());
+
+                if (bundle.getParcelable(ExampleThreadFragment.GET_BITMAP_THUMBNAIL) != null) {
+                    thumbnail_bitmap = bundle.getParcelable(ExampleThreadFragment.GET_BITMAP_THUMBNAIL);
+                    Glide.with(mContext)
+                            .load(thumbnail_bitmap)
+                            .into(image_thumbnail);
+                }
+                if (bundle.getParcelable(ExampleThreadFragment.GET_CATEGORY) != null) {
+                    forumCategory = bundle.getParcelable(ExampleThreadFragment.GET_CATEGORY);
+                    categoryAdapter.setLastPosition(categoryPosition);
+                    categoryAdapter.notifyItemChanged(categoryPosition);
+                }
+                if (bundle.getParcelableArrayList(ExampleThreadFragment.GET_ARRAY_OF_IMAGE) != null) {
+                    imageList.addAll(bundle.<ImagePicker>getParcelableArrayList(ExampleThreadFragment.GET_ARRAY_OF_IMAGE));
+                    imagePickerAdapter.setImageList(imageList);
+                }
             }
-            tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
         }
     }
 
@@ -237,8 +280,8 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         TextView loc = codeView.findViewById(R.id.merchantLoc_Preview);
         RecyclerView recyclerView_preview = codeView.findViewById(R.id.recycler_preview);
         ImageButton imageButton = codeView.findViewById(R.id.close_preview_thread);
-        Button cancel = codeView.findViewById(R.id.btnCancel_Preview);
-        Button save = codeView.findViewById(R.id.btnSubmit_Preview);
+        Button cancel = codeView.findViewById(R.id.btn_back_example_thread);
+        Button save = codeView.findViewById(R.id.btn_send_example_thread);
 
         scrollView.smoothScrollTo(0, 0);
 
@@ -303,7 +346,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         frame_loading.setVisibility(View.GONE);
         Forum forums = new Forum(forum.getFid(), String.valueOf(prefConfig.getMID())
                 , content.getText().toString(), forum.getForum_date()
-                , title.getText().toString(), forumCategory.getFcid(), forum.getForum_like()
+                , title.getText().toString(), forumCategory.getFcid(), "", forum.getForum_like()
                 , forum.getView_count(), forum.isLike());
         SelectedThread selectedThread = new SelectedThread();
 
@@ -360,17 +403,23 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 final String titles = title.getText().toString();
                 final String contents = content.getText().toString();
 
-                title.setBackground(getResources().getDrawable(R.drawable.background_edit_text));
-                content.setBackground(getResources().getDrawable(R.drawable.background_edit_text));
                 error_content.setVisibility(View.GONE);
                 error_title.setVisibility(View.GONE);
 
                 if (titles.isEmpty() && !THREAD_CONDITION.equals(EDIT_THREAD_REPLY)) {
-//                    error_title.setVisibility(View.VISIBLE);
-//                    title.setBackground(getResources().getDrawable(R.drawable.background_edit_text_error));
+                    title.setError("This cannot be empty");
+                    title.requestFocus(title.getLayoutDirection());
+                } else if (categoryAdapter.getLastPosition() == -1) {
+                    recycler_category.requestFocus(recycler_category.getLayoutDirection());
+                    Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                    anim.setDuration(500); //You can manage the blinking time with this parameter
+                    anim.setStartOffset(20);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(5);
+                    recycler_category.startAnimation(anim);
                 } else if (contents.isEmpty()) {
-//                    error_content.setVisibility(View.VISIBLE);
-//                    content.setBackground(getResources().getDrawable(R.drawable.background_edit_text_error));
+                    content.setError("This cannot be empty");
+                    content.requestFocus(content.getLayoutDirection());
                 } else {
                     if (THREAD_CONDITION.equals(EDIT_THREAD_REPLY)) {
                         frame_loading.setVisibility(View.VISIBLE);
@@ -400,12 +449,14 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 
                             Forum forum = new Forum(key, prefConfig.getMID(), content.getText().toString()
                                     , Utils.getTime("EEEE, dd/MM/yyyy HH:mm"), title.getText().toString()
-                                    , forumCategory.getFcid(), 0, 1, false);
+                                    , forumCategory.getFcid(), "", 0, 1, false);
                             ExampleThreadFragment exampleThreadFragment = new ExampleThreadFragment();
                             Bundle bundle = new Bundle();
                             FragmentManager fragmentManager = getFragmentManager();
 
                             bundle.putParcelable(ExampleThreadFragment.GET_NEW_THREAD, forum);
+                            bundle.putParcelable(ExampleThreadFragment.GET_CATEGORY, forumCategory);
+                            bundle.putParcelable(ExampleThreadFragment.GET_BITMAP_THUMBNAIL, thumbnail_bitmap);
                             bundle.putParcelableArrayList(ExampleThreadFragment.GET_ARRAY_OF_IMAGE, (ArrayList<? extends Parcelable>) imageList);
 
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -487,10 +538,10 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
             case R.id.close_preview_thread:
                 codeAlert.dismiss();
                 break;
-            case R.id.btnCancel_Preview:
+            case R.id.btn_back_example_thread:
                 codeAlert.dismiss();
                 break;
-            case R.id.btnSubmit_Preview:
+            case R.id.btn_send_example_thread:
                 codeAlert.dismiss();
                 frame_loading.setVisibility(View.VISIBLE);
 
@@ -499,7 +550,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 
                     Forum forum = new Forum(key, prefConfig.getMID(), content.getText().toString()
                             , Utils.getTime("EEEE, dd/MM/yyyy HH:mm"), title.getText().toString()
-                            , forumCategory.getFcid(), 0, 1, false);
+                            , forumCategory.getFcid(), "", 0, 1, false);
 
                     if (imageList.size() == 0) {
                         String path = Constant.DB_REFERENCE_FORUM + "/" + key;
@@ -539,18 +590,35 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 //                    onBackPress(false, mContext);
 //                fragmentTransaction.commit();
                     break;
+
+            case R.id.image_button_question_mark_new_thread:
+                if (!isTooltipAppear) {
+                    isTooltipAppear = true;
+                    ToolTip.Builder builder = new ToolTip.Builder(mContext, question_mark
+                            , (CoordinatorLayout) v.findViewById(R.id.coordinator_new_thread)
+                            , "Thumbnail akan muncul\ndihalaman forum utama", ToolTip.POSITION_BELOW);
+                    builder.setBackgroundColor(mContext.getResources().getColor(R.color.blue_palette));
+                    builder.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/sniglet_reguler.ttf"));
+                    toolTipsManager.show(builder.build());
+                }
+                break;
         }
     }
 
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (view.getId() == R.id.edit_text_content_new_thread) {
-            view.getParent().requestDisallowInterceptTouchEvent(true);
-            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_UP:
-                    view.getParent().requestDisallowInterceptTouchEvent(false);
-                    break;
-            }
+//        if (view.getId() == R.id.edit_text_content_new_thread) {
+//            view.getParent().requestDisallowInterceptTouchEvent(true);
+//            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+//                case MotionEvent.ACTION_UP:
+//                    view.getParent().requestDisallowInterceptTouchEvent(false);
+//                    break;
+//            }
+//        }
+        if (view.getId() == R.id.nested_scroll_new_thread) {
+            isTooltipAppear = false;
+            toolTipsManager.dismissAll();
         }
         return false;
     }
@@ -763,7 +831,8 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     }
 
     @Override
-    public void onClick(Forum.ForumCategory forumCategory) {
+    public void onClick(Forum.ForumCategory forumCategory, int pos) {
         NewThread.forumCategory = forumCategory;
+        categoryPosition = pos;
     }
 }

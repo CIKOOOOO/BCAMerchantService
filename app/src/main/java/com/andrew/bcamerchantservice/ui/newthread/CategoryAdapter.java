@@ -24,6 +24,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
     private onCategoryClick onCategoryClick;
     private int lastPosition;
 
+    public void setLastPosition(int lastPosition) {
+        this.lastPosition = lastPosition;
+    }
+
+    public int getLastPosition() {
+        return lastPosition;
+    }
+
     public CategoryAdapter(Context mContext, List<Forum.ForumCategory> forumCategoryList, CategoryAdapter.onCategoryClick onCategoryClick) {
         this.mContext = mContext;
         this.forumCategoryList = forumCategoryList;
@@ -32,7 +40,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
     }
 
     public interface onCategoryClick {
-        void onClick(Forum.ForumCategory forumCategory);
+        void onClick(Forum.ForumCategory forumCategory, int i);
     }
 
     @NonNull
@@ -62,7 +70,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onCategoryClick.onClick(category);
+                onCategoryClick.onClick(category, pos);
                 notifyItemChanged(lastPosition);
                 lastPosition = pos;
                 notifyItemChanged(pos);
@@ -71,7 +79,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
 
         if (forumCategoryList.size() > 5) {
             /*
-             * I will think about it later
+             * I will think about it later, but it should show more option,
+             * and when user click more, it will pop up a bottom navigation
+             * then it will show all of category list like gojek apps
              * */
         }
     }

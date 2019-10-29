@@ -2,6 +2,9 @@ package com.andrew.bcamerchantservice.ui.mainforum;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,10 +34,17 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -101,8 +112,23 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             final int position = viewHolder.getAdapterPosition();
             final Forum forumThread = forumList.get(i);
             final Merchant merchant = map.get(forumThread.getMid());
+
             viewHolder.title.setText(forumThread.getForum_title());
             viewHolder.view_count.setText(forumThread.getView_count() + "");
+
+            Transformation transformation = new RoundedTransformationBuilder()
+                    .borderColor(context.getResources().getColor(R.color.blue_palette))
+                    .borderWidthDp(1)
+                    .cornerRadiusDp(5)
+                    .oval(false)
+                    .build();
+
+            Picasso.get()
+                    .load(forumThread.getForum_thumbnail())
+                    .resize(300, 180)
+                    .centerCrop()
+                    .transform(transformation)
+                    .into(viewHolder.rounded_thumbnail);
 
             try {
                 viewHolder.date.setText(Utils.formatDateFromDateString("EEEE, dd/MM/yyyy HH:mm", "dd MMM yyyy", forumThread.getForum_date()));
@@ -113,7 +139,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
             if (merchant != null) {
                 viewHolder.username.setText(merchant.getMerchant_name());
-                Picasso.get().load(merchant.getMerchant_profile_picture()).into(viewHolder.roundedImageView);
+                Picasso.get()
+                        .load(merchant.getMerchant_profile_picture())
+                        .into(viewHolder.roundedImageView);
             }
             viewHolder.like.setText(String.valueOf(forumThread.getForum_like()));
             viewHolder.content.setText(forumThread.getForum_content());
@@ -271,6 +299,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         TextView title, date, time, username, content, like, view_count;
         ImageButton option_menu;
         RoundedImageView roundedImageView;
+        ImageView rounded_thumbnail;
         RippleView rippleView;
         RelativeLayout relative_profile;
 
@@ -287,6 +316,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             roundedImageView = itemView.findViewById(R.id.recycler_profile_main_forum);
             view_count = itemView.findViewById(R.id.recycler_view_count_main_forum);
             relative_profile = itemView.findViewById(R.id.recycler_relative_profile_main_forum);
+            rounded_thumbnail = itemView.findViewById(R.id.recycler_image_thumbnail_main_forum);
         }
     }
 

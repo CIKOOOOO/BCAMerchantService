@@ -84,8 +84,8 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
                         Glide.with(context).load(DecodeBitmap.compressBitmap(imageList.get(i).getImage_bitmap())).into(holder.imageViews);
                         break;
                 }
-                holder.textview_img_thread.setVisibility(View.VISIBLE);
-                holder.textview_img_thread.setText(imageList.get(i).getTitle());
+//                holder.textview_img_thread.setVisibility(View.VISIBLE);
+//                holder.textview_img_thread.setText(imageList.get(i).getTitle());
                 break;
             default:
                 switch (imageList.get(i).getType()) {

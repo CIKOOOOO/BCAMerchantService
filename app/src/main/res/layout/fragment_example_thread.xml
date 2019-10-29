@@ -37,7 +37,9 @@
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:overScrollMode="never">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,6 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/sniglet_reguler"
                         android:textColor="@color/blackPalette"
                         android:textSize="17sp" />
@@ -61,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="5dp"
                         android:background="@color/blue_palette"
                         android:orientation="horizontal">
@@ -112,7 +115,9 @@
                             android:id="@+id/text_title_example_new_thread"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
                             android:fontFamily="@font/sniglet_reguler"
                             android:textAlignment="center"
                             android:textColor="@color/toolbar_base"
@@ -132,9 +137,9 @@
                             android:id="@+id/text_content_example_new_thread"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="20dp"
-                            android:layout_marginEnd="5dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
                             android:fontFamily="@font/sniglet_reguler"
                             android:text="@string/lorem"
@@ -149,23 +154,23 @@
                             android:overScrollMode="never" />
                     </LinearLayout>
                 </LinearLayout>
-
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="bottom"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white_color"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btnCancel_Preview"
+            android:id="@+id/btn_back_example_thread"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -174,13 +179,13 @@
             android:layout_weight="1"
             android:background="@drawable/rectangle_rounded_stroke_blue"
             android:fontFamily="@font/sniglet_reguler"
-            android:text="@string/cancel"
+            android:text="@string/back"
             android:textAllCaps="false"
             android:textColor="@color/blue_palette"
             android:textSize="17sp" />
 
         <Button
-            android:id="@+id/btnSubmit_Preview"
+            android:id="@+id/btn_send_example_thread"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
