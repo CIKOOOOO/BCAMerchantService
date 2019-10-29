@@ -1,0 +1,260 @@
+package com.andrew.bcamerchantservice.ui.mainforum;
+
+import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.andrew.bcamerchantservice.model.Forum;
+import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.model.MerchantStory;
+import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ForumPresenter implements IForumPresenter {
+
+    private IForumView iForumView;
+    private DatabaseReference dbRef;
+    private StorageReference storageRef;
+    private FirebaseStorage firebaseStorage;
+
+    ForumPresenter(IForumView iForumView) {
+        this.iForumView = iForumView;
+        dbRef = FirebaseDatabase.getInstance().getReference();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageRef = firebaseStorage.getReference();
+    }
+
+    @Override
+    public void onGetData() {
+
+    }
+
+    @Override
+    public void loadForum(final boolean isSearch) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (!isSearch) {
+                    List<Forum> forums = new ArrayList<>();
+                    List<Forum> trendingList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        final Forum forum = snapshot.getValue(Forum.class);
+                        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE).child(forum.getMid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
+                                        if (dataSnapshots.getValue(Merchant.class) == null)
+                                            return;
+                                        iForumView.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                        forums.add(0, forum);
+                        trendingList.add(forum);
+                    }
+                    iForumView.onForumData(forums);
+                    iForumView.onTrendingList(trendingList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void loadShowCase() {
+        dbRef.child(Constant.DB_REFERENCE_MERCHANT_STORY)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() != null) {
+                            List<MerchantStory> showCaseList = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String URL = "";
+                                String MID = "";
+                                String date = "";
+                                String SID = "";
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                    SID = snapshot1.child("sid").getValue(String.class);
+                                    date = snapshot1.child("story_date").getValue(String.class);
+                                    URL = snapshot1.child("story_picture").getValue(String.class);
+                                    MID = snapshot.getRef().getKey();
+                                }
+                                showCaseList.add(0, new MerchantStory(URL, SID, MID, date));
+                            }
+
+                            Collections.sort(showCaseList, new Comparator<MerchantStory>() {
+                                @Override
+                                public int compare(MerchantStory t2, MerchantStory t1) {
+                                    return t1.getStory_date().compareTo(t2.getStory_date());
+                                }
+                            });
+
+                            for (int i = 0; i < showCaseList.size(); i++) {
+                                dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
+                                        .child(showCaseList.get(i).getMid())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
+                                                if (dataSnapshots.getValue(Merchant.class) == null)
+                                                    return;
+                                                iForumView.onMerchantStoryProfile(dataSnapshots.getValue(Merchant.class));
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                            }
+                            iForumView.onStoryData(showCaseList);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    @Override
+    public List<Forum> onSearchTrending(List<Forum> list, String search) {
+        List<Forum> forums = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getForum_title().toLowerCase().trim().contains(search.toLowerCase().trim())) {
+                forums.add(list.get(i));
+            }
+        }
+        return forums;
+    }
+
+    @Override
+    public void onLoadSearch(Map<String, Merchant> map, final String searchResult) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Forum> forumLists = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    final Forum forum = snapshot.getValue(Forum.class);
+                    if (forum.getForum_title().trim().toLowerCase().contains(searchResult.trim().toLowerCase())) {
+                        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + forum.getMid())
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
+                                        if (dataSnapshots.getValue(Merchant.class) == null || forum.getMid() == null) {
+                                            return;
+                                        }
+                                        iForumView.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                        forumLists.add(0, forum);
+                    }
+                }
+
+                iForumView.onLoadSearch(forumLists);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onUploadShowCase(final String MID, final int randomNumber, byte[] byteData) {
+        final UploadTask uploadTask = storageRef.child(Constant.DB_REFERENCE_MERCHANT_STORY).child("story-" + MID + "-" + randomNumber).putBytes(byteData);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                storageRef.child(Constant.DB_REFERENCE_MERCHANT_STORY).child("story-" + MID + "-" + randomNumber)
+                        .getDownloadUrl()
+                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(final Uri uri) {
+                                /*
+                                 * Apabila data tersebut telah dihapus, maka sekarang mencari URL dr foto yang diupload
+                                 * Data merchant akan diupdate sesuai dengan URL terbaru
+                                 * */
+                                String key = dbRef.child(Constant.DB_REFERENCE_MERCHANT_STORY + "/" + MID).push().getKey();
+
+                                HashMap<String, String> map = new HashMap<>();
+                                map.put("sid", key);
+                                map.put("story_picture", uri.toString());
+                                map.put("story_date", Utils.getTime("yyyy-MM-dd HH:mm"));
+
+                                dbRef.child(Constant.DB_REFERENCE_MERCHANT_STORY + "/" + MID).child(key)
+                                        .setValue(map)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                /*
+                                                 * Kondisi dibawah ini akan berjalan jika value sudah berhasil diUpdate
+                                                 * */
+                                                iForumView.onSuccessUpload();
+                                            }
+                                        });
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onRemoveThread(String FID, final int pos) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
+                .removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        iForumView.onSuccessDeleteThread(pos);
+                    }
+                });
+    }
+
+    @Override
+    public void onUpdateViewCount(Map<String, Object> map, final Forum forum, final Merchant merchant) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM).updateChildren(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        iForumView.onSuccessUpdateViewCount(forum, merchant);
+                    }
+                });
+    }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recycler_relative_category"
+    android:layout_width="80dp"
+    android:layout_height="100dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/rectangle_rounded_stroke_blue"
+    android:orientation="vertical">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/recycler_img_category"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/recycler_name_category"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/recycler_name_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rectangle_rounded_down_stroke_blue"
+        android:fontFamily="@font/sniglet_reguler"
+        android:gravity="center"
+        android:paddingTop="3dp"
+        android:paddingBottom="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/blue_palette"
+        android:textSize="13sp" />
+</RelativeLayout>

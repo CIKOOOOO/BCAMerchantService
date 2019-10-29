@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
+    <LinearLayout
+        android:id="@+id/recycler_linear_main_forum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/recycler_relative_profile_main_forum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/recycler_profile_main_forum"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/blank_profile"
+                android:scaleType="centerCrop"
+                app:riv_border_color="#333333"
+                app:riv_corner_radius="30dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/main_forum_thread_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="6dp"
+                android:layout_toEndOf="@id/recycler_profile_main_forum"
+                android:ellipsize="end"
+                android:fontFamily="@font/sniglet_reguler"
+                android:maxLines="2"
+                android:textColor="@color/toolbar_base"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/recycler_date_main_forum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_forum_thread_username"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@id/recycler_profile_main_forum"
+                android:fontFamily="@font/sniglet_reguler"
+                android:textColor="@color/toolbar_base"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/recycler_time_main_forum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_forum_thread_username"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/recycler_date_main_forum"
+                android:fontFamily="@font/sniglet_reguler"
+                android:textAlignment="textEnd"
+                android:textColor="@color/toolbar_base"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <com.andexert.library.RippleView
+            android:id="@+id/ripple_main_forum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rv_alpha="200"
+            app:rv_color="@color/dark_grey_palette"
+            app:rv_framerate="25"
+            app:rv_rippleDuration="150"
+            app:rv_type="rectangle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/recycler_title_main_forum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/toolbar_base"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/recycler_image_thumbnail_main_forum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/blue_palette"
+                        android:scaleType="centerCrop"
+                        app:riv_border_color="#333333"
+                        app:riv_border_width="1dp"
+                        app:riv_corner_radius="10dip"
+                        app:riv_mutate_background="true" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/recycler_content_main_forum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="5"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/toolbar_base" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentBottom="true"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/icon_eye" />
+
+                            <TextView
+                                android:id="@+id/recycler_view_count_main_forum"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/blackPalette" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="20dp"
+                                android:background="@drawable/smile" />
+
+                            <TextView
+                                android:id="@+id/recycler_like_main_forum"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:textColor="@color/blackPalette" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/silver_palette" />
+            </LinearLayout>
+        </com.andexert.library.RippleView>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/main_forum_thread_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_more_vert" />
+</RelativeLayout>

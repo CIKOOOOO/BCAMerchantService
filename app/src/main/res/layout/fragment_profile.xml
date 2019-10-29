@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    tools:context=".ui.profile.Profile">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView_Profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="170dp">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/image_background_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/cornflower_blue_palette"
+                    android:scaleType="fitXY"
+                    app:riv_border_color="#333333"
+                    app:riv_mutate_background="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/image_profile_picture_profile"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/blank_profile"
+                            android:scaleType="centerCrop"
+                            app:riv_border_color="#333333"
+                            app:riv_border_width="2dip"
+                            app:riv_corner_radius="30dip"
+                            app:riv_mutate_background="true"
+                            app:riv_oval="true" />
+
+                        <ImageButton
+                            android:id="@+id/btn_change_picture_profile"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_below="@id/image_profile_picture_profile"
+                            android:layout_alignEnd="@+id/image_profile_picture_profile"
+                            android:layout_marginTop="-50dp"
+                            android:layout_marginEnd="1dp"
+                            android:background="@drawable/plus" />
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/btn_change_home_profile"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:background="@drawable/ic_triangle_add" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_merchant_name_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/toolbar_base"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_position_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/iron_palette"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/blackPalette" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@color/iron_palette"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_email_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:maxLines="2"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="mid Number    "
+                        android:textColor="@color/iron_palette"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/text_mid_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/blackPalette" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="never"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blackPalette" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
+
+            <Button
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Keluar"
+                android:textColor="@color/blue_palette"
+                android:visibility="gone" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/picture_frame_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/blackPalette"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rl_frame_main_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <ImageButton
+                android:id="@+id/btn_close_frame_profile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_close" />
+
+            <ImageView
+                android:id="@+id/image_frame_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_above="@id/download_image_frame_profile"
+                android:layout_below="@id/btn_close_frame_profile"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="40dp"
+                android:scaleType="fitXY" />
+
+            <ImageButton
+                android:id="@+id/download_image_frame_profile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_ic_file_download" />
+
+            <TextView
+                android:id="@+id/merchantName_Profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_frame_profile"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/white_color"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_loading_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blackPalette"
+        android:visibility="gone">
+
+        <com.developers.coolprogressviews.CircleWithArcProgress
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:arcColor="@color/blue_palette"
+            app:circleColor="@color/royal_blue_palette"
+            app:radius1="30dp" />
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

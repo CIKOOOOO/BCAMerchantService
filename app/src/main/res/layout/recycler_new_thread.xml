@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="160dp"
+    android:layout_marginStart="10dp"
+    android:background="@drawable/rectangle_rounded_stroke_blue"
+    android:gravity="center">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_recycler_new_thread"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="centerCrop"
+        app:riv_border_color="@color/blue_palette"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="10dp"
+        app:riv_mutate_background="true" />
+
+    <TextView
+        android:id="@+id/close_recycler_new_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/rectangle_rounded_down_white"
+        android:fontFamily="@font/sniglet_reguler"
+        android:gravity="center"
+        android:paddingTop="3dp"
+        android:paddingBottom="5dp"
+        android:text="Hapus"
+        android:textAlignment="center"
+        android:textColor="@color/blue_palette"
+        android:textSize="13sp" />
+</RelativeLayout>
