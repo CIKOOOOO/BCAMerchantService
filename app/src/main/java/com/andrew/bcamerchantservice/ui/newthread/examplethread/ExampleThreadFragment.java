@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
@@ -23,6 +24,7 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.ui.newthread.ImagePickerAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
+import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -36,7 +38,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExampleThreadFragment extends Fragment implements ImagePickerAdapter.onItemClick, View.OnClickListener {
+public class ExampleThreadFragment extends Fragment implements ImagePickerAdapter.onItemClick, View.OnClickListener, IExampleView {
 
     public static final String GET_NEW_THREAD = "get_new_thread";
     public static final String GET_ARRAY_OF_IMAGE = "get_array_of_image";
@@ -46,6 +48,9 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
     private View v;
     private PrefConfig prefConfig;
     private Context mContext;
+    private FrameLayout frame_loading;
+
+    private IExampleThreadPresenter presenter;
 
     private Forum forum;
     private Forum.ForumCategory category;
@@ -70,8 +75,12 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
     private void initVar() {
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
+        presenter = new ExampleThreadPresenter(this);
 
         Button btn_back = v.findViewById(R.id.btn_back_example_thread);
+        Button btn_send = v.findViewById(R.id.btn_send_example_thread);
+
+        frame_loading = v.findViewById(R.id.frame_loading_example_new_thread);
 
         imageList = new ArrayList<>();
 
@@ -119,8 +128,8 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                 }
             }
         }
-
         btn_back.setOnClickListener(this);
+        btn_send.setOnClickListener(this);
     }
 
     @Override
@@ -154,8 +163,34 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                 break;
             case R.id.btn_send_example_thread:
                 NewThread.categoryPosition = -1;
-                // send data
+                frame_loading.setVisibility(View.VISIBLE);
+                if (imageList.size() == 0) {
+                    presenter.onSendNewThread(forum, prefConfig, thumbnail_bitmap);
+                } else {
+                    presenter.onSendNewThread(forum, prefConfig, imageList, thumbnail_bitmap);
+                }
                 break;
         }
+    }
+
+    @Override
+    public void onSuccessUpload(Forum forum) {
+        frame_loading.setVisibility(View.GONE);
+        SelectedThread selectedThread = new SelectedThread();
+
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SelectedThread.GET_THREAD_OBJECT, forum);
+        bundle.putParcelable(SelectedThread.GET_MERCHANT, prefConfig.getMerchantData());
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, selectedThread);
+
+        selectedThread.setArguments(bundle);
+        fragmentTransaction.commit();
     }
 }

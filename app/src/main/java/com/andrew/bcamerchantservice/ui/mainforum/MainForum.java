@@ -49,6 +49,7 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.MerchantStory;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
+import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
@@ -154,7 +155,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         scaleDrawable = DecodeBitmap.setScaleDrawable(mContext, R.drawable.placeholder);
 
         LinearLayout linearLayout = v.findViewById(R.id.parentll_main_forum);
-        ImageButton search = v.findViewById(R.id.imgBtn_Search);
+        ImageButton search = v.findViewById(R.id.image_button_search_main_forum);
         ImageButton new_thread = v.findViewById(R.id.imgBtn_AddThread);
         ImageButton close = v.findViewById(R.id.btn_close_frame);
         ImageButton file_download = v.findViewById(R.id.download_image_frame);
@@ -190,7 +191,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
         setAdapter();
 
-        presenter.loadForum(isSearch);
+        presenter.loadForum(prefConfig.getMID());
         presenter.loadShowCase();
 
         bundle = getArguments();
@@ -345,6 +346,11 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
+    public void onHide(String FID) {
+        presenter.onHide(FID, prefConfig.getMID());
+    }
+
+    @Override
     public void onForumData(List<Forum> forums) {
         forumLists.clear();
         forumLists.addAll(forums);
@@ -486,18 +492,19 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imgBtn_Search:
-                search();
-                break;
-            case R.id.etSearch:
+            case R.id.image_button_search_main_forum:
                 /*
                  * Jika kolom search di klik maka akan masuk kedalam kondisi dibawah
                  * */
-                if (trendingIsVisible) {
-                    removeTrending(mContext);
-                } else {
-                    makeTrendingVisible();
-                }
+//                if (trendingIsVisible) {
+//                    removeTrending(mContext);
+//                } else {
+//                    makeTrendingVisible();
+//                }
+                FragmentTransaction fragmentTransactions = getFragmentManager().beginTransaction();
+                fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransactions.replace(R.id.main_frame, new SearchFragment());
+                fragmentTransactions.commit();
                 break;
             case R.id.parentll_main_forum:
                 removeTrending(view.getContext());

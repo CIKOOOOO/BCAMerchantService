@@ -57,6 +57,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     private Map<String, Merchant> map;
     private Boolean check = false;
     private PrefConfig prefConfig;
+    private Transformation transformation;
 
     public void setForumMerchantMap(List<Forum> forumList, Map<String, Merchant> map) {
         this.forumList = forumList;
@@ -77,6 +78,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         void onDelete(int pos, Forum forum);
 
         void profileOnClick(int pos, Merchant merchant);
+
+        void onHide(String FID);
     }
 
     private onItemClick onItemClick;
@@ -88,6 +91,12 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         this.forumList = forumList;
         this.onItemClick = onItemClick;
         prefConfig = new PrefConfig(context);
+        transformation = new RoundedTransformationBuilder()
+                .borderColor(context.getResources().getColor(R.color.blue_palette))
+                .borderWidthDp(1)
+                .cornerRadiusDp(5)
+                .oval(false)
+                .build();
     }
 
     @NonNull
@@ -116,19 +125,21 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             viewHolder.title.setText(forumThread.getForum_title());
             viewHolder.view_count.setText(forumThread.getView_count() + "");
 
-            Transformation transformation = new RoundedTransformationBuilder()
-                    .borderColor(context.getResources().getColor(R.color.blue_palette))
-                    .borderWidthDp(1)
-                    .cornerRadiusDp(5)
-                    .oval(false)
-                    .build();
-
-            Picasso.get()
-                    .load(forumThread.getForum_thumbnail())
-                    .resize(300, 180)
-                    .centerCrop()
-                    .transform(transformation)
-                    .into(viewHolder.rounded_thumbnail);
+            if (!forumThread.getForum_thumbnail().isEmpty()) {
+                Picasso.get()
+                        .load(forumThread.getForum_thumbnail())
+                        .resize(300, 180)
+                        .centerCrop()
+                        .transform(transformation)
+                        .into(viewHolder.rounded_thumbnail);
+            } else {
+                Picasso.get()
+                        .load(Constant.SOLID_COLOR)
+                        .resize(300, 180)
+                        .centerCrop()
+                        .transform(transformation)
+                        .into(viewHolder.rounded_thumbnail);
+            }
 
             try {
                 viewHolder.date.setText(Utils.formatDateFromDateString("EEEE, dd/MM/yyyy HH:mm", "dd MMM yyyy", forumThread.getForum_date()));
@@ -278,6 +289,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                                     });
 
                                     codeAlert.show();
+                                    break;
+                                case R.id.menu_hide:
+                                    onItemClick.onHide(forumThread.getFid());
                                     break;
                             }
                             return false;

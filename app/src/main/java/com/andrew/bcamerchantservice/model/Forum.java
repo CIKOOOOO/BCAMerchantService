@@ -54,6 +54,10 @@ public class Forum implements Parcelable {
         return forum_thumbnail;
     }
 
+    public void setForum_thumbnail(String forum_thumbnail) {
+        this.forum_thumbnail = forum_thumbnail;
+    }
+
     public String getFcid() {
         return fcid;
     }
@@ -325,6 +329,31 @@ public class Forum implements Parcelable {
             parcel.writeString(fcid);
             parcel.writeString(category_name);
             parcel.writeString(category_url);
+        }
+    }
+
+    public static class ForumHidden{
+        private String fhid, fid, time;
+
+        public ForumHidden() {
+        }
+
+        public ForumHidden(String fhid, String fid, String time) {
+            this.fhid = fhid;
+            this.fid = fid;
+            this.time = time;
+        }
+
+        public String getFhid() {
+            return fhid;
+        }
+
+        public String getFid() {
+            return fid;
+        }
+
+        public String getTime() {
+            return time;
         }
     }
 }

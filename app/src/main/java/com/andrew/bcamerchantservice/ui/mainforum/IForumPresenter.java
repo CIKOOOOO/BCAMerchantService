@@ -11,7 +11,7 @@ import java.util.Map;
 public interface IForumPresenter {
     void onGetData();
 
-    void loadForum(boolean isSearch);
+    void loadForum(String MID);
 
     void loadShowCase();
 
@@ -24,4 +24,6 @@ public interface IForumPresenter {
     void onRemoveThread(String FID, int pos);
 
     void onUpdateViewCount(Map<String, Object> map, Forum forum, Merchant merchant);
+
+    void onHide(String FID, String MID);
 }

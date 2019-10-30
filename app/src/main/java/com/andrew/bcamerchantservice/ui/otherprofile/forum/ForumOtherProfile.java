@@ -89,6 +89,11 @@ public class ForumOtherProfile extends Fragment implements ThreadAdapter.onItemC
     }
 
     @Override
+    public void onHide(String FID) {
+
+    }
+
+    @Override
     public void onGettingData(List<Forum> forumList) {
         this.forumList.clear();
         this.forumList.addAll(forumList);

@@ -113,7 +113,8 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <ImageView
+                            <ImageButton
+                                android:id="@+id/image_button_search_main_forum"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/ic_search" />

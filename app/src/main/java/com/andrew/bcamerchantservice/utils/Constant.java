@@ -29,6 +29,8 @@ public class Constant {
     public static final String DB_REFERENCE_FORUM_IMAGE_REPLY = "forum_image_reply";
     public static final String DB_REFERENCE_FORUM_CATEGORY = "forum_category";
     public static final String DB_REFERENCE_FORUM_THUMBNAIL = "forum_thumbnail";
+    public static final String DB_REFERENCE_FORUM_HIDDEN = "forum_hidden";
+    public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
     public static final int MAX_ALPHA = 220;
 
 //    private static final String[] trendingTitle = {"Potret Asli Afrika Vs Anggapan Banyak Orang"

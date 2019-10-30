@@ -780,13 +780,17 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     break;
                 case CAMERA_THUMBNAIL:
                     thumbnail_bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
-                    Glide.with(mContext).load(thumbnail_bitmap).into(image_thumbnail);
+                    Glide.with(mContext)
+                            .load(DecodeBitmap.compressBitmap(thumbnail_bitmap))
+                            .into(image_thumbnail);
                     break;
                 case GALLERY_THUMBNAIL:
                     Uri targetUri = data.getData();
                     try {
                         thumbnail_bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(targetUri));
-                        Glide.with(mContext).load(thumbnail_bitmap).into(image_thumbnail);
+                        Glide.with(mContext)
+                                .load(DecodeBitmap.compressBitmap(thumbnail_bitmap))
+                                .into(image_thumbnail);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
