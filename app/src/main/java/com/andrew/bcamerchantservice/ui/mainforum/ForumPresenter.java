@@ -42,11 +42,6 @@ public class ForumPresenter implements IForumPresenter {
     }
 
     @Override
-    public void onGetData() {
-
-    }
-
-    @Override
     public void loadForum(final String MID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM)
                 .addValueEventListener(new ValueEventListener() {
@@ -99,7 +94,6 @@ public class ForumPresenter implements IForumPresenter {
                             }
                         }
                         iForumView.onForumData(forums);
-                        iForumView.onTrendingList(trendingList);
                     }
 
                     @Override
@@ -164,55 +158,6 @@ public class ForumPresenter implements IForumPresenter {
 
                     }
                 });
-    }
-
-    @Override
-    public List<Forum> onSearchTrending(List<Forum> list, String search) {
-        List<Forum> forums = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getForum_title().toLowerCase().trim().contains(search.toLowerCase().trim())) {
-                forums.add(list.get(i));
-            }
-        }
-        return forums;
-    }
-
-    @Override
-    public void onLoadSearch(Map<String, Merchant> map, final String searchResult) {
-        dbRef.child(Constant.DB_REFERENCE_FORUM).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Forum> forumLists = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    final Forum forum = snapshot.getValue(Forum.class);
-                    if (forum.getForum_title().trim().toLowerCase().contains(searchResult.trim().toLowerCase())) {
-                        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + forum.getMid())
-                                .addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
-                                        if (dataSnapshots.getValue(Merchant.class) == null || forum.getMid() == null) {
-                                            return;
-                                        }
-                                        iForumView.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                        forumLists.add(0, forum);
-                    }
-                }
-
-                iForumView.onLoadSearch(forumLists);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override

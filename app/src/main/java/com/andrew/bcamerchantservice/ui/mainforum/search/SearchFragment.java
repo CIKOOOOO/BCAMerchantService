@@ -19,6 +19,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
+import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
 import java.util.ArrayList;
@@ -122,6 +123,16 @@ public class SearchFragment extends Fragment implements TextWatcher, View.OnClic
 
     @Override
     public void onSearchClick(Forum forum, Merchant merchant) {
+        Bundle bundle = new Bundle();
+        SelectedThread selectedThread = new SelectedThread();
 
+        bundle.putParcelable(SelectedThread.GET_MERCHANT, merchant);
+        bundle.putParcelable(SelectedThread.GET_THREAD_OBJECT, forum);
+        selectedThread.setArguments(bundle);
+
+        FragmentTransaction fragmentTransactions = getFragmentManager().beginTransaction();
+        fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransactions.replace(R.id.main_frame, selectedThread);
+        fragmentTransactions.commit();
     }
 }

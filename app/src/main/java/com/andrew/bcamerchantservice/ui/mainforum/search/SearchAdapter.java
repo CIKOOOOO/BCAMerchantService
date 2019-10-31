@@ -64,11 +64,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        Forum forum = forumList.get(i);
+        final Forum forum = forumList.get(i);
         if (merchantMap != null) {
             if (merchantMap.containsKey(forum.getMid())) {
                 Merchant merchant = merchantMap.get(forum.getMid());
-                holder.text_writer.setText("By : " + merchant.getMerchant_name());
+                holder.text_writer.setText("Written by : " + merchant.getMerchant_name());
             }
         }
         if (forum.getForum_thumbnail().isEmpty()) {
@@ -94,6 +94,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.Holder> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (merchantMap.get(forum.getMid()) != null) {
+                    onClickListener.onSearchClick(forum, merchantMap.get(forum.getMid()));
+                }
+            }
+        });
     }
 
     @Override

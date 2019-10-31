@@ -48,4 +48,5 @@
     <color name="raven_palette">#7c808b</color>
     <color name="gull_gray_palette">#a0a6ba</color>
     <color name="antique_brass_palette">#cd8b62</color>
+    <color name="gallery_palette">#eeeeee</color>
 </resources>

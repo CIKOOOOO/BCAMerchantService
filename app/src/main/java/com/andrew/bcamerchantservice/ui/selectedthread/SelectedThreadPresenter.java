@@ -41,26 +41,6 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
-    public void onLoadData(DatabaseReference reference) {
-        reference.child(Constant.DB_REFERENCE_FORUM).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Forum> trendingList = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Forum forum = snapshot.getValue(Forum.class);
-                    trendingList.add(forum);
-                }
-                iSelectedThreadView.onLoadTrendingList(trendingList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    @Override
     public void onLoadReplyData(final DatabaseReference dbRef, final Forum forum, final String MID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()).addValueEventListener(new ValueEventListener() {
             @Override

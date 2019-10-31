@@ -13,11 +13,7 @@ public interface IForumView {
 
     void onMerchantStoryProfile(Merchant merchant);
 
-    void onTrendingList(List<Forum> trendingList);
-
     void onStoryData(List<MerchantStory> stories);
-
-    void onLoadSearch(List<Forum> list);
 
     void onSuccessUpload();
 

@@ -71,13 +71,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         MainActivity.onBackPressFragment onBackPressFragment;
 
         if (fragment instanceof MainForum) {
-            if (MainForum.trendingIsVisible) {
+            if (MainForum.isStoryVisible) {
                 onBackPressFragment = new MainForum();
                 onBackPressFragment.onBackPress(false, fragment.getContext());
-            }
-            if (MainForum.showcase_condition) {
-                MainForum.showcase_condition = false;
-                MainForum.frame_showcase.setVisibility(View.GONE);
             } else
                 iMainPresenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof SelectedThread) {
@@ -127,7 +123,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     public void onUserInteraction() {
         super.onUserInteraction();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frame);
-        if (fragment instanceof MainForum) {
+        if (fragment instanceof MainForum && !MainForum.isStoryVisible) {
             bottomNavigationView.setVisibility(View.VISIBLE);
             floatingActionButton.show();
         } else floatingActionButton.hide();

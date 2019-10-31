@@ -61,7 +61,7 @@ public class SearchPresenter implements ISearchPresenter {
 
                                                 }
                                             });
-                                    forumList.add(forum);
+                                    forumList.add(0, forum);
                                 }
                             } else {
                                 if (forum.getForum_title().toLowerCase().trim().contains(search.toLowerCase().trim())) {
@@ -79,7 +79,7 @@ public class SearchPresenter implements ISearchPresenter {
 
                                                 }
                                             });
-                                    forumList.add(forum);
+                                    forumList.add(0, forum);
                                 }
                             }
                         }

@@ -9,15 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface IForumPresenter {
-    void onGetData();
-
     void loadForum(String MID);
 
     void loadShowCase();
-
-    List<Forum> onSearchTrending(List<Forum> list, String search);
-
-    void onLoadSearch(Map<String, Merchant> map, String searchResult);
 
     void onUploadShowCase(String MID, int randomNumber, byte[] byteData);
 

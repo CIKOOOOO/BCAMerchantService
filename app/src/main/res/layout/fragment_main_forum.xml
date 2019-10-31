@@ -34,39 +34,6 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <EditText
-                            android:id="@+id/etSearch"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_stroke_white"
-                            android:hint="@string/find_here"
-                            android:inputType="text"
-                            android:paddingStart="10dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="6dp"
-                            android:singleLine="true"
-                            android:textColor="@color/blackPalette"
-                            android:textColorHint="@color/dark_grey_palette" />
-
-                        <ImageButton
-                            android:id="@+id/imgBtn_Search"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="20dp"
-                            android:background="@drawable/ic_search" />
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -248,93 +215,15 @@
                             app:circleColor4="@color/blue_palette"
                             app:radius1="30dp" />
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linear_trending"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ll"
-                        android:background="@drawable/background_trending"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="@string/trending_thread"
-                            android:textColor="@color/toolbar_base"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerTrending_MainForum"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:nestedScrollingEnabled="false" />
-                    </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </com.baoyz.widget.PullRefreshLayout>
 
-    <FrameLayout
-        android:id="@+id/picture_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="@color/blackPalette"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:id="@+id/rl_frame_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/btn_close_frame"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/button_close" />
-
-            <ImageView
-                android:id="@+id/image_frame"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_above="@id/download_image_frame"
-                android:layout_below="@id/btn_close_frame"
-                android:layout_centerInParent="true"
-                android:scaleType="fitCenter" />
-
-            <ImageButton
-                android:id="@+id/download_image_frame"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/background_ic_file_download" />
-
-            <TextView
-                android:id="@+id/merchantName_MainForum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/image_frame"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@id/download_image_frame"
-                android:textColor="@color/white_color"
-                android:textSize="15sp" />
-        </RelativeLayout>
-    </FrameLayout>
+    <include
+        android:id="@+id/custom_view_story"
+        layout="@layout/custom_story_view"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/frame_loading_main_forum"

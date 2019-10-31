@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISelectedThreadPresenter {
-    void onLoadData(DatabaseReference reference);
-
     void onLoadReplyData(DatabaseReference dbRef, Forum forum, String MID);
 
     void onUpdateLike(String path, Map<String, Object> map);

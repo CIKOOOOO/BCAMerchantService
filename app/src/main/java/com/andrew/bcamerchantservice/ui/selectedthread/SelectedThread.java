@@ -59,13 +59,11 @@ import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
-import com.andrew.bcamerchantservice.ui.mainforum.TrendingAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -86,10 +84,10 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SelectedThread extends Fragment implements TrendingAdapter.itemClickListener
-        , ISelectedThreadView, TextWatcher, View.OnClickListener, View.OnKeyListener, View.OnTouchListener
-        , ReplyAdapter.onEdit, ReplyAdapter.onReplyDelete, ReplyAdapter.onReplyClick, PageNumberAdapter.pageNumber
-        , MainActivity.onBackPressFragment, ImageGridAdapter.imageOnClick, ImagePickerAdapter.onItemClick, PopupMenu.OnMenuItemClickListener {
+public class SelectedThread extends Fragment implements ISelectedThreadView, View.OnClickListener
+        , ReplyAdapter.onEdit, ReplyAdapter.onReplyDelete, ReplyAdapter.onReplyClick
+        , PageNumberAdapter.pageNumber, MainActivity.onBackPressFragment, ImageGridAdapter.imageOnClick
+        , ImagePickerAdapter.onItemClick, PopupMenu.OnMenuItemClickListener {
 
     public static final String GET_THREAD_OBJECT = "thread_object";
     public static final String GET_MERCHANT = "merchant_profile";
@@ -104,21 +102,18 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
     private static final int AMOUNT_REPLY = 5;
 
     @SuppressLint("StaticFieldLeak")
-    private static LinearLayout trending_linear;
-    @SuppressLint("StaticFieldLeak")
-    private static TrendingAdapter trendingAdapter;
     private static List<ImagePicker> imageList, imageReply;
 
     private View v;
     private LinearLayout reply_linear;
-    private RecyclerView recycler_trending, recycler_main_forum, recycler_img_reply, recycler_page_number, recycler_page_number2;
+    private RecyclerView recycler_main_forum, recycler_img_reply, recycler_page_number, recycler_page_number2;
     private AnimatedRecyclerView recycler_reply;
     private TextView amount_like, chosen_image, error_box, merchant_name;
     private ImageButton img_more, frame_close, img_download, img_like;
     private NestedScrollView scrollView;
     private ReplyAdapter replyAdapter;
     private ImagePickerAdapter pickerAdapter;
-    private EditText etReply, etName, etSearch;
+    private EditText etReply, etName;
     private PrefConfig prefConfig;
     private PageNumberAdapter pageNumberAdapter;
     private Context mContext;
@@ -126,15 +121,14 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
     private ImageView img_frame_selected, img_profile;
     private Forum forum;
     private Merchant merchant;
-    private DatabaseReference dbRef, dbProfile;
-    private StorageReference storageReference;
+    private DatabaseReference dbRef;
     private ImageGridAdapter imageGridAdapter;
     private RelativeLayout relative_page_number, relative_page_number2;
     private FrameLayout frame_loading;
 
     private ISelectedThreadPresenter presenter;
 
-    private List<Forum> trendingList, tempList, threadList;
+    private List<Forum> threadList;
     private List<Forum.ForumImage> forumImageList;
     private List<Forum.ForumReply> replyList;
     private Map<String, Merchant> merchantMap;
@@ -169,12 +163,8 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         prefConfig = new PrefConfig(mContext);
         isLike = false;
         dbRef = FirebaseDatabase.getInstance().getReference();
-        storageReference = FirebaseStorage.getInstance().getReference(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY);
-        dbProfile = FirebaseDatabase.getInstance().getReference(Constant.DB_REFERENCE_MERCHANT_PROFILE);
         presenter = new SelectedThreadPresenter(this);
 
-        RelativeLayout relativeLayout = v.findViewById(R.id.relative_selected_thread);
-        ImageButton imageButton = v.findViewById(R.id.search_selected_thread);
         ImageButton gallery_opener = v.findViewById(R.id.gallery_opener_reply);
         ImageButton after = v.findViewById(R.id.btn_after_reply);
         ImageButton after2 = v.findViewById(R.id.btn_after_reply2);
@@ -188,17 +178,14 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         TextView last_page2 = v.findViewById(R.id.btn_end_reply2);
 
         img_like = v.findViewById(R.id.img_smile_thread);
-        etSearch = v.findViewById(R.id.etsearch_selected_thread);
         scrollView = v.findViewById(R.id.scrollView_SelectedThread);
         etReply = v.findViewById(R.id.etReply_Selected);
         etName = v.findViewById(R.id.etName_Selected);
         error_box = v.findViewById(R.id.show_error_content_selected);
         img_more = v.findViewById(R.id.thread_more_selected);
         chosen_image = v.findViewById(R.id.chosen_image);
-        trending_linear = v.findViewById(R.id.linear_trending_selected_thread);
         reply_linear = v.findViewById(R.id.linear_reply);
         recycler_main_forum = v.findViewById(R.id.recycler_img_selected);
-        recycler_trending = v.findViewById(R.id.recycler_trending_selected_thread);
         recycler_reply = v.findViewById(R.id.recycler_reply);
         recycler_img_reply = v.findViewById(R.id.recycler_img_reply);
         recycler_page_number = v.findViewById(R.id.recycler_page_number);
@@ -218,8 +205,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
 
         threadList = new ArrayList<>();
-        trendingList = new ArrayList<>();
-        tempList = new ArrayList<>();
         imageList = new ArrayList<>();
         imageReply = new ArrayList<>();
         forumImageList = new ArrayList<>();
@@ -230,13 +215,9 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
 
         setAdapter();
 
-        presenter.onLoadData(dbRef);
-
-        imageButton.setOnClickListener(this);
         reply.setOnClickListener(this);
         send.setOnClickListener(this);
         gallery_opener.setOnClickListener(this);
-        relativeLayout.setOnClickListener(this);
 
         frameLayout.setOnClickListener(this);
         frame_close.setOnClickListener(this);
@@ -244,13 +225,8 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         img_like.setOnClickListener(this);
         img_more.setOnClickListener(this);
 
-        etSearch.addTextChangedListener(this);
-        etSearch.setOnClickListener(this);
-        etSearch.setOnKeyListener(this);
-
         scrollView.setSmoothScrollingEnabled(true);
         scrollView.setNestedScrollingEnabled(false);
-        scrollView.setOnTouchListener(this);
 
         after.setOnClickListener(this);
         before.setOnClickListener(this);
@@ -263,38 +239,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         last_page2.setOnClickListener(this);
 
         new AsyncTasks().doInBackground();
-    }
-
-    @Override
-    public void onItemClick(int pos, List<Forum> forumThreads) {
-        if (forumThreads.size() == 0) {
-            Log.e("HEHE", "PENCARIAN");
-        } else {
-            Forum thread = forumThreads.get(pos);
-            SelectedThread selectedThread = new SelectedThread();
-            Bundle bundle = new Bundle();
-            FragmentManager fragmentManager = getFragmentManager();
-
-            bundle.putParcelable(SelectedThread.GET_THREAD_OBJECT, thread);
-            bundle.putParcelable(SelectedThread.GET_MERCHANT, merchantMap.get(thread.getMid()));
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, selectedThread);
-
-            selectedThread.setArguments(bundle);
-            fragmentTransaction.commit();
-            Utils.hideSoftKeyboard(mActivity);
-        }
-    }
-
-    @Override
-    public void onLoadTrendingList(List<Forum> forumList) {
-        trendingList.clear();
-        trendingList.addAll(forumList);
-        trendingAdapter.setTrendingList(forumList);
-        trendingAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -365,56 +309,9 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         }
     }
 
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (!trendingIsVisible)
-            makeVisible();
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        tempList.clear();
-        if (!trendingIsVisible)
-            makeVisible();
-        if (editable.toString().isEmpty()) {
-            trendingAdapter.setTrendingList(trendingList);
-        } else {
-            for (int i = 0; i < trendingList.size(); i++) {
-                if (trendingList.get(i).getForum_title().toLowerCase().trim().contains(editable.toString().toLowerCase().trim())) {
-                    tempList.add(trendingList.get(i));
-                }
-            }
-            trendingAdapter.setTrendingList(tempList);
-        }
-        trendingAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.search_selected_thread:
-                search();
-                break;
-            case R.id.etsearch_selected_thread:
-                Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_up);
-                Animation animation2 = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
-                if (trendingIsVisible) {
-                    trending_linear.setAnimation(animation);
-                    removeTrending(view.getContext());
-                } else {
-                    makeVisible();
-                    trending_linear.setAnimation(animation2);
-                }
-                break;
-            case R.id.relative_selected_thread:
-                removeTrending(view.getContext());
-                break;
             case R.id.img_smile_thread:
                 Map<String, Object> map = new HashMap<>();
                 if (!isLike) {
@@ -544,33 +441,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
     }
 
     @Override
-    public boolean onKey(View view, int i, KeyEvent keyEvent) {
-        switch (view.getId()) {
-            case R.id.etSearch:
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (i) {
-                        case KeyEvent.KEYCODE_ENTER:
-                            search();
-                            return true;
-                    }
-                }
-                break;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        switch (view.getId()) {
-            case R.id.scrollView_SelectedThread:
-                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE)
-                    if (trendingIsVisible) removeTrending(mContext);
-                break;
-        }
-        return false;
-    }
-
-    @Override
     public void onThreadEdit(int pos) {
         Forum.ForumReply thread = replyList.get(pos);
         NewThread newThread = new NewThread();
@@ -657,7 +527,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
 
     @Override
     public void onBackPress(boolean check, Context context) {
-        removeTrending(context);
     }
 
     @Override
@@ -859,45 +728,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
         }
     }
 
-    private void search() {
-        String result = etSearch.getText().toString();
-        if (!result.trim().isEmpty()) {
-            MainForum mainForum = new MainForum();
-            Bundle bundle = new Bundle();
-            FragmentManager fragmentManager = getFragmentManager();
-
-            bundle.putString(MainForum.BUNDLE_SEARCH, result);
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, mainForum);
-
-            mainForum.setArguments(bundle);
-            fragmentTransaction.commit();
-        }
-        Utils.hideSoftKeyboard(mActivity);
-    }
-
-    private void makeVisible() {
-        etSearch.setCursorVisible(true);
-        trendingIsVisible = true;
-        trending_linear.setVisibility(View.VISIBLE);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) trending_linear.getLayoutParams();
-        lp.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-    }
-
-    private void removeTrending(Context context) {
-        if (trendingIsVisible) {
-            etSearch.setCursorVisible(false);
-            trendingIsVisible = false;
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
-            trending_linear.setAnimation(animation);
-            Utils.hideSoftKeyboard(mActivity);
-            trending_linear.setVisibility(View.GONE);
-        }
-    }
-
     private int getPageNumber(int reply_amount) {
         int pageAll = reply_amount / AMOUNT_REPLY;
         if (reply_amount % AMOUNT_REPLY > 0) {
@@ -961,9 +791,6 @@ public class SelectedThread extends Fragment implements TrendingAdapter.itemClic
     private void setAdapter() {
         imageGridAdapter = new ImageGridAdapter(mContext, forumImageList, this);
         setLayoutManager(recycler_main_forum, imageGridAdapter, STATE_GRID);
-
-        trendingAdapter = new TrendingAdapter(mContext, trendingList, this);
-        setLayoutManager(recycler_trending, trendingAdapter, STATE_LINEAR_VERTICAL);
 
         replyAdapter = new ReplyAdapter(replyList, merchantMap, forumImageReplyMap, mContext, this, this, this);
         setLayoutManager(recycler_reply, replyAdapter, STATE_LINEAR_VERTICAL);
