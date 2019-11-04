@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
         layoutParams2.setBehavior(new FloatingActionButtonBehavior());
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+//        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     @Override

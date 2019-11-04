@@ -123,7 +123,7 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
         RoundedImageView imageView;
         ImageView imageViews;
         TextView textview_img_thread;
-        ImageButton imageButton;
+        TextView imageButton;
 
         Holder(@NonNull View itemView) {
             super(itemView);

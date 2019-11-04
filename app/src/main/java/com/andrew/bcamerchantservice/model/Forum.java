@@ -332,7 +332,7 @@ public class Forum implements Parcelable {
         }
     }
 
-    public static class ForumHidden{
+    public static class ForumHidden {
         private String fhid, fid, time;
 
         public ForumHidden() {
@@ -354,6 +354,26 @@ public class Forum implements Parcelable {
 
         public String getTime() {
             return time;
+        }
+    }
+
+    public static class ForumFavorite {
+        private String FID, date;
+
+        public ForumFavorite() {
+        }
+
+        public ForumFavorite(String FID, String date) {
+            this.FID = FID;
+            this.date = date;
+        }
+
+        public String getFID() {
+            return FID;
+        }
+
+        public String getDate() {
+            return date;
         }
     }
 }

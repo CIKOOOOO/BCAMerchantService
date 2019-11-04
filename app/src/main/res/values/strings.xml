@@ -93,6 +93,7 @@
     <string name="menu_outlet">Tambah Outlet</string>
     <string name="menu_request_promo">Promo Request</string>
     <string name="menu_forum">Merchant Forum</string>
+    <string name="menu_favorite">Favorite Thread</string>
     <string name="menu_loyalty">Merchant Loyalty</string>
 
     <string name="mid">mid : 2001558246</string>

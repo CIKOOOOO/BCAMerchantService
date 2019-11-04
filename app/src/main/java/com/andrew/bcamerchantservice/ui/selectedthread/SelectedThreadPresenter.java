@@ -9,6 +9,7 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -137,6 +138,55 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
+    public void onFavoriteThread(String MID, String FID) {
+        Forum.ForumFavorite forumFavorite = new Forum.ForumFavorite(FID, Utils.getTime("dd/MM/yyyy"));
+        String path = Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
+        dbRef.child(path).setValue(forumFavorite);
+        dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID)
+                .setValue(forumFavorite)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        iSelectedThreadView.onFavorite(true);
+                    }
+                });
+    }
+
+    @Override
+    public void onRemoveFavoriteThread(String MID, String FID) {
+        String path = Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
+        dbRef.child(path).removeValue();
+        dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID)
+                .removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        iSelectedThreadView.onFavorite(false);
+                    }
+                });
+    }
+
+    @Override
+    public void onCheckFavorite(String MID, String FID) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getChildrenCount() == 0) {
+                            iSelectedThreadView.onFavorite(false);
+                        } else {
+                            iSelectedThreadView.onFavorite(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    @Override
     public void onUpdateLike(String path, Map<String, Object> map) {
         dbRef.child(path).updateChildren(map);
     }
@@ -225,6 +275,23 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                                 }
                             });
                         }
+                    }
+                });
+    }
+
+    @Override
+    public void getCategoryName(String FCID) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM_CATEGORY + "/" + FCID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Forum.ForumCategory forumCategory = dataSnapshot.getValue(Forum.ForumCategory.class);
+                        iSelectedThreadView.onGetForum(forumCategory);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }

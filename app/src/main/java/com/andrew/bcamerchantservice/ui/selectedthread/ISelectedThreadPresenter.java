@@ -10,6 +10,12 @@ import java.util.Map;
 public interface ISelectedThreadPresenter {
     void onLoadReplyData(DatabaseReference dbRef, Forum forum, String MID);
 
+    void onFavoriteThread(String MID, String FID);
+
+    void onRemoveFavoriteThread(String MID, String FID);
+
+    void onCheckFavorite(String MID, String FID);
+
     void onUpdateLike(String path, Map<String, Object> map);
 
     void onRemove(String path);
@@ -19,4 +25,6 @@ public interface ISelectedThreadPresenter {
     void onReply(String path, Forum.ForumReply reply);
 
     void onReply(String path, String FID, String key, String MID, Forum.ForumReply reply, List<ImagePicker> list);
+
+    void getCategoryName(String FCID);
 }

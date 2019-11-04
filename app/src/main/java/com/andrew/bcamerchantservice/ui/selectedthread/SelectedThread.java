@@ -27,18 +27,11 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -60,14 +53,13 @@ import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
+import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.mlsdev.animatedrv.AnimatedRecyclerView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -96,6 +88,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     public static boolean trendingIsVisible, frameIsVisible;
     public static FrameLayout frameLayout;
 
+    private static Map<String, List<Forum.ForumImageReply>> forumImageReplyMap;
+
     private static final int STATE_LINEAR_VERTICAL = 1;
     private static final int STATE_GRID = 2;
     private static final int STATE_LINEAR_HORIZONTAL = 3;
@@ -108,12 +102,12 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private LinearLayout reply_linear;
     private RecyclerView recycler_main_forum, recycler_img_reply, recycler_page_number, recycler_page_number2;
     private AnimatedRecyclerView recycler_reply;
-    private TextView amount_like, chosen_image, error_box, merchant_name;
-    private ImageButton img_more, frame_close, img_download, img_like;
+    private TextView amount_like, merchant_name, text_category;
+    private ImageButton img_more, frame_close, img_download, img_like, img_favorite;
     private NestedScrollView scrollView;
     private ReplyAdapter replyAdapter;
     private ImagePickerAdapter pickerAdapter;
-    private EditText etReply, etName;
+    private EditText etReply;
     private PrefConfig prefConfig;
     private PageNumberAdapter pageNumberAdapter;
     private Context mContext;
@@ -132,8 +126,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private List<Forum.ForumImage> forumImageList;
     private List<Forum.ForumReply> replyList;
     private Map<String, Merchant> merchantMap;
-    private static Map<String, List<Forum.ForumImageReply>> forumImageReplyMap;
-    private boolean isLike, isCheck, isReply;
+
+    private boolean isLike, isCheck, isReply, isFavorite;
 
     public SelectedThread() {
         // Required empty public constructor
@@ -156,6 +150,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private void initVar() {
         mContext = v.getContext();
         trendingIsVisible = false;
+        isFavorite = false;
         frameIsVisible = false;
         isCheck = false;
         isReply = false;
@@ -170,6 +165,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         ImageButton after2 = v.findViewById(R.id.btn_after_reply2);
         ImageButton before = v.findViewById(R.id.btn_before_reply);
         ImageButton before2 = v.findViewById(R.id.btn_before_reply2);
+        ImageButton favorite = v.findViewById(R.id.image_button_favorite_selected_thread);
+        ImageButton back = v.findViewById(R.id.img_btn_back_selected_thread);
         Button reply = v.findViewById(R.id.btn_reply_thread);
         Button send = v.findViewById(R.id.btn_send_selected);
         TextView first_page = v.findViewById(R.id.btn_first_page_reply);
@@ -179,11 +176,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
         img_like = v.findViewById(R.id.img_smile_thread);
         scrollView = v.findViewById(R.id.scrollView_SelectedThread);
-        etReply = v.findViewById(R.id.etReply_Selected);
-        etName = v.findViewById(R.id.etName_Selected);
-        error_box = v.findViewById(R.id.show_error_content_selected);
+        etReply = v.findViewById(R.id.edit_reply_selected_thread);
         img_more = v.findViewById(R.id.thread_more_selected);
-        chosen_image = v.findViewById(R.id.chosen_image);
         reply_linear = v.findViewById(R.id.linear_reply);
         recycler_main_forum = v.findViewById(R.id.recycler_img_selected);
         recycler_reply = v.findViewById(R.id.recycler_reply);
@@ -200,6 +194,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         relative_page_number = v.findViewById(R.id.relative_page_number);
         relative_page_number2 = v.findViewById(R.id.relative_page_number2);
         frame_loading = v.findViewById(R.id.frame_loading_selected_thread);
+        text_category = v.findViewById(R.id.text_category_selected_thread);
+        img_favorite = v.findViewById(R.id.image_button_favorite_selected_thread);
 
         frameLayout.getBackground().setAlpha(Constant.MAX_ALPHA);
         frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
@@ -218,12 +214,15 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         reply.setOnClickListener(this);
         send.setOnClickListener(this);
         gallery_opener.setOnClickListener(this);
+        favorite.setOnClickListener(this);
+        back.setOnClickListener(this);
 
         frameLayout.setOnClickListener(this);
         frame_close.setOnClickListener(this);
         img_download.setOnClickListener(this);
         img_like.setOnClickListener(this);
         img_more.setOnClickListener(this);
+        img_favorite.setOnClickListener(this);
 
         scrollView.setSmoothScrollingEnabled(true);
         scrollView.setNestedScrollingEnabled(false);
@@ -260,9 +259,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     @Override
     public void onSuccessReply() {
         frame_loading.setVisibility(View.GONE);
-        etName.setText("");
         etReply.setText("");
-        chosen_image.setVisibility(View.GONE);
         if (imageReply.size() > 0) {
             imageReply.clear();
             pickerAdapter.setImageList(imageReply);
@@ -276,6 +273,11 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         if (replyList.size() > pos) setDeletedList(PAGE_POSITION);
         else if (PAGE_POSITION - 1 < 0) setDeletedList(PAGE_POSITION);
         else setDeletedList(PAGE_POSITION - 1);
+    }
+
+    @Override
+    public void onGetForum(Forum.ForumCategory forumCategory) {
+        text_category.setText("Kategori : " + forumCategory.getCategory_name());
     }
 
     @Override
@@ -293,6 +295,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
         forumImageReplyMap.putAll(map);
         replyList.addAll(forumReplies);
+        presenter.getCategoryName(forum.getFcid());
 
         replyAdapter.setList(forumReplies, map);
         replyAdapter.notifyDataSetChanged();
@@ -307,6 +310,16 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
             relative_page_number.setVisibility(View.GONE);
             relative_page_number2.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+        if (isFavorite) {
+            img_favorite.setBackground(mContext.getResources().getDrawable(R.drawable.icon_love_fill));
+        } else
+            img_favorite.setBackground(mContext.getResources().getDrawable(R.drawable.icon_love));
+
     }
 
     @Override
@@ -366,12 +379,10 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 }
                 break;
             case R.id.btn_send_selected:
-                etReply.setBackground(mContext.getDrawable(R.drawable.background_edit_text));
-                error_box.setVisibility(View.GONE);
                 if (etReply.getText().toString().trim().isEmpty()) {
                     scrollView.smoothScrollTo(scrollView.getScrollX(), reply_linear.getTop());
-                    error_box.setVisibility(View.VISIBLE);
-                    etReply.setBackground(mContext.getDrawable(R.drawable.background_edit_text_error));
+                    etReply.requestFocus();
+                    etReply.setError("This field cannot be empty");
                 } else {
                     frame_loading.setVisibility(View.VISIBLE);
                     final String key = dbRef.push().getKey();
@@ -436,6 +447,22 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     MediaStore.Images.Media.insertImage(mActivity.getContentResolver(), bitmap
                             , merchant_name.getText().toString(), "");
                 }
+                break;
+            case R.id.image_button_favorite_selected_thread:
+                if (!isFavorite)
+                    presenter.onFavoriteThread(prefConfig.getMID(), forum.getFid());
+                else
+                    presenter.onRemoveFavoriteThread(prefConfig.getMID(), forum.getFid());
+                break;
+            case R.id.img_btn_back_selected_thread:
+                FragmentManager fragmentManager = getFragmentManager();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.main_frame, new MainForum());
+
+                fragmentTransaction.commit();
                 break;
         }
     }
@@ -546,7 +573,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         if (states.equals(ImagePickerAdapter.STATES_CLICKED_DELETE)) {
             imageReply.remove(pos);
             pickerAdapter.setImageList(imageReply);
-            if (imageReply.size() == 0) chosen_image.setVisibility(View.GONE);
         } else {
             frameLayout.setVisibility(View.VISIBLE);
             frameIsVisible = true;
@@ -724,6 +750,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     merchant_loc.setText(merchant.getMerchant_location());
                 }
             }
+
+            presenter.onCheckFavorite(prefConfig.getMID(), forum.getFid());
             return null;
         }
     }
@@ -796,7 +824,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         setLayoutManager(recycler_reply, replyAdapter, STATE_LINEAR_VERTICAL);
 
         pickerAdapter = new ImagePickerAdapter(mContext, imageReply, this, "");
-        setLayoutManager(recycler_img_reply, pickerAdapter, STATE_GRID);
+        setLayoutManager(recycler_img_reply, pickerAdapter, STATE_LINEAR_HORIZONTAL);
 
         pageNumberAdapter = new PageNumberAdapter(mContext, getPageNumber(threadList.size()), this);
         setLayoutManager(recycler_page_number, pageNumberAdapter, STATE_LINEAR_HORIZONTAL);
@@ -850,7 +878,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     Uri targetUri = data.getData();
                     File f = new File("" + targetUri);
                     try {
-                        chosen_image.setVisibility(View.VISIBLE);
                         bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(targetUri));
                         imageReply.add(new ImagePicker(DecodeBitmap.compressBitmap(bitmap), "IMG", f.getName()));
                         pickerAdapter.setImageList(imageReply);

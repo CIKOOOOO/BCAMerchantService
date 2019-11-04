@@ -16,6 +16,13 @@ public class BottomNavigationViewBehavior extends CoordinatorLayout.Behavior<Vie
     }
 
     @Override
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
+        child.setTranslationY(Math.max(0f,
+                Math.min(Float.parseFloat(String.valueOf(child.getHeight())),child.getTranslationY()+dy)));
+    }
+
+    @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
                                        View child, @NonNull
                                                View directTargetChild, @NonNull View target,

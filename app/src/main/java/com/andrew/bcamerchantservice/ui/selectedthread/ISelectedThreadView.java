@@ -11,6 +11,8 @@ public interface ISelectedThreadView {
     void onLoadReply(boolean isLike, Forum forum, List<Forum.ForumReply> forumReplies
             , Map<String, List<Forum.ForumImageReply>> map);
 
+    void onFavorite(boolean isFavorite);
+
     void onUpdateMerchant(Map<String, Merchant> merchantMap);
 
     void onLoadImageForum(List<Forum.ForumImage> imageList);
@@ -18,4 +20,6 @@ public interface ISelectedThreadView {
     void onSuccessReply();
 
     void onSuccessDelete(int pos);
+
+    void onGetForum(Forum.ForumCategory forumCategory);
 }

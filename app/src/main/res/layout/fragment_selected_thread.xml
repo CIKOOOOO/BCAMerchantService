@@ -7,422 +7,474 @@
     android:background="@color/background"
     tools:context=".ui.selectedthread.SelectedThread">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView_SelectedThread"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_dummy_00_selected_thread"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/img_btn_back_selected_thread"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="@string/menu_forum"
+                android:textColor="@color/blackPalette"
+                android:textSize="25sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@color/blue_palette"
-                android:orientation="horizontal">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/image_profile_selected_thread"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="10dp"
-                    android:scaleType="centerCrop"
-                    app:riv_border_color="#333333"
-                    app:riv_border_width="1dip"
-                    app:riv_corner_radius="20dip" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/merchantName_Selected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white_color"
-                        android:textSize="17sp" />
-
-                    <TextView
-                        android:id="@+id/merchantLoc_Selected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white_color"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/thread_more_selected"
+                    android:id="@+id/image_button_favorite_selected_thread"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/icon_love" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/ic_more_vert_white" />
+                    android:fontFamily="@font/sniglet_reguler"
+                    android:text="@string/favorite"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="10sp" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_below="@id/img_btn_back_selected_thread"
+                android:layout_marginTop="10dp"
+                android:background="@color/silver_palette" />
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scrollView_SelectedThread"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rl_dummy_00_selected_thread"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/background_edit_text"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/title_selected"
+                    android:id="@+id/text_category_selected_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="5dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/toolbar_base"
-                    android:textSize="25sp" />
+                    android:background="@color/blue_palette"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/time_selected"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/toolbar_base"
-                    android:textSize="10sp" />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/image_profile_selected_thread"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="10dp"
+                        android:scaleType="centerCrop"
+                        app:riv_border_color="#333333"
+                        app:riv_border_width="1dip"
+                        app:riv_corner_radius="20dip" />
 
-                <TextView
-                    android:id="@+id/content_selected"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="5dp"
-                    android:textColor="@color/toolbar_base" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_img_selected"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:isScrollContainer="false"
-                    android:nestedScrollingEnabled="false" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
-
-                    <TextView
-                        android:id="@+id/smile_amount_thread"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="-15dp"
-                        android:layout_toStartOf="@+id/btn_reply_thread"
-                        android:background="@drawable/background_smile_amount"
-                        android:paddingStart="20dp"
-                        android:paddingTop="4dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="4dp"
-                        android:text="@string/default_value"
-                        android:textColor="@color/white_color"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/merchantName_Selected"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white_color"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/merchantLoc_Selected"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white_color"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <ImageButton
-                        android:id="@+id/img_smile_thread"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="-20dp"
-                        android:layout_toStartOf="@id/smile_amount_thread"
-                        android:background="@drawable/smile_condition" />
+                        android:id="@+id/thread_more_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/ic_more_vert_white" />
+                </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_reply_thread"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/background_edit_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/toolbar_base"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/time_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/toolbar_base"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/content_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:textColor="@color/toolbar_base" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_img_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:isScrollContainer="false"
+                        android:nestedScrollingEnabled="false" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/smile_amount_thread"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="-15dp"
+                            android:layout_toStartOf="@+id/btn_reply_thread"
+                            android:background="@drawable/background_smile_amount"
+                            android:paddingStart="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="4dp"
+                            android:text="@string/default_value"
+                            android:textColor="@color/white_color"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/img_smile_thread"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="-20dp"
+                            android:layout_toStartOf="@id/smile_amount_thread"
+                            android:background="@drawable/smile_condition" />
+
+                        <Button
+                            android:id="@+id/btn_reply_thread"
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/sniglet_font"
+                            android:text="@string/reply"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/background_text_color"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative_page_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/blue_palette"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/recycler_page_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_page_number2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/btn_first_page_reply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/start"
+                        android:textColor="@color/white_color" />
+
+                    <ImageButton
+                        android:id="@+id/btn_before_reply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toStartOf="@id/recycler_page_ll"
+                        android:background="@drawable/ic_navigate_before"
+                        android:textColor="@color/white_color" />
+
+                    <TextView
+                        android:id="@+id/btn_end_reply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="15dp"
-                        android:background="@android:color/transparent"
-                        android:text="@string/reply"
-                        android:textColor="@drawable/background_text_color"
-                        android:textStyle="bold" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/end"
+                        android:textColor="@color/white_color" />
 
-            <RelativeLayout
-                android:id="@+id/relative_page_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/blue_palette"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/recycler_page_ll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_page_number2"
+                    <ImageButton
+                        android:id="@+id/btn_after_reply"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/btn_first_page_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/start"
-                    android:textColor="@color/white_color" />
-
-                <ImageButton
-                    android:id="@+id/btn_before_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/recycler_page_ll"
-                    android:background="@drawable/ic_navigate_before"
-                    android:textColor="@color/white_color" />
-
-                <TextView
-                    android:id="@+id/btn_end_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:text="@string/end"
-                    android:textColor="@color/white_color" />
-
-                <ImageButton
-                    android:id="@+id/btn_after_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/recycler_page_ll"
-                    android:background="@drawable/ic_navigate_next"
-                    android:textColor="@color/white_color" />
-            </RelativeLayout>
-
-            <com.mlsdev.animatedrv.AnimatedRecyclerView
-                android:id="@+id/recycler_reply"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:nestedScrollingEnabled="false"
-                app:animationDuration="600"
-                app:layoutAnimation="@anim/layout_animation_from_bottom"
-                app:layoutManagerOrientation="vertical"
-                app:layoutManagerReverse="false"
-                app:layoutManagerType="linear" />
-
-            <RelativeLayout
-                android:id="@+id/relative_page_number2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/blue_palette"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/recycler_page_ll2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_page_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/btn_first_page_reply2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/start"
-                    android:textColor="@color/white_color" />
-
-                <ImageButton
-                    android:id="@+id/btn_before_reply2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@id/recycler_page_ll2"
-                    android:background="@drawable/ic_navigate_before"
-                    android:textColor="@color/white_color" />
-
-                <TextView
-                    android:id="@+id/btn_end_reply2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:text="@string/end"
-                    android:textColor="@color/white_color" />
-
-                <ImageButton
-                    android:id="@+id/btn_after_reply2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/recycler_page_ll2"
-                    android:background="@drawable/ic_navigate_next"
-                    android:textColor="@color/white_color" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_reply"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/background_white_w_stroke"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/reply_to"
-                        android:textColor="@color/toolbar_base"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/reply_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
-                        android:background="@drawable/background_custom_preview"
-                        android:paddingStart="10dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:textColor="@color/toolbar_base" />
+                        android:layout_toEndOf="@id/recycler_page_ll"
+                        android:background="@drawable/ic_navigate_next"
+                        android:textColor="@color/white_color" />
+                </RelativeLayout>
 
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/etName_Selected"
+                <com.mlsdev.animatedrv.AnimatedRecyclerView
+                    android:id="@+id/recycler_reply"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/background_edit_text"
-                    android:cursorVisible="true"
-                    android:hint="@string/input_name"
-                    android:inputType="text"
-                    android:padding="5dp"
-                    android:textColor="@color/blackPalette"
-                    android:textColorHint="@color/greyPalette2"
-                    android:visibility="gone" />
-
-                <EditText
-                    android:id="@+id/etReply_Selected"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/background_edit_text"
-                    android:cursorVisible="true"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine"
-                    android:padding="5dp"
-                    android:textColor="@color/blackPalette" />
-
-                <TextView
-                    android:id="@+id/show_error_content_selected"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="5dp"
-                    android:drawableStart="@drawable/ic_warning"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/dont_empty_this_edittext"
-                    android:textColor="@color/blackPalette"
-                    android:visibility="gone" />
-
-                <ImageButton
-                    android:id="@+id/gallery_opener_reply"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/background_ic_photo"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:id="@+id/chosen_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/chosen_image"
-                    android:textColor="@color/toolbar_base"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_img_reply"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never" />
+                    app:animationDuration="600"
+                    app:layoutAnimation="@anim/layout_animation_from_bottom"
+                    app:layoutManagerOrientation="vertical"
+                    app:layoutManagerReverse="false"
+                    app:layoutManagerType="linear" />
 
-                <Button
-                    android:id="@+id/btn_send_selected"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/relative_page_number2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/background_reply"
-                    android:text="@string/reply"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white_color"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/blue_palette"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/recycler_page_ll2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_page_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/btn_first_page_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/start"
+                        android:textColor="@color/white_color" />
+
+                    <ImageButton
+                        android:id="@+id/btn_before_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toStartOf="@id/recycler_page_ll2"
+                        android:background="@drawable/ic_navigate_before"
+                        android:textColor="@color/white_color" />
+
+                    <TextView
+                        android:id="@+id/btn_end_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/end"
+                        android:textColor="@color/white_color" />
+
+                    <ImageButton
+                        android:id="@+id/btn_after_reply2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@id/recycler_page_ll2"
+                        android:background="@drawable/ic_navigate_next"
+                        android:textColor="@color/white_color" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_reply"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="50dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sniglet_font"
+                            android:text="@string/reply_to"
+                            android:textColor="@color/blackPalette"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/reply_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/sniglet_font"
+                            android:textColor="@color/blackPalette" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle_rounded_stroke_black"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edit_reply_selected_thread"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="13dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@android:color/transparent"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/sniglet_font"
+                            android:gravity="top|start"
+                            android:hint="Keluarin uneg-uneg kamu disini"
+                            android:inputType="textMultiLine"
+                            android:padding="5dp"
+                            android:textColor="@color/blackPalette"
+                            android:textColorHint="@color/iron_palette" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="100dp"
+                                android:layout_height="160dp"
+                                android:background="@drawable/rectangle_rounded_stroke_blue">
+
+                                <ImageButton
+                                    android:id="@+id/gallery_opener_reply"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/ic_gallery" />
+                            </RelativeLayout>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_img_reply"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:nestedScrollingEnabled="false"
+                                android:overScrollMode="never" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_send_selected"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/background_reply"
+                        android:text="@string/reply"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white_color"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
+
 
     <FrameLayout
         android:id="@+id/frame_selected_thread"

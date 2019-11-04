@@ -42,6 +42,7 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
+import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
@@ -158,6 +159,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         LinearLayout linearLayout = v.findViewById(R.id.parentll_main_forum);
         ImageButton search = v.findViewById(R.id.image_button_search_main_forum);
         ImageButton new_thread = v.findViewById(R.id.imgBtn_AddThread);
+        ImageButton favorite = v.findViewById(R.id.image_button_favorite_main_forum);
 
         showcase_recycler_view = v.findViewById(R.id.recycler_story_main_forum);
         thread_recycler_view = v.findViewById(R.id.recycler_thread_main_forum);
@@ -189,6 +191,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         linearLayout.setOnClickListener(this);
         new_thread.setOnClickListener(this);
         search.setOnClickListener(this);
+        favorite.setOnClickListener(this);
 
         reverse.setOnClickListener(this);
         skip.setOnClickListener(this);
@@ -221,6 +224,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         codeBuilder.setView(codeView);
         codeAlert = codeBuilder.create();
         codeAlert.show();
+    }
+
+    private void changeFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransactions = getFragmentManager().beginTransaction();
+        fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransactions.replace(R.id.main_frame, fragment);
+        fragmentTransactions.commit();
     }
 
     @Override
@@ -427,16 +437,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button_search_main_forum:
-                FragmentTransaction fragmentTransactions = getFragmentManager().beginTransaction();
-                fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                fragmentTransactions.replace(R.id.main_frame, new SearchFragment());
-                fragmentTransactions.commit();
+                changeFragment(new SearchFragment());
                 break;
             case R.id.imgBtn_AddThread:
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                fragmentTransaction.replace(R.id.main_frame, new NewThread());
-                fragmentTransaction.commit();
+                changeFragment(new NewThread());
                 break;
             case R.id.btnSubmit_AddShowCase:
                 tvError_AddShowCase.setVisibility(View.GONE);
@@ -479,6 +483,9 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
             case R.id.skip_story:
                 Log.e("asd", "skip");
                 storiesProgressView.skip();
+                break;
+            case R.id.image_button_favorite_main_forum:
+                changeFragment(new FavoriteFragment());
                 break;
         }
     }

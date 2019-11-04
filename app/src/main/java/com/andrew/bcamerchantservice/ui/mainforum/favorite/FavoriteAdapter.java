@@ -1,10 +1,7 @@
-package com.andrew.bcamerchantservice.ui.mainforum;
+package com.andrew.bcamerchantservice.ui.mainforum.favorite;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -32,18 +29,14 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
+import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.utils.Constant;
-import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
-import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import java.text.ParseException;
@@ -51,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
     private Context context;
     private List<Forum> forumList;
     private Map<String, Merchant> map;
@@ -84,8 +77,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     private onItemClick onItemClick;
 
-    public ThreadAdapter(Context context, List<Forum> forumList, Map<String, Merchant> map
-            , ThreadAdapter.onItemClick onItemClick) {
+    public FavoriteAdapter(Context context, List<Forum> forumList, Map<String, Merchant> map
+            , onItemClick onItemClick) {
         this.context = context;
         this.map = map;
         this.forumList = forumList;
@@ -103,10 +96,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view;
-//        if (viewType == 0)
-//            view = LayoutInflater.from(context).inflate(R.layout.nothing_found, viewGroup, false);
-//        else
-        view = LayoutInflater.from(context).inflate(R.layout.recycler_thread_mainforum, viewGroup, false);
+        if (viewType == 0)
+            view = LayoutInflater.from(context).inflate(R.layout.custom_layout_empty, viewGroup, false);
+        else
+            view = LayoutInflater.from(context).inflate(R.layout.recycler_thread_mainforum, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -117,7 +110,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        if (forumList.size() != 0) {
+        if (getItemViewType(i) != 0) {
             final int position = viewHolder.getAdapterPosition();
             final Forum forumThread = forumList.get(i);
             final Merchant merchant = map.get(forumThread.getMid());
@@ -305,7 +298,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return forumList.size();
+        return forumList.size() == 0 ? 1 : forumList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -23,7 +23,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/blank_profile"
                 android:scaleType="centerCrop"
                 app:riv_border_color="#333333"
                 app:riv_corner_radius="30dip"
