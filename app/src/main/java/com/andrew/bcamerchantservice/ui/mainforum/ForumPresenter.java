@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
-import com.andrew.bcamerchantservice.model.MerchantStory;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -110,7 +109,7 @@ public class ForumPresenter implements IForumPresenter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() != null) {
-                            List<MerchantStory> showCaseList = new ArrayList<>();
+                            List<Merchant.MerchantStory> showCaseList = new ArrayList<>();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 String URL = "";
                                 String MID = "";
@@ -122,12 +121,12 @@ public class ForumPresenter implements IForumPresenter {
                                     URL = snapshot1.child("story_picture").getValue(String.class);
                                     MID = snapshot.getRef().getKey();
                                 }
-                                showCaseList.add(0, new MerchantStory(URL, SID, MID, date));
+                                showCaseList.add(0, new Merchant.MerchantStory(URL, SID, MID, date));
                             }
 
-                            Collections.sort(showCaseList, new Comparator<MerchantStory>() {
+                            Collections.sort(showCaseList, new Comparator<Merchant.MerchantStory>() {
                                 @Override
-                                public int compare(MerchantStory t2, MerchantStory t1) {
+                                public int compare(Merchant.MerchantStory t2, Merchant.MerchantStory t1) {
                                     return t1.getStory_date().compareTo(t2.getStory_date());
                                 }
                             });
@@ -246,6 +245,26 @@ public class ForumPresenter implements IForumPresenter {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onClickStory(String MID) {
+        dbRef.child(Constant.DB_REFERENCE_MERCHANT_STORY + "/" + MID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Merchant.MerchantStory> storyList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            storyList.add(0, snapshot.getValue(Merchant.MerchantStory.class));
+                        }
+                        iForumView.onLoadStory(storyList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });

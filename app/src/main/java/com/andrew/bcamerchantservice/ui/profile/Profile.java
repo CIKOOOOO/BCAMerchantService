@@ -36,37 +36,28 @@ import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
-import com.andrew.bcamerchantservice.model.MerchantStory;
+import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.model.ProfileModel;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
-import com.andrew.bcamerchantservice.ui.mainforum.ShowcaseAdapter;
+import com.andrew.bcamerchantservice.ui.mainforum.StoryAdapter;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Profile extends Fragment implements ShowcaseAdapter.onImageClickListener
+public class Profile extends Fragment implements StoryAdapter.onImageClickListener
         , View.OnClickListener, ProfileAdapter.onClick, IProfileView {
     public static boolean showcase_condition;
     @SuppressLint("StaticFieldLeak")
@@ -93,7 +84,7 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
     private IProfilePresenter presenter;
 
     private List<MerchantStory> showCaseList;
-    private ShowcaseAdapter showcaseAdapter;
+    private StoryAdapter storyAdapter;
     private PrefConfig prefConfig;
 
     public Profile() {
@@ -142,7 +133,7 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
         frame_loading = v.findViewById(R.id.frame_loading_profile);
 
         showCaseList = new ArrayList<>();
-        showcaseAdapter = new ShowcaseAdapter(mContext, showCaseList, true, new HashMap<String, Merchant>(), this);
+        storyAdapter = new StoryAdapter(mContext, showCaseList, true, new HashMap<String, Merchant>(), this);
 
         Picasso.get()
                 .load(prefConfig.getProfilePicture())
@@ -162,7 +153,7 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
         frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
 
         recycler_showcase.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        recycler_showcase.setAdapter(showcaseAdapter);
+        recycler_showcase.setAdapter(storyAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(new ProfileAdapter(mContext, profileModelList, this));
@@ -270,7 +261,7 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
                 break;
             case R.id.download_image_frame_profile:
                 Bitmap bitmap = ((BitmapDrawable) img_showcase.getDrawable()).getBitmap();
-                int position = showcaseAdapter.getAdapterPosition();
+                int position = storyAdapter.getAdapterPosition();
                 if (ActivityCompat.checkSelfPermission(mActivity
                         , Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}
@@ -331,7 +322,7 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
                 break;
             case Constant.PERMISSION_WRITE_EXTERNAL:
                 Bitmap bitmap = ((BitmapDrawable) img_showcase.getDrawable()).getBitmap();
-                int position = showcaseAdapter.getAdapterPosition();
+                int position = storyAdapter.getAdapterPosition();
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(mContext, mContext.getResources().getString(R.string.download_success), Toast.LENGTH_SHORT).show();
                     MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bitmap
@@ -402,8 +393,8 @@ public class Profile extends Fragment implements ShowcaseAdapter.onImageClickLis
     public void onGettingStoryData(List<MerchantStory> storyList) {
         showCaseList.clear();
         showCaseList.addAll(storyList);
-        showcaseAdapter.setShowCases(showCaseList);
-        showcaseAdapter.notifyDataSetChanged();
+        storyAdapter.setShowCases(showCaseList);
+        storyAdapter.notifyDataSetChanged();
     }
 
     @Override

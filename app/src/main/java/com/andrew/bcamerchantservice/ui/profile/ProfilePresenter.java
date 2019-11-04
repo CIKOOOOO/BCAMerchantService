@@ -3,7 +3,7 @@ package com.andrew.bcamerchantservice.ui.profile;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.andrew.bcamerchantservice.model.MerchantStory;
+import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;

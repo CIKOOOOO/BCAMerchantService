@@ -14,28 +14,21 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,7 +40,7 @@ import android.widget.Toast;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
-import com.andrew.bcamerchantservice.model.MerchantStory;
+import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
@@ -56,12 +49,10 @@ import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
-import com.andrew.bcamerchantservice.utils.Utils;
 import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
-import com.developers.coolprogressviews.ColorfulProgress;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,17 +69,22 @@ import jp.shts.android.storiesprogressview.StoriesProgressView;
  * A simple {@link Fragment} subclass.
  */
 public class MainForum extends Fragment implements ThreadAdapter.onItemClick
-        , IForumView, ShowcaseAdapter.onImageClickListener, View.OnClickListener
-        , PullRefreshLayout.OnRefreshListener, MainActivity.onBackPressFragment {
+        , IForumView, StoryAdapter.onImageClickListener, View.OnClickListener
+        , PullRefreshLayout.OnRefreshListener, MainActivity.onBackPressFragment
+        , StoriesProgressView.StoriesListener {
     public static boolean isStoryVisible;
 
     private static final String TAG = MainForum.class.getSimpleName();
 
     private static RecyclerView showcase_recycler_view;
-    private static ShowcaseAdapter showcaseAdapter;
-    private static List<Forum> forumLists;
-    private static List<MerchantStory> showCaseList;
+    private static StoriesProgressView storiesProgressView;
+    private static StoryAdapter storyAdapter;
     private static RelativeLayout relative_story;
+
+    private static List<Forum> forumLists;
+    private static List<MerchantStory> storyList;
+
+    private static int counter_story, counter_mid;
 
     private View v;
     private RecyclerView thread_recycler_view;
@@ -96,22 +92,22 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private TextView tvError_AddShowCase;
     private PullRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager threadLayoutManager;
-    private ImageView img_add_showcase;
+    private ImageView img_add_showcase, image_story;
+    private View reverse, skip;
     private AlertDialog codeAlert;
     private Context mContext;
     private Activity mActivity;
     private ScaleDrawable scaleDrawable;
     private PrefConfig prefConfig;
     private FrameLayout frame_loading;
-    private StoriesProgressView storiesProgressView;
+    private RoundedImageView story_picture;
 
     private IForumPresenter presenter;
 
+    private List<MerchantStory> eachStoryList;
     private Map<String, Merchant> merchantMap, merchantStoryMap;
 
-    private int counter = 0;
-    private long pressTime = 0L;
-    private long limit = 500L;
+    private long pressTime;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -128,13 +124,29 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
+    public void onPause() {
+        storiesProgressView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        storiesProgressView.resume();
+        super.onResume();
+    }
+
+    @Override
     public void onDestroyView() {
+        storiesProgressView.destroy();
         thread_recycler_view.destroyDrawingCache();
         showcase_recycler_view.destroyDrawingCache();
         super.onDestroyView();
     }
 
     private void initVar() {
+        counter_mid = 0;
+        counter_story = 0;
+        pressTime = 0L;
         mContext = v.getContext();
         presenter = new ForumPresenter(this);
 
@@ -150,12 +162,18 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         showcase_recycler_view = v.findViewById(R.id.recycler_story_main_forum);
         thread_recycler_view = v.findViewById(R.id.recycler_thread_main_forum);
         relative_story = v.findViewById(R.id.custom_view_story);
+        storiesProgressView = v.findViewById(R.id.progress_story);
+        reverse = v.findViewById(R.id.reverse_story);
+        skip = v.findViewById(R.id.skip_story);
+        image_story = v.findViewById(R.id.image_story);
+        story_picture = v.findViewById(R.id.profile_picture_story);
 
         swipeRefreshLayout = v.findViewById(R.id.swipe);
         frame_loading = v.findViewById(R.id.frame_loading_main_forum);
 
-        showCaseList = new ArrayList<>();
+        storyList = new ArrayList<>();
         forumLists = new ArrayList<>();
+        eachStoryList = new ArrayList<>();
 
         merchantMap = new HashMap<>();
         merchantStoryMap = new HashMap<>();
@@ -172,13 +190,18 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         new_thread.setOnClickListener(this);
         search.setOnClickListener(this);
 
+        reverse.setOnClickListener(this);
+        skip.setOnClickListener(this);
+        skip.setOnTouchListener(onTouchListener);
+        reverse.setOnTouchListener(onTouchListener);
+
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void setAdapter() {
-        showcaseAdapter = new ShowcaseAdapter(mContext, showCaseList, true, merchantStoryMap, this);
+        storyAdapter = new StoryAdapter(mContext, storyList, true, merchantStoryMap, this);
         showcase_recycler_view.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        showcase_recycler_view.setAdapter(showcaseAdapter);
+        showcase_recycler_view.setAdapter(storyAdapter);
 
         threadAdapter = new ThreadAdapter(mContext, forumLists, merchantMap, this);
         thread_recycler_view.setLayoutManager(threadLayoutManager);
@@ -272,17 +295,17 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     public void onMerchantStoryProfile(Merchant merchant) {
         if (!merchantStoryMap.containsKey(merchant.getMid())) {
             merchantStoryMap.put(merchant.getMid(), merchant);
-            showcaseAdapter.setMerchantMap(merchantStoryMap);
-            showcaseAdapter.notifyDataSetChanged();
+            storyAdapter.setMerchantMap(merchantStoryMap);
+            storyAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onStoryData(List<MerchantStory> stories) {
-        showCaseList.clear();
-        showCaseList.addAll(stories);
-        showcaseAdapter.setShowCases(stories);
-        showcaseAdapter.notifyDataSetChanged();
+        storyList.clear();
+        storyList.addAll(stories);
+        storyAdapter.setShowCases(stories);
+        storyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -323,6 +346,19 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
+    public void onLoadStory(List<MerchantStory> list) {
+        eachStoryList.clear();
+        eachStoryList.addAll(list);
+        if (list.size() > 0) {
+            storiesProgressView = v.findViewById(R.id.progress_story);
+            storiesProgressView.setStoriesCount(list.size());
+            storiesProgressView.setStoriesListener(MainForum.this);
+            storiesProgressView.setStoryDuration(Constant.DURATION_STORY);
+            storiesProgressView.startStories(counter_story);
+        }
+    }
+
+    @Override
     public void onImageClick(Context context, int pos) {
         // For story list
         if (pos == 0) {
@@ -333,18 +369,57 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
             MainActivity.floatingActionButton.hide();
             isStoryVisible = true;
 
-//                TextView textView = v.findViewById(R.id.merchantName_MainForum);
-//                if (showCaseList.get(pos - 1).getMid().equals(prefConfig.getMID())) {
-//                    textView.setText("Merchant Name : " + prefConfig.getName());
-//                } else {
-//                    textView.setText("Merchant Name : " + showCaseList.get(pos - 1).getMid());
-//                }
-//                showcase_condition = true;
-//                frame_showcase.setVisibility(View.VISIBLE);
-//                frame_showcase.getBackground().setAlpha(230);
-//                Picasso.get().load(showCaseList.get(pos - 1).getStory_picture()).into(img_showcase);
-//                MainActivity.bottomNavigationView.setVisibility(View.GONE);
-//                MainActivity.floatingActionButton.hide();
+            presenter.onClickStory(storyList.get(pos - 1).getMid());
+
+            counter_mid = pos - 1;
+
+            Picasso.get()
+                    .load(merchantStoryMap.get(storyList.get(pos - 1).getMid()).getMerchant_profile_picture())
+                    .into(story_picture);
+
+            Picasso.get()
+                    .load(storyList.get(pos - 1).getStory_picture())
+                    .into(image_story);
+        }
+    }
+
+    @Override
+    public void onNext() {
+        Log.e("asd", "on next - " + counter_story);
+        Picasso.get()
+                .load(eachStoryList.get(++counter_story).getStory_picture())
+                .into(image_story);
+    }
+
+    @Override
+    public void onPrev() {
+        Log.e("asd", "on prev - " + counter_story);
+        if (counter_story > 0) {
+            Log.e("asd", "masuk");
+            Picasso.get()
+                    .load(eachStoryList.get(--counter_story).getStory_picture())
+                    .into(image_story);
+        }
+    }
+
+    @Override
+    public void onComplete() {
+        Log.e("asd", "complete ");
+        if (storyList.size() == counter_mid + 1) {
+            relative_story.setVisibility(View.GONE);
+            isStoryVisible = false;
+        } else {
+            storiesProgressView.destroy();
+            storiesProgressView = null;
+            counter_mid++;
+            counter_story = 0;
+            presenter.onClickStory(storyList.get(counter_mid).getMid());
+            Picasso.get()
+                    .load(merchantStoryMap.get(storyList.get(counter_mid).getMid()).getMerchant_profile_picture())
+                    .into(story_picture);
+            Picasso.get()
+                    .load(storyList.get(counter_mid).getStory_picture())
+                    .into(image_story);
         }
     }
 
@@ -352,14 +427,6 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button_search_main_forum:
-                /*
-                 * Jika kolom search di klik maka akan masuk kedalam kondisi dibawah
-                 * */
-//                if (trendingIsVisible) {
-//                    removeTrending(mContext);
-//                } else {
-//                    makeTrendingVisible();
-//                }
                 FragmentTransaction fragmentTransactions = getFragmentManager().beginTransaction();
                 fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransactions.replace(R.id.main_frame, new SearchFragment());
@@ -405,6 +472,14 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                     startActivityForResult(intent, Constant.ACTIVITY_CHOOSE_IMAGE);
                 }
                 break;
+            case R.id.reverse_story:
+                Log.e("asd", "reverse");
+                storiesProgressView.reverse();
+                break;
+            case R.id.skip_story:
+                Log.e("asd", "skip");
+                storiesProgressView.skip();
+                break;
         }
     }
 
@@ -416,21 +491,26 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void onBackPress(boolean check, Context context) {
-        relative_story.setVisibility(View.GONE);
-        isStoryVisible = false;
-        MainActivity.floatingActionButton.show();
-        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        if (isStoryVisible) {
+            storiesProgressView.destroy();
+            relative_story.setVisibility(View.GONE);
+            isStoryVisible = false;
+            MainActivity.floatingActionButton.show();
+            MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            long limit = 500L;
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     pressTime = System.currentTimeMillis();
                     storiesProgressView.pause();
                     return false;
                 case MotionEvent.ACTION_UP:
+//                    mActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                     long now = System.currentTimeMillis();
                     storiesProgressView.resume();
                     return limit < now - pressTime;

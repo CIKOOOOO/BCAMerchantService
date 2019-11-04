@@ -1,7 +1,7 @@
 package com.andrew.bcamerchantservice.ui.profile;
 
 
-import com.andrew.bcamerchantservice.model.MerchantStory;
+import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 
 import java.util.List;
 

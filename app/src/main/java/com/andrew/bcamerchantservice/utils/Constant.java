@@ -13,6 +13,7 @@ import java.util.List;
 public class Constant {
     public static final long DELAY = 1000;
     public static final long DELAY_THREAD = 1000;
+    public static final long DURATION_STORY = 7000;
     public static final int PERMISSION_READ_GALLERY_EXTERNAL = 100;
     public static final int PERMISSION_WRITE_EXTERNAL = 101;
     public static final int PERMISSION_CAMERA_TAKER = 102;

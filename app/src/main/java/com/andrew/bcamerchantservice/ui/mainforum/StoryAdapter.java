@@ -1,10 +1,9 @@
 package com.andrew.bcamerchantservice.ui.mainforum;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,14 @@ import android.widget.ImageButton;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
-import com.andrew.bcamerchantservice.model.MerchantStory;
-import com.bumptech.glide.Glide;
+import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 import java.util.Map;
 
-public class ShowcaseAdapter extends RecyclerView.Adapter<ShowcaseAdapter.ViewHolder> {
+public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> {
     private Context context;
     private int position;
     private List<MerchantStory> showCases;
@@ -49,7 +44,7 @@ public class ShowcaseAdapter extends RecyclerView.Adapter<ShowcaseAdapter.ViewHo
 
     private onImageClickListener onImageClickListener;
 
-    public ShowcaseAdapter(Context context, List<MerchantStory> showCases, boolean check
+    public StoryAdapter(Context context, List<MerchantStory> showCases, boolean check
             , Map<String, Merchant> merchantMap, onImageClickListener onItemClickListener) {
         this.context = context;
         this.merchantMap = merchantMap;
@@ -106,13 +101,13 @@ public class ShowcaseAdapter extends RecyclerView.Adapter<ShowcaseAdapter.ViewHo
             viewHolder.imageButton.setEnabled(false);
             viewHolder.frameLayout.setVisibility(View.GONE);
             viewHolder.imageView.setVisibility(View.VISIBLE);
+
             if (merchantMap.get(showCases.get(i - 1).getMid()) != null) {
                 viewHolder.image_profile.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(merchantMap.get(showCases.get(i - 1).getMid()).getMerchant_profile_picture())
                         .into(viewHolder.image_profile);
-            }
-            else{
+            } else {
                 viewHolder.image_profile.setVisibility(View.GONE);
             }
         }
