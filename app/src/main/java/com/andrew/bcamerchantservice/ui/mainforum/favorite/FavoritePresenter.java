@@ -41,33 +41,8 @@ public class FavoritePresenter implements IFavoritePresenter {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             Forum forum = dataSnapshot.getValue(Forum.class);
-                                            if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
-                                                dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
-                                                        .child(forum.getMid())
-                                                        .addValueEventListener(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
-                                                                if (dataSnapshots.getValue(Merchant.class) == null)
-                                                                    return;
-                                                                view.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                            }
-                                                        });
-                                                forumList.add(0, forum);
-                                            } else {
-                                                boolean isHide = false;
-                                                for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
-                                                    if (snapshot1.getKey().equals(MID)) {
-                                                        isHide = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                                if (!isHide) {
+                                            if (forum != null) {
+                                                if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
                                                     dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
                                                             .child(forum.getMid())
                                                             .addValueEventListener(new ValueEventListener() {
@@ -84,9 +59,45 @@ public class FavoritePresenter implements IFavoritePresenter {
                                                                 }
                                                             });
                                                     forumList.add(0, forum);
+                                                } else {
+                                                    boolean isHide = false;
+                                                    for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                                                        if (snapshot1.getKey().equals(MID)) {
+                                                            isHide = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if (!isHide) {
+                                                        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
+                                                                .child(forum.getMid())
+                                                                .addValueEventListener(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
+                                                                        if (dataSnapshots.getValue(Merchant.class) == null)
+                                                                            return;
+                                                                        view.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                                    }
+                                                                });
+                                                        forumList.add(0, forum);
+                                                    }
                                                 }
+                                                view.onLoadForum(forumList);
+                                            } else {
+                                                dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + snapshot.getKey())
+                                                        .removeValue()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+                                                            }
+                                                        });
                                             }
-                                            view.onLoadForum(forumList);
                                         }
 
                                         @Override

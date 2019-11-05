@@ -3,18 +3,17 @@ package com.andrew.bcamerchantservice.ui.main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
+import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
@@ -22,7 +21,6 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.previewproquest.PreviewProquest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequest;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
-import com.andrew.bcamerchantservice.utils.BottomNavigationViewBehavior;
 import com.andrew.bcamerchantservice.utils.FloatingActionButtonBehavior;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -98,6 +96,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     onBackPressFragment.onBackPress(false, fragment.getContext());
                     break;
             }
+        } else if (fragment instanceof FavoriteFragment) {
+            iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof Profile) {
             if (Profile.showcase_condition) {
                 Profile.frame_add_showcase.setVisibility(View.GONE);
@@ -154,14 +154,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 floatingActionButton.show();
                 break;
             case R.id.bot_home:
-//                changeFragment(new HomeFragment());
                 break;
             case R.id.bot_account:
-                iMainPresenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
+                iMainPresenter.changeFragment(new Profile(), fragmentTransaction);
                 break;
-            case R.id.bot_edc:
+            case R.id.bot_forum:
+                iMainPresenter.changeFragment(new MainForum(), fragmentTransaction);
                 break;
-            case R.id.bot_store:
+            case R.id.bot_submission:
+                iMainPresenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
                 break;
             case R.id.bot_transaction:
                 break;

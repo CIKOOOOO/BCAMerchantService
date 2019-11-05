@@ -19,6 +19,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
+import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
@@ -98,7 +99,7 @@ public class SearchFragment extends Fragment implements TextWatcher, View.OnClic
                 break;
 
             case R.id.ll_dummy_00_search_fragment:
-                fragmentTransactions.replace(R.id.main_frame, new MainForum());
+                fragmentTransactions.replace(R.id.main_frame, new FavoriteFragment());
                 break;
         }
         fragmentTransactions.commit();

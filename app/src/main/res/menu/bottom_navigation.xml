@@ -6,16 +6,16 @@
         android:title="@string/bottom_navigation_home" />
     <item
         android:id="@+id/bot_transaction"
-        android:icon="@drawable/ic_credit_card_transparent"
+        android:icon="@drawable/ic_credit_card"
         android:title="@string/bottom_navigation_transaction" />
     <item
-        android:id="@+id/bot_edc"
-        android:icon="@drawable/ic_edc"
-        android:title="@string/bottom_navigation_edc" />
+        android:id="@+id/bot_forum"
+        android:icon="@drawable/ic_forum"
+        android:title="@string/bottom_navigation_forum" />
     <item
-        android:id="@+id/bot_store"
-        android:icon="@drawable/ic_store"
-        android:title="@string/bottom_navigation_store" />
+        android:id="@+id/bot_submission"
+        android:icon="@drawable/ic_request"
+        android:title="@string/bottom_navigation_submission" />
     <item
         android:id="@+id/bot_account"
         android:icon="@drawable/ic_acc"

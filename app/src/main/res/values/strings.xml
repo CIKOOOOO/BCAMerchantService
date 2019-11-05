@@ -12,6 +12,8 @@
     <string name="bottom_navigation_home">Home</string>
     <string name="bottom_navigation_transaction">Transaksi</string>
     <string name="bottom_navigation_edc">EDC</string>
+    <string name="bottom_navigation_forum">Forum</string>
+    <string name="bottom_navigation_submission">Pengajuan</string>
     <string name="bottom_navigation_store">Toko</string>
     <string name="bottom_navigation_account">Akun</string>
     <string name="search">Search</string>
@@ -35,7 +37,7 @@
         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
         proident, sunt in culpa qui </string>
 
-    <string name="edit_thread">Sunting thread</string>
+    <string name="edit_thread">Sunting Thread</string>
     <string name="delete_thread">Hapus thread</string>
     <string name="hide_thread">Sembunyikan thread</string>
     <string name="report_thread">Laporkan thread</string>
