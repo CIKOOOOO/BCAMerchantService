@@ -30,7 +30,6 @@ public class ExampleThreadPresenter implements IExampleThreadPresenter {
         storageRef = FirebaseStorage.getInstance().getReference();
     }
 
-
     @Override
     public void onSendNewThread(final Forum forum, final PrefConfig prefConfig, Bitmap thumbnail) {
         ByteArrayOutputStream thumbnail_baos = new ByteArrayOutputStream();

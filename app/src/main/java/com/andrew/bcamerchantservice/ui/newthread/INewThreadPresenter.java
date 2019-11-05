@@ -1,6 +1,8 @@
 package com.andrew.bcamerchantservice.ui.newthread;
 
 
+import android.graphics.Bitmap;
+
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
@@ -27,8 +29,8 @@ public interface INewThreadPresenter {
 
     void onEditThreadReply(Map<String, Object> map, List<ImagePicker> list, String MID, String FID, String key, String FRID);
 
-    void onUpdateThread(Map<String, Object> map);
+    void onUpdateThread(Map<String, Object> map, Bitmap bitmap, String MID, final String FID);
 
     void onUpdateThread(Map<String, Object> map, List<ImagePicker> list, Forum forum, String MID
-            , String content, String title);
+            , String content, String title, Bitmap bitmap);
 }

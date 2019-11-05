@@ -254,19 +254,83 @@ public class NewThreadPresenter implements INewThreadPresenter {
     }
 
     @Override
-    public void onUpdateThread(Map<String, Object> map) {
-        dbRef.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                iNewThreadView.onEditSuccess();
-            }
-        });
+    public void onUpdateThread(final Map<String, Object> map, Bitmap bitmap, final String MID, final String FID) {
+        if (bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+
+            Random randoms = new Random();
+            final int rans = randoms.nextInt(10000);
+
+            final String thumbnail_name = Constant.DB_REFERENCE_FORUM_THUMBNAIL + "-" + MID + "-" + rans;
+
+            UploadTask uploadTask = storageReference.child(Constant.DB_REFERENCE_FORUM_THUMBNAIL
+                    + "/" + MID + "/" + thumbnail_name).putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageReference.child(Constant.DB_REFERENCE_FORUM_THUMBNAIL
+                            + "/" + MID + "/" + thumbnail_name)
+                            .getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    map.put(Constant.DB_REFERENCE_FORUM + "/" + FID + "/forum_thumbnail", uri.toString());
+                                    dbRef.updateChildren(map)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    iNewThreadView.onEditSuccess();
+                                                }
+                                            });
+                                }
+                            });
+                }
+            });
+        } else dbRef.updateChildren(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        iNewThreadView.onEditSuccess();
+                    }
+                });
     }
 
     @Override
-    public void onUpdateThread(Map<String, Object> map, final List<ImagePicker> imageList
-            , final Forum forum, final String MID, final String content, final String title) {
-        dbRef.updateChildren(map);
+    public void onUpdateThread(final Map<String, Object> map, final List<ImagePicker> imageList
+            , final Forum forum, final String MID, final String content, final String title, Bitmap bitmap) {
+
+        if (bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+
+            Random randoms = new Random();
+            final int rans = randoms.nextInt(10000);
+
+            final String thumbnail_name = Constant.DB_REFERENCE_FORUM_THUMBNAIL + "-" + MID + "-" + rans;
+
+            UploadTask uploadTask = storageReference.child(Constant.DB_REFERENCE_FORUM_THUMBNAIL
+                    + "/" + MID + "/" + thumbnail_name).putBytes(bytes);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageReference.child(Constant.DB_REFERENCE_FORUM_THUMBNAIL
+                            + "/" + MID + "/" + thumbnail_name)
+                            .getDownloadUrl()
+                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_thumbnail", uri.toString());
+                                    dbRef.updateChildren(map);
+                                }
+                            });
+                }
+            });
+        } else dbRef.updateChildren(map);
 
         for (int i = 0; i < imageList.size(); i++) {
             final String key = dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE).push().getKey();

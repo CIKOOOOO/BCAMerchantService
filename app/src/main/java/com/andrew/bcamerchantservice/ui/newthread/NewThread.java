@@ -101,7 +101,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private static Forum.ForumReply forumReply;
     private static Forum.ForumCategory forumCategory;
 
-
     private View v;
     private RecyclerView recyclerView, recycler_category;
     private EditText title, content;
@@ -213,6 +212,16 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 if (forum != null) {
                     title.setText(forum.getForum_title());
                     content.setText(forum.getForum_content());
+                    String URL = "";
+
+                    if (forum.getForum_thumbnail().isEmpty())
+                        URL = Constant.SOLID_COLOR;
+                    else
+                        URL = forum.getForum_thumbnail();
+
+                    Picasso.get()
+                            .load(URL)
+                            .into(image_thumbnail);
 
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE;
                     presenter.onLoadImage(path);
@@ -394,6 +403,14 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         categoryList.addAll(forumCategories);
         categoryAdapter.setForumCategoryList(forumCategories);
         categoryAdapter.notifyDataSetChanged();
+        if (THREAD_CONDITION.equals(EDIT_THREAD) || THREAD_CONDITION.equals(EDIT_THREAD_SELECTED) || THREAD_CONDITION.equals(ExampleThreadFragment.GET_NEW_THREAD))
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (forum.getFcid().equals(categoryList.get(i).getFcid())) {
+                    forumCategory = categoryList.get(i);
+                    categoryAdapter.setLastPosition(i);
+                    break;
+                }
+            }
     }
 
     @Override
@@ -421,30 +438,30 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     content.setError("This cannot be empty");
                     content.requestFocus(content.getLayoutDirection());
                 } else {
-                    if (THREAD_CONDITION.equals(EDIT_THREAD_REPLY)) {
-                        frame_loading.setVisibility(View.VISIBLE);
-                        Map<String, Object> map = new HashMap<>();
-                        if (forumImageList.size() > 0) {
-                            for (int i = 0; i < forumImageList.size(); i++) {
-                                presenter.onStorageDelete(storageReference, forumImageList.get(i).getImage_name());
+                    Map<String, Object> map = new HashMap<>();
+                    switch (THREAD_CONDITION) {
+                        case EDIT_THREAD_REPLY:
+                            frame_loading.setVisibility(View.VISIBLE);
+                            if (forumImageList.size() > 0) {
+                                for (int i = 0; i < forumImageList.size(); i++) {
+                                    presenter.onStorageDelete(storageReference, forumImageList.get(i).getImage_name());
+                                }
+                                String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_REPLY + "/"
+                                        + forumReply.getFrid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE_REPLY;
+                                presenter.onFirebaseRemoveValue(path);
                             }
-                            String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_REPLY + "/"
-                                    + forumReply.getFrid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE_REPLY;
-                            presenter.onFirebaseRemoveValue(path);
-                        }
-                        if (imageList.size() == 0) {
-                            map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()
-                                    + "/forum_reply/" + forumReply.getFrid() + "/forum_content", content.getText().toString());
-                            presenter.onEditThreadReply(map);
-                        } else {
-                            final String key = dbRef.push().getKey();
-                            map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_reply/"
-                                    + forumReply.getFrid() + "/forum_content", content.getText().toString());
-                            presenter.onEditThreadReply(map, imageList, prefConfig.getMID(), forum.getFid(), key, forumReply.getFrid());
-                        }
-                    } else {
-//                        setPreview();
-                        if (THREAD_CONDITION.isEmpty()) {
+                            if (imageList.size() == 0) {
+                                map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()
+                                        + "/forum_reply/" + forumReply.getFrid() + "/forum_content", content.getText().toString());
+                                presenter.onEditThreadReply(map);
+                            } else {
+                                final String key = dbRef.push().getKey();
+                                map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_reply/"
+                                        + forumReply.getFrid() + "/forum_content", content.getText().toString());
+                                presenter.onEditThreadReply(map, imageList, prefConfig.getMID(), forum.getFid(), key, forumReply.getFrid());
+                            }
+                            break;
+                        case "":
                             final String key = dbRef.push().getKey();
 
                             Forum forum = new Forum(key, prefConfig.getMID(), content.getText().toString()
@@ -466,7 +483,29 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 
                             exampleThreadFragment.setArguments(bundle);
                             fragmentTransaction.commit();
-                        }
+                            break;
+                        case EDIT_THREAD:
+                        case EDIT_THREAD_SELECTED:
+                            frame_loading.setVisibility(View.VISIBLE);
+                            map.put(Constant.DB_REFERENCE_FORUM + "/" + NewThread.forum.getFid() + "/forum_content", content.getText().toString());
+                            map.put(Constant.DB_REFERENCE_FORUM + "/" + NewThread.forum.getFid() + "/forum_title/", title.getText().toString());
+                            map.put(Constant.DB_REFERENCE_FORUM + "/" + NewThread.forum.getFid() + "/fcid/", forumCategory.getFcid());
+
+                            if (forumImageList.size() > 0) {
+                                for (int i = 0; i < forumImageList.size(); i++) {
+                                    presenter.onStorageDelete(storageReference, forumImageList.get(i).getImage_name());
+                                }
+                                presenter.onFirebaseRemoveValue(Constant.DB_REFERENCE_FORUM + "/"
+                                        + NewThread.forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE);
+                            }
+
+                            if (imageList.size() == 0) {
+                                presenter.onUpdateThread(map, thumbnail_bitmap, prefConfig.getMID(), NewThread.forum.getFid());
+                            } else {
+                                presenter.onUpdateThread(map, imageList, NewThread.forum, prefConfig.getMID()
+                                        , content.getText().toString(), title.getText().toString(), thumbnail_bitmap);
+                            }
+                            break;
                     }
                 }
                 break;
@@ -559,24 +598,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                         presenter.onSendNewThread(key, storageReference, forum, imageList, prefConfig);
                     }
                 } else if (THREAD_CONDITION.equals(EDIT_THREAD) || THREAD_CONDITION.equals(EDIT_THREAD_SELECTED)) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_content", content.getText().toString());
-                    map.put(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_title/", title.getText().toString());
 
-                    if (forumImageList.size() > 0) {
-                        for (int i = 0; i < forumImageList.size(); i++) {
-                            presenter.onStorageDelete(storageReference, forumImageList.get(i).getImage_name());
-                        }
-                        presenter.onFirebaseRemoveValue(Constant.DB_REFERENCE_FORUM + "/"
-                                + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE);
-                    }
-
-                    if (imageList.size() == 0) {
-                        presenter.onUpdateThread(map);
-                    } else {
-                        presenter.onUpdateThread(map, imageList, forum, prefConfig.getMID()
-                                , content.getText().toString(), title.getText().toString());
-                    }
                 } else
 
 
