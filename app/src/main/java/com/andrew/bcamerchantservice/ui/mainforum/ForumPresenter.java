@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -182,6 +183,75 @@ public class ForumPresenter implements IForumPresenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void loadReportList() {
+        dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT_LIST)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Report> reportList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.e("asd", snapshot.getValue().toString());
+                            reportList.add(snapshot.getValue(Report.class));
+                        }
+                        iForumView.onSuccessLoadReport(reportList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onSendReport(String content, final List<Report> reportList, final String FID, final String MID) {
+        boolean isReportListAvailable = false;
+        final String key = dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID).push().getKey();
+        Map<String, String> map = new HashMap<>();
+        map.put("report_id", key);
+        map.put("report_date", Utils.getTime("dd/MM/yyyy HH:mm"));
+        map.put("report_mid", MID);
+
+        map.put("report_content", content);
+
+        for (Report report : reportList) {
+            if (report.isReport_is_checked()) {
+                isReportListAvailable = true;
+                break;
+            }
+        }
+
+        if (isReportListAvailable)
+            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+                    .setValue(map)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            for (int i = 0; i < reportList.size(); i++) {
+                                Report report = reportList.get(i);
+                                if (report.isReport_is_checked()) {
+                                    dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/"
+                                            + key + "/" + Constant.DB_REFERENCE_FORUM_REPORT_LIST + "/" + report.getFrlid())
+                                            .setValue(report);
+                                }
+
+                                if (i == reportList.size() - 1)
+                                    iForumView.onSuccessSendReport();
+                            }
+                        }
+                    });
+        else
+            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+                    .setValue(map)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            iForumView.onSuccessSendReport();
+                        }
+                    });
     }
 
     @Override

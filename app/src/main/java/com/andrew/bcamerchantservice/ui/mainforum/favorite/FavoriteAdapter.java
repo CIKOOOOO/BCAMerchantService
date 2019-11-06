@@ -210,7 +210,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                     break;
                                 case R.id.menu_report:
                                     final List<Report> reportList = new ArrayList<>();
-                                    reportList.addAll(Constant.getReport());
+//                                    reportList.addAll(Constant.getReport());
 
                                     AlertDialog.Builder codeBuilder = new AlertDialog.Builder(context);
                                     final View codeView = LayoutInflater.from(context).inflate(R.layout.custom_report, null);
@@ -328,7 +328,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     private boolean isChecked(List<Report> list) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isReport_checked()) return true;
+            if (list.get(i).isReport_is_checked()) return true;
         }
         return false;
     }

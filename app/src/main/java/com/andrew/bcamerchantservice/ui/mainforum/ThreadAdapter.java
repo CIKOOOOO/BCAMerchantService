@@ -80,6 +80,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         void profileOnClick(int pos, Merchant merchant);
 
         void onHide(String FID);
+
+        void onShowReport(Merchant merchant, Forum forum);
     }
 
     private onItemClick onItemClick;
@@ -216,78 +218,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                                     fragmentTransaction.commit();
                                     break;
                                 case R.id.menu_report:
-                                    final List<Report> reportList = new ArrayList<>();
-                                    reportList.addAll(Constant.getReport());
-
-                                    AlertDialog.Builder codeBuilder = new AlertDialog.Builder(context);
-                                    final View codeView = LayoutInflater.from(context).inflate(R.layout.custom_report, null);
-                                    TextView name = codeView.findViewById(R.id.report_name);
-                                    TextView thread = codeView.findViewById(R.id.report_title);
-                                    final TextView error = codeView.findViewById(R.id.show_error_content_report);
-                                    final EditText content = codeView.findViewById(R.id.etOther_Report);
-                                    Button send = codeView.findViewById(R.id.btnSubmit_Report);
-                                    Button cancel = codeView.findViewById(R.id.btnCancel_Report);
-                                    RecyclerView recyclerView = codeView.findViewById(R.id.recycler_checkbox_report);
-                                    final CheckBox checkBox = codeView.findViewById(R.id.check_other);
-                                    final ReportAdapter reportAdapter = new ReportAdapter(reportList, codeView.getContext());
-
-                                    recyclerView.setLayoutManager(new GridLayoutManager(codeView.getContext(), 2));
-
-                                    codeBuilder.setView(codeView);
-                                    final AlertDialog codeAlert = codeBuilder.create();
-
-                                    name.setText(": " + merchant.getMerchant_name());
-                                    thread.setText(": " + forumThread.getForum_title());
-
-                                    recyclerView.setAdapter(reportAdapter);
-
-                                    content.setEnabled(false);
-
-                                    checkBox.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            if (!check) {
-                                                content.setBackground(codeView.getContext().getDrawable(R.drawable.background_stroke_white));
-                                                check = true;
-                                                content.setEnabled(true);
-                                            } else {
-                                                content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
-                                                check = false;
-                                                content.setEnabled(false);
-                                            }
-                                        }
-                                    });
-
-                                    send.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            error.setVisibility(View.GONE);
-                                            if (check) {
-                                                if (content.getText().toString().isEmpty())
-                                                    error.setVisibility(View.VISIBLE);
-                                                else {
-                                                    Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                                            , Toast.LENGTH_SHORT).show();
-                                                    codeAlert.dismiss();
-                                                }
-                                            } else if (isChecked(reportList)) {
-                                                Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                                        , Toast.LENGTH_SHORT).show();
-                                                codeAlert.dismiss();
-                                            } else {
-                                                error.setVisibility(View.VISIBLE);
-                                            }
-                                        }
-                                    });
-
-                                    cancel.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            codeAlert.dismiss();
-                                        }
-                                    });
-
-                                    codeAlert.show();
+                                    onItemClick.onShowReport(merchant, forumThread);
                                     break;
                                 case R.id.menu_hide:
                                     onItemClick.onHide(forumThread.getFid());
@@ -333,10 +264,5 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         }
     }
 
-    private boolean isChecked(List<Report> list) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isReport_checked()) return true;
-        }
-        return false;
-    }
+
 }

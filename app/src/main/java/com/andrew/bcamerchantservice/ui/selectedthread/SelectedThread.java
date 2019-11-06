@@ -53,7 +53,6 @@ import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
-import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
@@ -98,7 +97,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     @SuppressLint("StaticFieldLeak")
     private static List<ImagePicker> imageList, imageReply;
 
-    private View v;
+    private View v, codeView;
     private LinearLayout reply_linear;
     private RecyclerView recycler_main_forum, recycler_img_reply, recycler_page_number, recycler_page_number2;
     private AnimatedRecyclerView recycler_reply;
@@ -119,12 +118,15 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private ImageGridAdapter imageGridAdapter;
     private RelativeLayout relative_page_number, relative_page_number2;
     private FrameLayout frame_loading;
+    private ReportAdapter reportAdapter;
+    private AlertDialog codeAlert;
 
     private ISelectedThreadPresenter presenter;
 
     private List<Forum> threadList;
     private List<Forum.ForumImage> forumImageList;
     private List<Forum.ForumReply> replyList;
+    private List<Report> reportList;
     private Map<String, Merchant> merchantMap;
 
     private boolean isLike, isCheck, isReply, isFavorite;
@@ -165,7 +167,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         ImageButton after2 = v.findViewById(R.id.btn_after_reply2);
         ImageButton before = v.findViewById(R.id.btn_before_reply);
         ImageButton before2 = v.findViewById(R.id.btn_before_reply2);
-        ImageButton favorite = v.findViewById(R.id.image_button_favorite_selected_thread);
         ImageButton back = v.findViewById(R.id.img_btn_back_selected_thread);
         Button reply = v.findViewById(R.id.btn_reply_thread);
         Button send = v.findViewById(R.id.btn_send_selected);
@@ -205,16 +206,18 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         imageReply = new ArrayList<>();
         forumImageList = new ArrayList<>();
         replyList = new ArrayList<>();
+        reportList = new ArrayList<>();
 
         merchantMap = new HashMap<>();
         forumImageReplyMap = new HashMap<>();
+
+        codeView = LayoutInflater.from(mContext).inflate(R.layout.custom_report, null);
 
         setAdapter();
 
         reply.setOnClickListener(this);
         send.setOnClickListener(this);
         gallery_opener.setOnClickListener(this);
-        favorite.setOnClickListener(this);
         back.setOnClickListener(this);
 
         frameLayout.setOnClickListener(this);
@@ -254,6 +257,21 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         forumImageList.addAll(imageList);
         imageGridAdapter.setForumImageList(imageList);
         imageGridAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessLoadReport(List<Report> reportList) {
+        this.reportList.clear();
+        this.reportList.addAll(reportList);
+        reportAdapter.setReportList(reportList);
+        reportAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessSendReport() {
+        Toast.makeText(mContext, mContext.getResources().getString(R.string.report_sent)
+                , Toast.LENGTH_SHORT).show();
+        codeAlert.dismiss();
     }
 
     @Override
@@ -631,16 +649,11 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 }
                 break;
             case R.id.menu_report:
-                final List<Report> reportList = new ArrayList<>();
-                reportList.addAll(Constant.getReport());
-
                 AlertDialog.Builder codeBuilder = new AlertDialog.Builder(mContext);
-                final View codeView = LayoutInflater.from(mContext).inflate(R.layout.custom_report, null);
 
                 final TextView error = codeView.findViewById(R.id.show_error_content_report);
                 final EditText content = codeView.findViewById(R.id.etOther_Report);
                 final CheckBox checkBox = codeView.findViewById(R.id.check_other);
-                ReportAdapter reportAdapter = new ReportAdapter(reportList, codeView.getContext());
 
                 TextView name = codeView.findViewById(R.id.report_name);
                 TextView thread = codeView.findViewById(R.id.report_title);
@@ -652,16 +665,22 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 recyclerView.setLayoutManager(new GridLayoutManager(codeView.getContext(), 2));
 
                 codeBuilder.setView(codeView);
-                final AlertDialog codeAlert = codeBuilder.create();
 
-                name.setText(merchant.getMerchant_name());
-                thread.setText(forum.getForum_title());
+                if (codeView.getParent() == null) {
+                    codeAlert = codeBuilder.create();
+                }
+
+                presenter.onLoadReportList();
+
+                name.setText(": " + merchant.getMerchant_name());
+                thread.setText(": " + forum.getForum_title());
 
                 recyclerView.setAdapter(reportAdapter);
 
-                thread.setVisibility(View.GONE);
-                threadTitle.setVisibility(View.GONE);
+                content.setText("");
+                content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
                 content.setEnabled(false);
+                checkBox.setChecked(false);
 
                 checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -686,14 +705,10 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                             if (content.getText().toString().isEmpty())
                                 error.setVisibility(View.VISIBLE);
                             else {
-                                Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                        , Toast.LENGTH_SHORT).show();
-                                codeAlert.dismiss();
+                                presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
                             }
                         } else if (isChecked(reportList)) {
-                            Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                    , Toast.LENGTH_SHORT).show();
-                            codeAlert.dismiss();
+                            presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
                         } else {
                             error.setVisibility(View.VISIBLE);
                         }
@@ -830,12 +845,14 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         setLayoutManager(recycler_page_number, pageNumberAdapter, STATE_LINEAR_HORIZONTAL);
         setLayoutManager(recycler_page_number2, pageNumberAdapter, STATE_LINEAR_HORIZONTAL);
 
+        reportAdapter = new ReportAdapter(reportList, codeView.getContext());
+
         replyAdapter.setImageFrame(frame_close, img_download, merchant_name, img_frame_selected);
     }
 
     private boolean isChecked(List<Report> list) {
         for (Report reportIsChecked : list) {
-            if (reportIsChecked.isReport_checked()) return true;
+            if (reportIsChecked.isReport_is_checked()) return true;
         }
         return false;
     }

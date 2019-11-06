@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -201,7 +200,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
 //                                break;
                             case R.id.menu_report:
                                 final List<Report> reportList = new ArrayList<>();
-                                reportList.addAll(Constant.getReport());
+//                                reportList.addAll(Constant.getReport());
 
                                 AlertDialog.Builder codeBuilder = new AlertDialog.Builder(context);
                                 final View codeView = LayoutInflater.from(context).inflate(R.layout.custom_report, null);
@@ -344,7 +343,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
 
     private boolean isChecked(List<Report> list) {
         for (Report reportIsChecked : list) {
-            if (reportIsChecked.isReport_checked()) return true;
+            if (reportIsChecked.isReport_is_checked()) return true;
         }
         return false;
     }

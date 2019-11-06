@@ -2,6 +2,7 @@ package com.andrew.bcamerchantservice.ui.mainforum;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.model.Report;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,6 +15,10 @@ public interface IForumPresenter {
     void loadShowCase();
 
     void loadCategory();
+
+    void loadReportList();
+
+    void onSendReport(String content, List<Report> reportList, String FID, String MID);
 
     void onUploadShowCase(String MID, int randomNumber, byte[] byteData);
 

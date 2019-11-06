@@ -2,6 +2,7 @@ package com.andrew.bcamerchantservice.ui.selectedthread;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.ImagePicker;
+import com.andrew.bcamerchantservice.model.Report;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public interface ISelectedThreadPresenter {
     void onReply(String path, Forum.ForumReply reply);
 
     void onReply(String path, String FID, String key, String MID, Forum.ForumReply reply, List<ImagePicker> list);
+
+    void onLoadReportList();
+
+    void onSendReport(String content, List<Report> reportList, String FID, String MID);
 
     void getCategoryName(String FCID);
 }

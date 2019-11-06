@@ -3,6 +3,7 @@ package com.andrew.bcamerchantservice.ui.selectedthread;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.model.Report;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,10 @@ public interface ISelectedThreadView {
     void onUpdateMerchant(Map<String, Merchant> merchantMap);
 
     void onLoadImageForum(List<Forum.ForumImage> imageList);
+
+    void onSuccessLoadReport(List<Report> reportList);
+
+    void onSuccessSendReport();
 
     void onSuccessReply();
 

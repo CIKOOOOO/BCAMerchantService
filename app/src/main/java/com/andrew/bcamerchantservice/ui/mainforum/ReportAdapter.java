@@ -20,6 +20,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
     private List<Report> reportList;
     private Context context;
 
+    public void setReportList(List<Report> reportList) {
+        this.reportList = reportList;
+    }
+
     public ReportAdapter(List<Report> reportList, Context context) {
         this.reportList = reportList;
         this.context = context;
@@ -35,14 +39,14 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.Holder> {
     @Override
     public void onBindViewHolder(@NonNull Holder holder, final int i) {
         final Report report = reportList.get(i);
-        holder.checkBox.setText(report.getReport_title());
+        holder.checkBox.setText(report.getReport_name());
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!report.isReport_checked()) {
-                    report.setReport_checked(true);
+                if (!report.isReport_is_checked()) {
+                    report.setReport_is_checked(true);
                 } else {
-                    report.setReport_checked(false);
+                    report.setReport_is_checked(false);
                 }
                 notifyDataSetChanged();
             }

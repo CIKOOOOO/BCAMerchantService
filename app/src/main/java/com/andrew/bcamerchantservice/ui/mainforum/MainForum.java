@@ -14,7 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -33,6 +32,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
+import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
@@ -92,7 +94,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     private static int counter_story, counter_mid;
 
-    private View v;
+    private View v, codeView;
     private RecyclerView thread_recycler_view;
     private ThreadAdapter threadAdapter;
     private TextView tvError_AddShowCase;
@@ -100,7 +102,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private LinearLayoutManager threadLayoutManager;
     private ImageView img_add_showcase, image_story;
     private View reverse, skip;
-    private AlertDialog codeAlert;
+    private AlertDialog codeAlert, dialog_report;
     private Context mContext;
     private Activity mActivity;
     private ScaleDrawable scaleDrawable;
@@ -111,14 +113,17 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private BottomSheetBehavior bottomSheetBehavior;
     private TextView text_category;
     private NestedScrollView nestedScrollView;
+    private ReportAdapter reportAdapter;
 
     private IForumPresenter presenter;
 
     private List<MerchantStory> eachStoryList;
     private List<Forum.ForumCategory> categoryList;
+    private List<Report> reportList;
     private Map<String, Merchant> merchantMap, merchantStoryMap;
 
     private long pressTime;
+    private boolean check;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -160,6 +165,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         pressTime = 0L;
         mContext = v.getContext();
         presenter = new ForumPresenter(this);
+        check = false;
 
         isStoryVisible = false;
         isCategoryBottomSheetVisible = false;
@@ -192,12 +198,17 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         forumLists = new ArrayList<>();
         eachStoryList = new ArrayList<>();
         categoryList = new ArrayList<>();
+        reportList = new ArrayList<>();
 
         merchantMap = new HashMap<>();
         merchantStoryMap = new HashMap<>();
 
+        codeView = LayoutInflater.from(mContext).inflate(R.layout.custom_report, null);
+
         categoryAdapter = new CategoryAdapter(mContext, categoryList, this);
+        reportAdapter = new ReportAdapter(reportList, codeView.getContext());
         threadLayoutManager = new LinearLayoutManager(mContext);
+
         swipeRefreshLayout.setDurations(0, 3);
 
         setAdapter();
@@ -220,7 +231,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
-                if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
@@ -258,6 +269,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         fragmentTransactions.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransactions.replace(R.id.main_frame, fragment);
         fragmentTransactions.commit();
+    }
+
+    private boolean isChecked(List<Report> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isReport_is_checked()) return true;
+        }
+        return false;
     }
 
     @Override
@@ -309,6 +327,78 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     @Override
     public void onHide(String FID) {
         presenter.onHide(FID, prefConfig.getMID());
+    }
+
+    @Override
+    public void onShowReport(final Merchant merchant, final Forum forum) {
+        AlertDialog.Builder codeBuilder = new AlertDialog.Builder(mContext);
+        TextView name = codeView.findViewById(R.id.report_name);
+        TextView thread = codeView.findViewById(R.id.report_title);
+        final TextView error = codeView.findViewById(R.id.show_error_content_report);
+        final EditText content = codeView.findViewById(R.id.etOther_Report);
+        Button send = codeView.findViewById(R.id.btnSubmit_Report);
+        Button cancel = codeView.findViewById(R.id.btnCancel_Report);
+        RecyclerView recyclerView = codeView.findViewById(R.id.recycler_checkbox_report);
+        final CheckBox checkBox = codeView.findViewById(R.id.check_other);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(codeView.getContext(), 2));
+
+        codeBuilder.setView(codeView);
+
+        if (codeView.getParent() == null) {
+            dialog_report = codeBuilder.create();
+        }
+
+        name.setText(": " + merchant.getMerchant_name());
+        thread.setText(": " + forum.getForum_title());
+
+        recyclerView.setAdapter(reportAdapter);
+
+        presenter.loadReportList();
+
+        content.setEnabled(false);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!check) {
+                    content.setBackground(codeView.getContext().getDrawable(R.drawable.background_stroke_white));
+                    check = true;
+                    content.setEnabled(true);
+                } else {
+                    content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
+                    check = false;
+                    content.setEnabled(false);
+                }
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                error.setVisibility(View.GONE);
+                if (check) {
+                    if (content.getText().toString().isEmpty())
+                        error.setVisibility(View.VISIBLE);
+                    else {
+                        presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                    }
+                } else if (isChecked(reportList)) {
+                    presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                } else {
+                    error.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_report.dismiss();
+            }
+        });
+
+        dialog_report.show();
     }
 
     @Override
@@ -401,6 +491,21 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         categoryList.addAll(forumCategories);
         categoryAdapter.setCategoryList(forumCategories);
         categoryAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessLoadReport(List<Report> reportList) {
+        this.reportList.clear();
+        this.reportList.addAll(reportList);
+        reportAdapter.setReportList(reportList);
+        reportAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessSendReport() {
+        Toast.makeText(mContext, mContext.getResources().getString(R.string.report_sent)
+                , Toast.LENGTH_SHORT).show();
+        dialog_report.dismiss();
     }
 
     @Override

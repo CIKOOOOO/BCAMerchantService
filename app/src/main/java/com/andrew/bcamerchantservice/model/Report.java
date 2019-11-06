@@ -1,24 +1,32 @@
 package com.andrew.bcamerchantservice.model;
 
 public class Report {
-    private String report_title;
-    private boolean report_checked;
+    private String frlid;
+    private String report_name;
+    private boolean report_is_checked;
 
-    public String getReport_title() {
-        return report_title;
+    public String getFrlid() {
+        return frlid;
     }
 
-    public void setReport_checked(boolean report_checked) {
-        this.report_checked = report_checked;
+    public String getReport_name() {
+        return report_name;
     }
 
-    public boolean isReport_checked() {
-        return report_checked;
+    public void setReport_is_checked(boolean report_is_checked) {
+        this.report_is_checked = report_is_checked;
     }
 
-    public Report(String report_title, boolean report_checked) {
+    public boolean isReport_is_checked() {
+        return report_is_checked;
+    }
 
-        this.report_title = report_title;
-        this.report_checked = report_checked;
+    public Report() {
+    }
+
+    public Report(String frlid, String report_name, boolean report_is_checked) {
+        this.frlid = frlid;
+        this.report_name = report_name;
+        this.report_is_checked = report_is_checked;
     }
 }
