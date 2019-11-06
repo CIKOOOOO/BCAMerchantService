@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,7 +106,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private RecyclerView recyclerView, recycler_category;
     private EditText title, content;
     private ImagePickerAdapter imagePickerAdapter;
-    private TextView error_content, error_title;
     private AlertDialog codeAlert;
     private Context mContext;
     private Activity mActivity;
@@ -157,6 +157,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         storageReference = FirebaseStorage.getInstance().getReference(Constant.DB_REFERENCE_FORUM_IMAGE);
         strRef = FirebaseStorage.getInstance().getReference(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY);
         toolTipsManager = new ToolTipsManager();
+        MainActivity.bottomNavigationView.setVisibility(View.GONE);
 
         TextView tvTitle = v.findViewById(R.id.title_new_thread);
         TextView title_only = v.findViewById(R.id.tvTitle_NewThread);
@@ -167,14 +168,15 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         ImageButton camera_thumbnail = v.findViewById(R.id.camera_thumbnail_new_thread);
         ImageButton gallery_thumbnail = v.findViewById(R.id.gallery_thumbnail_new_thread);
         NestedScrollView nested_scroll = v.findViewById(R.id.nested_scroll_new_thread);
+        LinearLayout linear_category = v.findViewById(R.id.ll_dummy_00_new_thread);
+        LinearLayout linear_thumbnail_title = v.findViewById(R.id.ll_dummy_01_new_thread);
+        LinearLayout linear_thumbnail_content = v.findViewById(R.id.ll_dummy_02_new_thread);
 
         question_mark = v.findViewById(R.id.image_button_question_mark_new_thread);
         recycler_category = v.findViewById(R.id.recycler_category_new_thread);
         recyclerView = v.findViewById(R.id.recycler_image_new_thread);
         title = v.findViewById(R.id.edit_title_new_thread);
         content = v.findViewById(R.id.edit_text_content_new_thread);
-        error_content = v.findViewById(R.id.show_error_content_new_thread);
-        error_title = v.findViewById(R.id.show_error_title_new_thread);
         frame_loading = v.findViewById(R.id.frame_loading_new_thread);
         image_thumbnail = v.findViewById(R.id.image_thumbnail_new_thread);
 
@@ -231,6 +233,9 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 THREAD_CONDITION = EDIT_THREAD_REPLY;
                 title.setVisibility(View.GONE);
                 title_only.setVisibility(View.GONE);
+                linear_category.setVisibility(View.GONE);
+                linear_thumbnail_content.setVisibility(View.GONE);
+                linear_thumbnail_title.setVisibility(View.GONE);
                 forumReply = bundle.getParcelable(EDIT_THREAD_REPLY);
                 forum = bundle.getParcelable(EDIT_THREAD_REPLY_BACK);
                 merchant = bundle.getParcelable(EDIT_THREAD_MERCHANT);
@@ -420,13 +425,10 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 final String titles = title.getText().toString();
                 final String contents = content.getText().toString();
 
-                error_content.setVisibility(View.GONE);
-                error_title.setVisibility(View.GONE);
-
                 if (titles.isEmpty() && !THREAD_CONDITION.equals(EDIT_THREAD_REPLY)) {
                     title.setError("This cannot be empty");
                     title.requestFocus(title.getLayoutDirection());
-                } else if (categoryAdapter.getLastPosition() == -1) {
+                } else if (categoryAdapter.getLastPosition() == -1 && !THREAD_CONDITION.equals(EDIT_THREAD_REPLY)) {
                     recycler_category.requestFocus(recycler_category.getLayoutDirection());
                     Animation anim = new AlphaAnimation(0.0f, 1.0f);
                     anim.setDuration(500); //You can manage the blinking time with this parameter

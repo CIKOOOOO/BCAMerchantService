@@ -3,6 +3,8 @@ package com.andrew.bcamerchantservice.ui.main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -123,7 +125,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     public void onUserInteraction() {
         super.onUserInteraction();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frame);
-        if (fragment instanceof MainForum && !MainForum.isStoryVisible) {
+        if (fragment instanceof MainForum && !MainForum.isStoryVisible && !MainForum.isCategoryBottomSheetVisible) {
             bottomNavigationView.setVisibility(View.VISIBLE);
             floatingActionButton.show();
         } else floatingActionButton.hide();

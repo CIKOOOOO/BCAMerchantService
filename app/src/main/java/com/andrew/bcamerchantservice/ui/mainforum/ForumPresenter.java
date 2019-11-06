@@ -163,6 +163,25 @@ public class ForumPresenter implements IForumPresenter {
     }
 
     @Override
+    public void loadCategory() {
+        dbRef.child(Constant.DB_REFERENCE_FORUM_CATEGORY)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Forum.ForumCategory> forumCategoryList = new ArrayList<>();
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                            forumCategoryList.add(snapshot.getValue(Forum.ForumCategory.class));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    @Override
     public void onUploadShowCase(final String MID, final int randomNumber, byte[] byteData) {
         final UploadTask uploadTask = storageRef.child(Constant.DB_REFERENCE_MERCHANT_STORY).child("story-" + MID + "-" + randomNumber).putBytes(byteData);
 

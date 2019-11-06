@@ -13,6 +13,8 @@ public interface IForumPresenter {
 
     void loadShowCase();
 
+    void loadCategory();
+
     void onUploadShowCase(String MID, int randomNumber, byte[] byteData);
 
     void onRemoveThread(String FID, int pos);

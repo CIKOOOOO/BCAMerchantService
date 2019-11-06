@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +46,7 @@ import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
+import com.andrew.bcamerchantservice.ui.newthread.CategoryAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
@@ -72,8 +75,9 @@ import jp.shts.android.storiesprogressview.StoriesProgressView;
 public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         , IForumView, StoryAdapter.onImageClickListener, View.OnClickListener
         , PullRefreshLayout.OnRefreshListener, MainActivity.onBackPressFragment
-        , StoriesProgressView.StoriesListener {
-    public static boolean isStoryVisible;
+        , StoriesProgressView.StoriesListener, CategoryAdapter.onCategoryClick {
+
+    public static boolean isStoryVisible, isCategoryBottomSheetVisible;
 
     private static final String TAG = MainForum.class.getSimpleName();
 
@@ -102,10 +106,14 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private PrefConfig prefConfig;
     private FrameLayout frame_loading;
     private RoundedImageView story_picture;
+    private CategoryAdapter categoryAdapter;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private CoordinatorLayout coordinatorLayout;
 
     private IForumPresenter presenter;
 
     private List<MerchantStory> eachStoryList;
+    private List<Forum.ForumCategory> categoryList;
     private Map<String, Merchant> merchantMap, merchantStoryMap;
 
     private long pressTime;
@@ -152,6 +160,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         presenter = new ForumPresenter(this);
 
         isStoryVisible = false;
+        isCategoryBottomSheetVisible = false;
 
         prefConfig = new PrefConfig(mContext);
         scaleDrawable = DecodeBitmap.setScaleDrawable(mContext, R.drawable.placeholder);
@@ -160,6 +169,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         ImageButton search = v.findViewById(R.id.image_button_search_main_forum);
         ImageButton new_thread = v.findViewById(R.id.imgBtn_AddThread);
         ImageButton favorite = v.findViewById(R.id.image_button_favorite_main_forum);
+        TextView text_change = v.findViewById(R.id.text_change_category_main_forum);
 
         showcase_recycler_view = v.findViewById(R.id.recycler_story_main_forum);
         thread_recycler_view = v.findViewById(R.id.recycler_thread_main_forum);
@@ -169,13 +179,15 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         skip = v.findViewById(R.id.skip_story);
         image_story = v.findViewById(R.id.image_story);
         story_picture = v.findViewById(R.id.profile_picture_story);
-
         swipeRefreshLayout = v.findViewById(R.id.swipe);
         frame_loading = v.findViewById(R.id.frame_loading_main_forum);
+        coordinatorLayout = v.findViewById(R.id.bottom_sheet_main);
+        bottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
 
         storyList = new ArrayList<>();
         forumLists = new ArrayList<>();
         eachStoryList = new ArrayList<>();
+        categoryList = new ArrayList<>();
 
         merchantMap = new HashMap<>();
         merchantStoryMap = new HashMap<>();
@@ -192,6 +204,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         new_thread.setOnClickListener(this);
         search.setOnClickListener(this);
         favorite.setOnClickListener(this);
+        text_change.setOnClickListener(this);
 
         reverse.setOnClickListener(this);
         skip.setOnClickListener(this);
@@ -487,6 +500,20 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
             case R.id.image_button_favorite_main_forum:
                 changeFragment(new FavoriteFragment());
                 break;
+            case R.id.text_change_category_main_forum:
+                MainActivity.floatingActionButton.hide();
+                MainActivity.bottomNavigationView.setVisibility(View.GONE);
+                isCategoryBottomSheetVisible = true;
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                RecyclerView recycler_category = v.findViewById(R.id.recycler_category_bottom_sheet);
+                recycler_category.setLayoutManager(new LinearLayoutManager(mContext));
+
+                categoryAdapter = new CategoryAdapter(mContext, categoryList, this);
+
+                presenter.loadCategory();
+
+                break;
         }
     }
 
@@ -566,5 +593,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                     break;
             }
         }
+    }
+
+    @Override
+    public void onClick(Forum.ForumCategory forumCategory, int i) {
+
     }
 }

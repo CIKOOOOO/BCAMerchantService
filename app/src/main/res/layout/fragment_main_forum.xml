@@ -184,6 +184,7 @@
                                 android:textSize="17sp" />
 
                             <TextView
+                                android:id="@+id/text_change_category_main_forum"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -225,6 +226,10 @@
         android:id="@+id/custom_view_story"
         layout="@layout/custom_story_view"
         android:visibility="gone" />
+
+    <include
+        android:id="@+id/bottom_sheet_main"
+        layout="@layout/bottom_sheet_category" />
 
     <FrameLayout
         android:id="@+id/frame_loading_main_forum"
