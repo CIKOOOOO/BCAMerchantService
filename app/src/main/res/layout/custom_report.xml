@@ -12,18 +12,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/sniglet_font"
             android:text="@string/report_thread"
             android:textAlignment="center"
-            android:textColor="@color/toolbar_base"
+            android:textColor="@color/blackPalette"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="5dp"
             android:orientation="horizontal">
 
@@ -36,57 +37,67 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
+                    android:fontFamily="@font/sniglet_font"
                     android:text="@string/info_name"
-                    android:textColor="@color/toolbar_base" />
+                    android:textColor="@color/blackPalette" />
 
                 <TextView
                     android:id="@+id/report_tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/sniglet_font"
                     android:text="@string/info_title"
-                    android:textColor="@color/toolbar_base" />
+                    android:textColor="@color/blackPalette" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/report_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/background_custom_preview"
+                    android:fontFamily="@font/sniglet_font"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:textColor="@color/toolbar_base" />
+                    android:textColor="@color/blackPalette" />
 
                 <TextView
                     android:id="@+id/report_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@drawable/background_custom_preview"
+                    android:fontFamily="@font/sniglet_font"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:textColor="@color/toolbar_base" />
+                    android:textColor="@color/blackPalette" />
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Alasan"
+            android:textColor="@color/blackPalette" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_checkbox_report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
@@ -95,24 +106,27 @@
             android:id="@+id/check_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:buttonTint="@color/toolbar_base"
+            android:fontFamily="@font/sniglet_font"
             android:text="@string/check_other"
-            android:textColor="@color/toolbar_base" />
+            android:textColor="@color/blackPalette" />
 
         <EditText
             android:id="@+id/etOther_Report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/background_grey"
             android:cursorVisible="true"
+            android:fontFamily="@font/sniglet_font"
             android:gravity="top|start"
             android:inputType="textMultiLine"
             android:maxLength="150"
+            android:minLines="3"
             android:overScrollMode="always"
             android:padding="5dp"
             android:scrollbarStyle="insideInset"
@@ -137,29 +151,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btnCancel_Report"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/button_cancel_background"
+                android:background="@drawable/background_reply"
+                android:fontFamily="@font/sniglet_font"
                 android:text="@string/cancel"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/white_color" />
 
             <Button
                 android:id="@+id/btnSubmit_Report"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_reply"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_rounded_stroke_blue"
+                android:fontFamily="@font/sniglet_font"
                 android:text="@string/send"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/blue_palette" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

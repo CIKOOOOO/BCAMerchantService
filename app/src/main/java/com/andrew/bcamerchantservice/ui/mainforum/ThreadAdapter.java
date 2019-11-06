@@ -236,8 +236,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                                     codeBuilder.setView(codeView);
                                     final AlertDialog codeAlert = codeBuilder.create();
 
-                                    name.setText(merchant.getMerchant_name());
-                                    thread.setText(forumThread.getForum_title());
+                                    name.setText(": " + merchant.getMerchant_name());
+                                    thread.setText(": " + forumThread.getForum_title());
 
                                     recyclerView.setAdapter(reportAdapter);
 
