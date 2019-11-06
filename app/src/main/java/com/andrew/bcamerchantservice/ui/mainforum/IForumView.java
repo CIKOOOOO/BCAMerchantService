@@ -21,4 +21,6 @@ public interface IForumView {
     void onSuccessUpdateViewCount(Forum forum, Merchant merchant);
 
     void onLoadStory(List<Merchant.MerchantStory> list);
+
+    void onSuccessLoadCategory(List<Forum.ForumCategory> forumCategories);
 }

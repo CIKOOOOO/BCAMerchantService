@@ -23,6 +23,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.previewproquest.PreviewProquest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequest;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
+import com.andrew.bcamerchantservice.utils.BottomNavigationViewBehavior;
 import com.andrew.bcamerchantservice.utils.FloatingActionButtonBehavior;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
-        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
+//        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
@@ -155,8 +156,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 iMainPresenter.changeFragment(new MainForum(), fragmentTransaction);
                 floatingActionButton.show();
                 break;
-            case R.id.bot_home:
-                break;
             case R.id.bot_account:
                 iMainPresenter.changeFragment(new Profile(), fragmentTransaction);
                 break;
@@ -165,6 +164,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 break;
             case R.id.bot_submission:
                 iMainPresenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
+                break;
+            case R.id.bot_home:
                 break;
             case R.id.bot_transaction:
                 break;

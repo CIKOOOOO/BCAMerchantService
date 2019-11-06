@@ -17,7 +17,7 @@
         app:refreshType="smartisan">
 
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestedScrollView_MainForum"
+            android:id="@+id/nested_scroll_main_forum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="always"
@@ -179,7 +179,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="10dp"
                                 android:fontFamily="@font/sniglet_reguler"
-                                android:text="Category : General"
+                                android:text="Category: General"
                                 android:textColor="@color/blackPalette"
                                 android:textSize="17sp" />
 

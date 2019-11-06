@@ -77,12 +77,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
             }
         });
 
-        if (forumCategoryList.size() > 5) {
+        if (forumCategoryList.size() > 6) {
             /*
              * I will think about it later, but it should show more option,
              * and when user click more, it will pop up a bottom navigation
-             * then it will show all of category list like gojek apps
+             * then it will show all of category list like Gojek apps
              * */
+            if (pos == 5) {
+                // here to add more
+            }
         }
     }
 
