@@ -24,11 +24,8 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
-import com.andrew.bcamerchantservice.ui.mainforum.ThreadAdapter;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
-import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
-import com.google.firebase.database.core.Repo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,14 +35,14 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ForumOtherProfile extends Fragment implements ThreadAdapter.onItemClick, IForumOtherProfileView {
+public class ForumOtherProfile extends Fragment implements OtherProfileAdapter.onItemClick, IForumOtherProfileView {
 
     public static final String GETTING_MERCHANT_DATA = "getting_merchant_data";
 
     private View v;
     private Context mContext;
 
-    private ThreadAdapter threadAdapter;
+    private OtherProfileAdapter otherProfileAdapter;
     private AlertDialog codeAlert;
     private PrefConfig prefConfig;
     private ReportAdapter reportAdapter;
@@ -85,7 +82,7 @@ public class ForumOtherProfile extends Fragment implements ThreadAdapter.onItemC
         reportList = new ArrayList<>();
         merchantMap = new HashMap<>();
 
-        threadAdapter = new ThreadAdapter(mContext, forumList, merchantMap, this);
+        otherProfileAdapter = new OtherProfileAdapter(mContext, forumList, merchantMap, this);
         reportAdapter = new ReportAdapter(reportList, mContext);
 
         if (bundle != null) {
@@ -96,7 +93,7 @@ public class ForumOtherProfile extends Fragment implements ThreadAdapter.onItemC
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(threadAdapter);
+        recyclerView.setAdapter(otherProfileAdapter);
     }
 
     @Override
@@ -201,16 +198,16 @@ public class ForumOtherProfile extends Fragment implements ThreadAdapter.onItemC
     public void onGettingData(List<Forum> forumList) {
         this.forumList.clear();
         this.forumList.addAll(forumList);
-        threadAdapter.setForumList(forumList);
-        threadAdapter.notifyDataSetChanged();
+        otherProfileAdapter.setForumList(forumList);
+        otherProfileAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onMerchantProfile(Merchant merchant) {
         if (!merchantMap.containsKey(merchant.getMid())) {
             merchantMap.put(merchant.getMid(), merchant);
-            threadAdapter.setMerchantMap(merchantMap);
-            threadAdapter.notifyDataSetChanged();
+            otherProfileAdapter.setMerchantMap(merchantMap);
+            otherProfileAdapter.notifyDataSetChanged();
         }
     }
 
