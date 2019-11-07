@@ -62,8 +62,6 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
     private Map<String, List<Forum.ForumImageReply>> replyImageMap;
     private PrefConfig prefConfig;
 
-    private onReplyDelete onReplyDelete;
-    private onEdit onEdit;
     private onReplyClick onReplyClick;
 
     public void setImageFrame(ImageButton btnClose, ImageButton btnDownload, TextView merchantName, ImageView imgFrame) {
@@ -99,24 +97,19 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
         void onReply(int pos);
 
         void onReplyLike(int pos);
-    }
 
-    public interface onEdit {
         void onThreadEdit(int pos);
-    }
 
-    public interface onReplyDelete {
         void onDelete(int pos);
+
+        void onReport(String FRID);
     }
 
     public ReplyAdapter(List<Forum.ForumReply> list, Map<String, Merchant> merchantMap, Map<String
-            , List<Forum.ForumImageReply>> replyImageMap, Context context, onReplyClick onReplyClick
-            , onEdit onEdit, onReplyDelete onReplyDelete) {
+            , List<Forum.ForumImageReply>> replyImageMap, Context context, onReplyClick onReplyClick) {
         this.list = list;
         this.merchantMap = merchantMap;
         this.replyImageMap = replyImageMap;
-        this.onReplyDelete = onReplyDelete;
-        this.onEdit = onEdit;
         this.onReplyClick = onReplyClick;
         this.context = context;
         newReplyIsAvailable = false;
@@ -182,7 +175,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
                         switch (menuItem.getItemId()) {
                             case R.id.menu_delete:
                                 int position = SelectedThread.PAGE_NUMBER_STATE * 5 + holder.getAdapterPosition();
-                                onReplyDelete.onDelete(position);
+                                onReplyClick.onDelete(position);
 //                                deleteAnimation(holder.itemView);
                                 break;
 //                            case R.id.menu_dont_show:
@@ -190,7 +183,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
 //                                Toast.makeText(context, context.getResources().getString(R.string.thread_not_appear), Toast.LENGTH_SHORT).show();
 //                                break;
                             case R.id.menu_edit:
-                                onEdit.onThreadEdit(SelectedThread.PAGE_NUMBER_STATE * 5 + holder.getAdapterPosition());
+                                onReplyClick.onThreadEdit(SelectedThread.PAGE_NUMBER_STATE * 5 + holder.getAdapterPosition());
                                 break;
 //                            case R.id.menu_hide:
 //                                int position_hide = SelectedThread.PAGE_NUMBER_STATE * 5 + holder.getAdapterPosition();
@@ -199,83 +192,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
 //                                Toast.makeText(context, context.getResources().getString(R.string.thread_hidden), Toast.LENGTH_SHORT).show();
 //                                break;
                             case R.id.menu_report:
-                                final List<Report> reportList = new ArrayList<>();
-//                                reportList.addAll(Constant.getReport());
-
-                                AlertDialog.Builder codeBuilder = new AlertDialog.Builder(context);
-                                final View codeView = LayoutInflater.from(context).inflate(R.layout.custom_report, null);
-
-                                final TextView error = codeView.findViewById(R.id.show_error_content_report);
-                                final EditText content = codeView.findViewById(R.id.etOther_Report);
-                                final CheckBox checkBox = codeView.findViewById(R.id.check_other);
-                                final ReportAdapter reportAdapter = new ReportAdapter(reportList, codeView.getContext());
-
-                                TextView name = codeView.findViewById(R.id.report_name);
-                                TextView thread = codeView.findViewById(R.id.report_title);
-                                TextView threadTitle = codeView.findViewById(R.id.report_tv_title);
-                                Button send = codeView.findViewById(R.id.btnSubmit_Report);
-                                Button cancel = codeView.findViewById(R.id.btnCancel_Report);
-                                RecyclerView recyclerView = codeView.findViewById(R.id.recycler_checkbox_report);
-
-                                recyclerView.setLayoutManager(new GridLayoutManager(codeView.getContext(), 2));
-
-                                codeBuilder.setView(codeView);
-                                final AlertDialog codeAlert = codeBuilder.create();
-
-                                name.setText(merchant.getMerchant_name());
-//                                thread.setText(forumThread.getTitle());
-
-                                recyclerView.setAdapter(reportAdapter);
-
-                                thread.setVisibility(View.GONE);
-                                threadTitle.setVisibility(View.GONE);
-                                content.setEnabled(false);
-
-                                checkBox.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (!check) {
-                                            content.setBackground(codeView.getContext().getDrawable(R.drawable.background_stroke_white));
-                                            check = true;
-                                            content.setEnabled(true);
-                                        } else {
-                                            content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
-                                            check = false;
-                                            content.setEnabled(false);
-                                        }
-                                    }
-                                });
-
-                                send.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        error.setVisibility(View.GONE);
-                                        if (check) {
-                                            if (content.getText().toString().isEmpty())
-                                                error.setVisibility(View.VISIBLE);
-                                            else {
-                                                Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                                        , Toast.LENGTH_SHORT).show();
-                                                codeAlert.dismiss();
-                                            }
-                                        } else if (isChecked(reportList)) {
-                                            Toast.makeText(codeView.getContext(), codeView.getContext().getResources().getString(R.string.report_sent)
-                                                    , Toast.LENGTH_SHORT).show();
-                                            codeAlert.dismiss();
-                                        } else {
-                                            error.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                });
-
-                                cancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        codeAlert.dismiss();
-                                    }
-                                });
-
-                                codeAlert.show();
+                                onReplyClick.onReport(forumThread.getFrid());
                                 break;
                         }
                         return false;

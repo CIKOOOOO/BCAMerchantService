@@ -34,14 +34,13 @@ public class Constant {
     public static final String DB_REFERENCE_FORUM_HIDDEN = "forum_hidden";
     public static final String DB_REFERENCE_FORUM_FAVORITE = "forum_favorite";
     public static final String DB_REFERENCE_FORUM_REPORT = "forum_report";
+    public static final String DB_REFERENCE_FORUM_REPORT_REPLY = "forum_report_reply";
+    public static final String DB_REFERENCE_FORUM_REPORTER = "forum_reporter";
     public static final String DB_REFERENCE_FORUM_REPORT_LIST = "forum_report_list";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
 
     public static final int MAX_ALPHA = 220;
 
-    private static final String[] reportList = {
-            "Ujaran Kebencian", "Pornografi", "Berita Bohong / Palsu", "Spam"
-    };
 
     // START PROFILE FRAGMENT
 

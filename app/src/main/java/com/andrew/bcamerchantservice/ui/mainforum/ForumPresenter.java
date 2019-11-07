@@ -224,8 +224,10 @@ public class ForumPresenter implements IForumPresenter {
             }
         }
 
+        String path = Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_REPORTER + "/" + MID + "/" + key;
+
         if (isReportListAvailable)
-            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+            dbRef.child(path)
                     .setValue(map)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -233,7 +235,8 @@ public class ForumPresenter implements IForumPresenter {
                             for (int i = 0; i < reportList.size(); i++) {
                                 Report report = reportList.get(i);
                                 if (report.isReport_is_checked()) {
-                                    dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/"
+                                    dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/"
+                                            + Constant.DB_REFERENCE_FORUM_REPORTER + "/" + MID + "/"
                                             + key + "/" + Constant.DB_REFERENCE_FORUM_REPORT_LIST + "/" + report.getFrlid())
                                             .setValue(report);
                                 }
@@ -244,7 +247,7 @@ public class ForumPresenter implements IForumPresenter {
                         }
                     });
         else
-            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+            dbRef.child(path)
                     .setValue(map)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

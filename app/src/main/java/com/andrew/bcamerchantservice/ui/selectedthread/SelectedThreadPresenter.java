@@ -302,14 +302,13 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
-    public void onSendReport(String content, final List<Report> reportList, final String FID, final String MID) {
+    public void onSendReport(final String path, String content, final List<Report> reportList, final String FID, final String MID) {
         boolean isReportListAvailable = false;
-        final String key = dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID).push().getKey();
+        final String key = dbRef.child(path).push().getKey();
         Map<String, String> map = new HashMap<>();
         map.put("report_id", key);
         map.put("report_date", Utils.getTime("dd/MM/yyyy HH:mm"));
         map.put("report_mid", MID);
-
         map.put("report_content", content);
 
         for (Report report : reportList) {
@@ -320,7 +319,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
         }
 
         if (isReportListAvailable)
-            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+            dbRef.child(path + "/" + key)
                     .setValue(map)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -328,8 +327,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                             for (int i = 0; i < reportList.size(); i++) {
                                 Report report = reportList.get(i);
                                 if (report.isReport_is_checked()) {
-                                    dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/"
-                                            + key + "/" + Constant.DB_REFERENCE_FORUM_REPORT_LIST + "/" + report.getFrlid())
+                                    dbRef.child(path + "/" + key + "/" + Constant.DB_REFERENCE_FORUM_REPORT_LIST + "/" + report.getFrlid())
                                             .setValue(report);
                                 }
 
@@ -339,7 +337,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                         }
                     });
         else
-            dbRef.child(Constant.DB_REFERENCE_FORUM_REPORT + "/" + FID + "/" + MID + "/" + key)
+            dbRef.child(path + "/" + key)
                     .setValue(map)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -347,6 +345,11 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                             iSelectedThreadView.onSuccessSendReport();
                         }
                     });
+    }
+
+    @Override
+    public void onSendReplyReport() {
+
     }
 
     @Override

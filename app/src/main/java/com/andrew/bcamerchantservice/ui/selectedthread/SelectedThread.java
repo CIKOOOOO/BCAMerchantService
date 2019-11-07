@@ -76,9 +76,8 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class SelectedThread extends Fragment implements ISelectedThreadView, View.OnClickListener
-        , ReplyAdapter.onEdit, ReplyAdapter.onReplyDelete, ReplyAdapter.onReplyClick
-        , PageNumberAdapter.pageNumber, MainActivity.onBackPressFragment, ImageGridAdapter.imageOnClick
-        , ImagePickerAdapter.onItemClick, PopupMenu.OnMenuItemClickListener {
+        , ReplyAdapter.onReplyClick, PageNumberAdapter.pageNumber, MainActivity.onBackPressFragment
+        , ImageGridAdapter.imageOnClick, ImagePickerAdapter.onItemClick, PopupMenu.OnMenuItemClickListener {
 
     public static final String GET_THREAD_OBJECT = "thread_object";
     public static final String GET_MERCHANT = "merchant_profile";
@@ -119,7 +118,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private RelativeLayout relative_page_number, relative_page_number2;
     private FrameLayout frame_loading;
     private ReportAdapter reportAdapter;
-    private AlertDialog codeAlert;
+    private AlertDialog codeAlert, reply_code_alert;
 
     private ISelectedThreadPresenter presenter;
 
@@ -129,7 +128,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private List<Report> reportList;
     private Map<String, Merchant> merchantMap;
 
-    private boolean isLike, isCheck, isReply, isFavorite;
+    private boolean isLike, isCheck, isReply, isFavorite, check;
 
     public SelectedThread() {
         // Required empty public constructor
@@ -159,6 +158,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         PAGE_NUMBER_STATE = 0;
         prefConfig = new PrefConfig(mContext);
         isLike = false;
+        check = false;
         dbRef = FirebaseDatabase.getInstance().getReference();
         presenter = new SelectedThreadPresenter(this);
 
@@ -271,7 +271,10 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     public void onSuccessSendReport() {
         Toast.makeText(mContext, mContext.getResources().getString(R.string.report_sent)
                 , Toast.LENGTH_SHORT).show();
-        codeAlert.dismiss();
+        if (codeAlert != null)
+            codeAlert.dismiss();
+        if (reply_code_alert != null)
+            reply_code_alert.dismiss();
     }
 
     @Override
@@ -528,6 +531,88 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     }
 
     @Override
+    public void onReport(final String FRID) {
+        AlertDialog.Builder codeBuilder = new AlertDialog.Builder(mContext);
+        final View codeView = LayoutInflater.from(mContext).inflate(R.layout.custom_report, null);
+
+        final TextView error = codeView.findViewById(R.id.show_error_content_report);
+        final EditText content = codeView.findViewById(R.id.etOther_Report);
+        final CheckBox checkBox = codeView.findViewById(R.id.check_other);
+
+        TextView name = codeView.findViewById(R.id.report_name);
+        TextView thread = codeView.findViewById(R.id.report_title);
+        TextView threadTitle = codeView.findViewById(R.id.report_tv_title);
+        Button send = codeView.findViewById(R.id.btnSubmit_Report);
+        Button cancel = codeView.findViewById(R.id.btnCancel_Report);
+        RecyclerView recyclerView = codeView.findViewById(R.id.recycler_checkbox_report);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(codeView.getContext(), 2));
+
+        codeBuilder.setView(codeView);
+        if (codeView.getParent() == null)
+            reply_code_alert = codeBuilder.create();
+
+        check = false;
+
+        name.setText(merchant.getMerchant_name());
+
+        presenter.onLoadReportList();
+
+        recyclerView.setAdapter(reportAdapter);
+
+        thread.setVisibility(View.GONE);
+        threadTitle.setVisibility(View.GONE);
+        content.setEnabled(false);
+        content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
+        content.setText("");
+        checkBox.setChecked(false);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!check) {
+                    content.setBackground(codeView.getContext().getDrawable(R.drawable.background_stroke_white));
+                    check = true;
+                    content.setEnabled(true);
+                } else {
+                    content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
+                    check = false;
+                    content.setEnabled(false);
+                }
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                error.setVisibility(View.GONE);
+                String path = Constant.DB_REFERENCE_FORUM_REPORT + "/" + forum.getFid() + "/"
+                        + Constant.DB_REFERENCE_FORUM_REPORT_REPLY + "/" + FRID + "/" + prefConfig.getMID();
+                if (check) {
+                    if (content.getText().toString().isEmpty())
+                        error.setVisibility(View.VISIBLE);
+                    else {
+                        presenter.onSendReport(path, content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                    }
+                } else if (isChecked(reportList)) {
+                    presenter.onSendReport(path, content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                } else {
+                    error.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reply_code_alert.dismiss();
+            }
+        });
+
+        reply_code_alert.show();
+    }
+
+    @Override
     public void onReply(int pos) {
         scrollView.smoothScrollTo(0, reply_linear.getBottom());
     }
@@ -677,9 +762,10 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
                 recyclerView.setAdapter(reportAdapter);
 
-                content.setText("");
-                content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
                 content.setEnabled(false);
+                content.setText("");
+                isCheck = false;
+                content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
                 checkBox.setChecked(false);
 
                 checkBox.setOnClickListener(new View.OnClickListener() {
@@ -701,14 +787,16 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     @Override
                     public void onClick(View view) {
                         error.setVisibility(View.GONE);
+                        final String path = Constant.DB_REFERENCE_FORUM_REPORT + "/" + forum.getFid() + "/"
+                                + Constant.DB_REFERENCE_FORUM_REPORTER + "/" + prefConfig.getMID();
                         if (isCheck) {
                             if (content.getText().toString().isEmpty())
                                 error.setVisibility(View.VISIBLE);
                             else {
-                                presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                                presenter.onSendReport(path, content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
                             }
                         } else if (isChecked(reportList)) {
-                            presenter.onSendReport(content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
+                            presenter.onSendReport(path, content.getText().toString(), reportList, forum.getFid(), prefConfig.getMID());
                         } else {
                             error.setVisibility(View.VISIBLE);
                         }
@@ -835,7 +923,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         imageGridAdapter = new ImageGridAdapter(mContext, forumImageList, this);
         setLayoutManager(recycler_main_forum, imageGridAdapter, STATE_GRID);
 
-        replyAdapter = new ReplyAdapter(replyList, merchantMap, forumImageReplyMap, mContext, this, this, this);
+        replyAdapter = new ReplyAdapter(replyList, merchantMap, forumImageReplyMap, mContext, this);
         setLayoutManager(recycler_reply, replyAdapter, STATE_LINEAR_VERTICAL);
 
         pickerAdapter = new ImagePickerAdapter(mContext, imageReply, this, "");

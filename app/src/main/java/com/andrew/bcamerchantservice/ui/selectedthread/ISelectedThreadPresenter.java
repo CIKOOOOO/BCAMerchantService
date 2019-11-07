@@ -29,7 +29,9 @@ public interface ISelectedThreadPresenter {
 
     void onLoadReportList();
 
-    void onSendReport(String content, List<Report> reportList, String FID, String MID);
+    void onSendReport(String path, String content, List<Report> reportList, String FID, String MID);
+
+    void onSendReplyReport();
 
     void getCategoryName(String FCID);
 }

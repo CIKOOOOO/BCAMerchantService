@@ -280,13 +280,11 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void onClick(int pos) {
-        if (thread_recycler_view.isEnabled()) {
-            final Forum forumThread = forumLists.get(pos);
-            final Merchant merchant = merchantMap.get(forumThread.getMid());
-            Map<String, Object> map = new HashMap<>();
-            map.put(forumThread.getFid() + "/view_count", forumThread.getView_count() + 1);
-            presenter.onUpdateViewCount(map, forumThread, merchant);
-        }
+        final Forum forumThread = forumLists.get(pos);
+        final Merchant merchant = merchantMap.get(forumThread.getMid());
+        Map<String, Object> map = new HashMap<>();
+        map.put(forumThread.getFid() + "/view_count", forumThread.getView_count() + 1);
+        presenter.onUpdateViewCount(map, forumThread, merchant);
     }
 
     @Override
@@ -357,6 +355,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         presenter.loadReportList();
 
         content.setEnabled(false);
+        content.setText("");
+        check = false;
+        content.setBackground(codeView.getContext().getDrawable(R.drawable.background_grey));
+        checkBox.setChecked(false);
 
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
