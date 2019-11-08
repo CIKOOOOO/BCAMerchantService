@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISelectedThreadView {
-    void onLoadReply(boolean isLike, Forum forum, List<Forum.ForumReply> forumReplies
+    void onLoadReply(Forum forum, List<Forum.ForumReply> forumReplies
             , Map<String, List<Forum.ForumImageReply>> map);
 
     void onFavorite(boolean isFavorite);

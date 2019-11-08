@@ -17,6 +17,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
+import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
@@ -119,6 +120,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof PreviewProquest) {
             onBackPressFragment = new PreviewProquest();
             onBackPressFragment.onBackPress(false, fragment.getContext());
+        } else if(fragment instanceof OtherProfile){
+            iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         }
     }
 

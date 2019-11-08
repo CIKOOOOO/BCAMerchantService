@@ -44,98 +44,102 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
 
     @Override
     public void onLoadReplyData(final DatabaseReference dbRef, final Forum forum, final String MID) {
-        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Forum.ForumReply> forums = new ArrayList<>();
-                List<Forum.ForumImage> images = new ArrayList<>();
-                Map<String, List<Forum.ForumImageReply>> map = new HashMap<>();
-                final Map<String, Merchant> merchantMap = new HashMap<>();
-                boolean isLike = false;
+        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Forum.ForumReply> forums = new ArrayList<>();
+                        List<Forum.ForumImage> images = new ArrayList<>();
+                        Map<String, List<Forum.ForumImageReply>> map = new HashMap<>();
+                        final Map<String, Merchant> merchantMap = new HashMap<>();
 
-                if (dataSnapshot.child("forum_like").getValue() != null)
-                    forum.setForum_like(Integer.parseInt(dataSnapshot.child("forum_like").getValue().toString()));
+                        if (dataSnapshot.child("forum_like").getValue() != null)
+                            forum.setForum_like(Integer.parseInt(dataSnapshot.child("forum_like").getValue().toString()));
 
-                for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).getChildren()) {
-                    /*
-                     * Untuk mendapatkan setiap reply dari forum yang diklik oleh user
-                     * */
-                    final Forum.ForumReply forumReply = snapshot.getValue(Forum.ForumReply.class);
+                        for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).getChildren()) {
+                            /*
+                             * Untuk mendapatkan setiap reply dari forum yang diklik oleh user
+                             * */
+                            final Forum.ForumReply forumReply = snapshot.getValue(Forum.ForumReply.class);
 
-                    forumReply.setLike(false);
+                            forumReply.setLike(false);
 
-                    for (DataSnapshot likeSnapshot : snapshot.child("forum_like_by").getChildren()) {
-                        if (likeSnapshot.getKey().equals(MID)) {
-                            forumReply.setLike(true);
-                            break;
-                        }
-                    }
-
-                    forums.add(forumReply);
-
-                    for (DataSnapshot ss : snapshot.getChildren()) {
-                        // Forum Image Reply
-                        List<Forum.ForumImageReply> list = new ArrayList<>();
-                        for (DataSnapshot snapImageReply : ss.getChildren()) {
-                            Forum.ForumImageReply forumImageReply = snapImageReply.getValue(Forum.ForumImageReply.class);
-                            if (forumImageReply.getImage_url() != null)
-                                list.add(forumImageReply);
-                        }
-                        if (list.size() > 0) {
-                            map.put(forumReply.getFrid(), list);
-                        }
-                    }
-
-                    dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + forumReply.getMid())
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot s) {
-                                    /*
-                                     * Untuk mendapatkan data merchant dari tree merchant_profile
-                                     * Menggunakan Map untuk tidak membuang-buang resource jika menggunakan array
-                                     * */
-                                    if (s.getValue(Merchant.class) == null || merchantMap.containsKey(forumReply.getMid())) {
-                                        return;
-                                    }
-                                    merchantMap.put(forumReply.getMid(), s.getValue(Merchant.class));
-                                    iSelectedThreadView.onUpdateMerchant(merchantMap);
+                            for (DataSnapshot likeSnapshot : snapshot.child("forum_like_by").getChildren()) {
+                                if (likeSnapshot.getKey().equals(MID)) {
+                                    forumReply.setLike(true);
+                                    break;
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            forums.add(forumReply);
 
+                            for (DataSnapshot ss : snapshot.getChildren()) {
+                                // Forum Image Reply
+                                List<Forum.ForumImageReply> list = new ArrayList<>();
+                                for (DataSnapshot snapImageReply : ss.getChildren()) {
+                                    Forum.ForumImageReply forumImageReply = snapImageReply.getValue(Forum.ForumImageReply.class);
+                                    if (forumImageReply.getImage_url() != null)
+                                        list.add(forumImageReply);
                                 }
-                            });
-                }
+                                if (list.size() > 0) {
+                                    map.put(forumReply.getFrid(), list);
+                                }
+                            }
 
-                for (DataSnapshot a : dataSnapshot.child("forum_like_by").getChildren()) {
-                    if (a.getKey().equals(MID)) {
-                        isLike = true;
-                        break;
+                            dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + forumReply.getMid())
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot s) {
+                                            /*
+                                             * Untuk mendapatkan data merchant dari tree merchant_profile
+                                             * Menggunakan Map untuk tidak membuang-buang resource jika menggunakan array
+                                             * */
+                                            if (s.getValue(Merchant.class) == null || merchantMap.containsKey(forumReply.getMid())) {
+                                                return;
+                                            }
+                                            merchantMap.put(forumReply.getMid(), s.getValue(Merchant.class));
+                                            iSelectedThreadView.onUpdateMerchant(merchantMap);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                        }
+
+                        boolean isLike = false;
+
+                        for (DataSnapshot a : dataSnapshot.child("forum_like_by").getChildren()) {
+                            if (a.getKey().equals(MID)) {
+                                isLike = true;
+                                break;
+                            }
+                        }
+
+                        forum.setLike(isLike);
+
+                        for (DataSnapshot s : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE).getChildren()) {
+                            /*
+                             * untuk mendapatkan image dari Thread Utamanya
+                             * */
+                            Forum.ForumImage forumImage = new Forum.ForumImage(s.child("fiid").getValue().toString()
+                                    , s.child("image_name").getValue().toString(), s.child("image_url").getValue().toString());
+                            images.add(forumImage);
+                        }
+
+                        if (images.size() > 0) {
+                            iSelectedThreadView.onLoadImageForum(images);
+                        }
+
+                        iSelectedThreadView.onLoadReply(forum, forums, map);
                     }
-                }
 
-                for (DataSnapshot s : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE).getChildren()) {
-                    /*
-                     * untuk mendapatkan image dari Thread Utamanya
-                     * */
-                    Forum.ForumImage forumImage = new Forum.ForumImage(s.child("fiid").getValue().toString()
-                            , s.child("image_name").getValue().toString(), s.child("image_url").getValue().toString());
-                    images.add(forumImage);
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                if (images.size() > 0) {
-                    iSelectedThreadView.onLoadImageForum(images);
-                }
-
-                iSelectedThreadView.onLoadReply(isLike, forum, forums, map);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                    }
+                });
     }
 
     @Override

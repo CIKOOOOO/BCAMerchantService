@@ -27,6 +27,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -128,7 +129,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private List<Report> reportList;
     private Map<String, Merchant> merchantMap;
 
-    private boolean isLike, isCheck, isReply, isFavorite, check;
+    private boolean isCheck, isReply, isFavorite, check;
 
     public SelectedThread() {
         // Required empty public constructor
@@ -157,7 +158,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         isReply = false;
         PAGE_NUMBER_STATE = 0;
         prefConfig = new PrefConfig(mContext);
-        isLike = false;
         check = false;
         dbRef = FirebaseDatabase.getInstance().getReference();
         presenter = new SelectedThreadPresenter(this);
@@ -302,13 +302,14 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     }
 
     @Override
-    public void onLoadReply(boolean isLike, Forum forum, List<Forum.ForumReply> forumReplies, Map<String, List<Forum.ForumImageReply>> map) {
+    public void onLoadReply(Forum forum, List<Forum.ForumReply> forumReplies, Map<String, List<Forum.ForumImageReply>> map) {
         this.forum = forum;
+
         amount_like.setText(forum.getForum_like() + "");
         replyList.clear();
         forumImageReplyMap.clear();
 
-        if (isLike) {
+        if (forum.isLike()) {
             img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile_press));
         } else {
             img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile));
@@ -348,12 +349,11 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         switch (view.getId()) {
             case R.id.img_smile_thread:
                 Map<String, Object> map = new HashMap<>();
-                if (!isLike) {
+                if (!forum.isLike()) {
                     img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile_press));
                     amount_like.setText(Integer.parseInt(amount_like.getText().toString()) + 1 + "");
-                    isLike = true;
+                    forum.setLike(false);
 
-                    map.put("like", true);
                     map.put("forum_like", forum.getForum_like() + 1);
 
                     Map<String, Object> maps = new HashMap<>();
@@ -365,8 +365,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 } else {
                     img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile));
                     amount_like.setText(Integer.parseInt(amount_like.getText().toString()) - 1 + "");
-                    isLike = false;
-                    map.put("like", false);
+                    forum.setLike(true);
+
                     map.put("forum_like", forum.getForum_like() - 1);
 
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_like_by/" + prefConfig.getMID();
