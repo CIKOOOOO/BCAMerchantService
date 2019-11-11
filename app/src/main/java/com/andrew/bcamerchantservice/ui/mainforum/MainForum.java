@@ -52,6 +52,7 @@ import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
+import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
@@ -307,18 +308,18 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void profileOnClick(int pos, Merchant merchant) {
-        OtherProfile otherProfile = new OtherProfile();
-        Bundle bundle = new Bundle();
         FragmentManager fragmentManager = getFragmentManager();
-
-        bundle.putParcelable(OtherProfile.GET_DATA_PROFILE, merchant);
-
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.main_frame, otherProfile);
-
-        otherProfile.setArguments(bundle);
+        Bundle bundle = new Bundle();
+        if (!merchant.getMid().equals(prefConfig.getMID())) {
+            OtherProfile otherProfile = new OtherProfile();
+            otherProfile.setArguments(bundle);
+            bundle.putParcelable(OtherProfile.GET_DATA_PROFILE, merchant);
+            fragmentTransaction.replace(R.id.main_frame, otherProfile);
+        } else {
+            fragmentTransaction.replace(R.id.main_frame, new Profile());
+        }
         fragmentTransaction.commit();
     }
 

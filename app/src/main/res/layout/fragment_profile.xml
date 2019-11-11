@@ -70,8 +70,7 @@
                         android:id="@+id/btn_change_home_profile"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="@drawable/ic_triangle_add" />
+                        android:layout_gravity="end"/>
                 </LinearLayout>
             </FrameLayout>
 

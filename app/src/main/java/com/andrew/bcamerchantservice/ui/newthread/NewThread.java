@@ -323,7 +323,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     @Override
     public void onThreadSuccessUpload(Forum forum) {
         frame_loading.setVisibility(View.GONE);
-        Toast.makeText(mContext, "Submit Sukses!", Toast.LENGTH_SHORT).show();
         SelectedThread selectedThread = new SelectedThread();
 
         AppCompatActivity activity = (AppCompatActivity) mContext;
@@ -340,6 +339,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 
         selectedThread.setArguments(bundle);
         fragmentTransaction.commit();
+        Toast.makeText(mContext, "Submit Sukses!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -599,10 +599,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     } else {
                         presenter.onSendNewThread(key, storageReference, forum, imageList, prefConfig);
                     }
-                } else if (THREAD_CONDITION.equals(EDIT_THREAD) || THREAD_CONDITION.equals(EDIT_THREAD_SELECTED)) {
-
-                } else
-
+                }
 
 //                FragmentManager fragmentManager = getFragmentManager();
 //                assert fragmentManager != null;

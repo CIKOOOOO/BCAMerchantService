@@ -41,11 +41,10 @@ public class Constant {
 
     public static final int MAX_ALPHA = 220;
 
-
     // START PROFILE FRAGMENT
 
     private static final int[] icon = {R.drawable.ic_group_people, R.drawable.ic_people_setting
-            , R.drawable.ic_store_add, R.drawable.ic_request, R.drawable.ic_forum, R.drawable.ic_card_giftcard
+            , R.drawable.ic_store_add, R.drawable.ic_request_black, R.drawable.ic_forum_black, R.drawable.ic_card_giftcard
             , R.drawable.ic_help_center, R.drawable.ic_phone, R.drawable.ic_logout};
 
     private static final String[] parent = {"Kelola Anggota", "Pengaturan Profile", "Tambah Cabang"
