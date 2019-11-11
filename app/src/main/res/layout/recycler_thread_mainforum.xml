@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="6dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/recycler_linear_main_forum"
@@ -141,6 +140,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
+                                android:text="0"
                                 android:textColor="@color/blackPalette" />
 
                             <ImageView
@@ -152,6 +152,7 @@
                             <TextView
                                 android:id="@+id/recycler_like_main_forum"
                                 android:layout_width="wrap_content"
+                                android:text="0"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:textColor="@color/blackPalette" />

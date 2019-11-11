@@ -43,11 +43,6 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
     private PrefConfig prefConfig;
     private Transformation transformation;
 
-    public void setForumMerchantMap(List<Forum> forumList, Map<String, Merchant> map) {
-        this.forumList = forumList;
-        this.map = map;
-    }
-
     public void setForumList(List<Forum> forumList) {
         this.forumList = forumList;
     }
@@ -60,8 +55,6 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
         void onClick(int pos);
 
         void onDelete(int pos, Forum forum);
-
-        void profileOnClick(int pos, Merchant merchant);
 
         void onHide(String FID);
 
@@ -138,16 +131,6 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
                 }
             });
 
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    int pos = viewHolder.getAdapterPosition();
-//                    onItemClick.onClick(position);
-//                    onItemClick.onClick(position, merchant);
-
-                }
-            });
-
             viewHolder.option_menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
@@ -210,7 +193,7 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
         ImageView rounded_thumbnail;
         RippleView rippleView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.recycler_title_other_profile);
             date = itemView.findViewById(R.id.recycler_date_other_profile);

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -25,8 +26,10 @@ import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.ui.newthread.ImagePickerAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
+import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -91,6 +94,7 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                  * Passing data category, thumbnail
                  * */
                 forum = bundle.getParcelable(GET_NEW_THREAD);
+
                 RoundedImageView roundedImageView = v.findViewById(R.id.image_profile_example_new_thread);
                 TextView text_merchant_name = v.findViewById(R.id.text_merchant_name);
                 TextView text_merchant_location = v.findViewById(R.id.text_merchant_location);
@@ -98,6 +102,14 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                 TextView text_time = v.findViewById(R.id.text_time_example_new_thread);
                 TextView text_content = v.findViewById(R.id.text_content_example_new_thread);
                 TextView text_category = v.findViewById(R.id.text_category_example_new_thread);
+
+                RoundedImageView image_profile_thread = v.findViewById(R.id.recycler_profile_main_forum);
+                TextView text_username_thread = v.findViewById(R.id.main_forum_thread_username);
+                TextView text_date_thread = v.findViewById(R.id.recycler_date_main_forum);
+                TextView text_time_thread = v.findViewById(R.id.recycler_time_main_forum);
+                TextView text_title_thread = v.findViewById(R.id.recycler_title_main_forum);
+                ImageView image_thumbnail_thread = v.findViewById(R.id.recycler_image_thumbnail_main_forum);
+                TextView text_content_thread = v.findViewById(R.id.recycler_content_main_forum);
 
                 Picasso.get()
                         .load(prefConfig.getProfilePicture())
@@ -110,8 +122,27 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                 text_title.setText(forum.getForum_title());
                 text_content.setText(forum.getForum_content());
 
+                Picasso.get()
+                        .load(prefConfig.getProfilePicture())
+                        .into(image_profile_thread);
+
+                text_username_thread.setText(prefConfig.getName());
+                text_date_thread.setText(Utils.getTime("dd MMM yyyy"));
+                text_time_thread.setText(Utils.getTime("HH:mm") + " WIB");
+                text_title_thread.setText(forum.getForum_title());
+                text_content_thread.setText(forum.getForum_content());
+
                 if (bundle.getParcelable(GET_BITMAP_THUMBNAIL) != null) {
                     thumbnail_bitmap = bundle.getParcelable(GET_BITMAP_THUMBNAIL);
+                    Glide.with(mContext)
+                            .load(thumbnail_bitmap)
+                            .centerCrop()
+                            .into(image_thumbnail_thread);
+                } else {
+                    Picasso.get()
+                            .load(Constant.SOLID_COLOR)
+                            .centerCrop()
+                            .into(image_thumbnail_thread);
                 }
 
                 if (bundle.getParcelable(GET_CATEGORY) != null) {

@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
-//        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
-//        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
+        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     @Override
@@ -103,11 +103,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof FavoriteFragment) {
             iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof Profile) {
-            if (Profile.showcase_condition) {
-                Profile.frame_add_showcase.setVisibility(View.GONE);
-                Profile.showcase_condition = false;
-            } else
-                finish();
+            finish();
 //                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof TabPromoRequest) {
             onBackPressFragment = new PromoRequest();
@@ -120,7 +116,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof PreviewProquest) {
             onBackPressFragment = new PreviewProquest();
             onBackPressFragment.onBackPress(false, fragment.getContext());
-        } else if(fragment instanceof OtherProfile){
+        } else if (fragment instanceof OtherProfile) {
             iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         }
     }

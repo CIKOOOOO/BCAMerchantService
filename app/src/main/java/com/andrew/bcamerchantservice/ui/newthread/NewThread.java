@@ -2,9 +2,7 @@ package com.andrew.bcamerchantservice.ui.newthread;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +39,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +60,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.tomergoldst.tooltips.ToolTip;
 import com.tomergoldst.tooltips.ToolTipsManager;
@@ -105,8 +102,8 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     private View v;
     private RecyclerView recyclerView, recycler_category;
     private EditText title, content;
+    private TextView text_delete_thumbnail;
     private ImagePickerAdapter imagePickerAdapter;
-    private AlertDialog codeAlert;
     private Context mContext;
     private Activity mActivity;
     private DatabaseReference dbRef;
@@ -179,6 +176,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         content = v.findViewById(R.id.edit_text_content_new_thread);
         frame_loading = v.findViewById(R.id.frame_loading_new_thread);
         image_thumbnail = v.findViewById(R.id.image_thumbnail_new_thread);
+        text_delete_thumbnail = v.findViewById(R.id.text_delete_thumbnail_new_thread);
 
         imageList = new ArrayList<>();
         forumImageList = new ArrayList<>();
@@ -193,6 +191,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         photo.setOnClickListener(this);
         camera_thumbnail.setOnClickListener(this);
         gallery_thumbnail.setOnClickListener(this);
+        text_delete_thumbnail.setOnClickListener(this);
         question_mark.setOnClickListener(this);
 //        it will appear when we know how to upload pdf file to firebase storage
 //        file.setOnClickListener(this);
@@ -278,46 +277,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         imagePickerAdapter = new ImagePickerAdapter(mContext, imageList, this, "");
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(imagePickerAdapter);
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setPreview() {
-        AlertDialog.Builder codeBuilder = new AlertDialog.Builder(mContext);
-        @SuppressLint("InflateParams") View codeView = getLayoutInflater().inflate(R.layout.custom_preview_thread, null);
-
-        TextView title = codeView.findViewById(R.id.title_custom_preview);
-        TextView content = codeView.findViewById(R.id.content_preview);
-        TextView time = codeView.findViewById(R.id.time_preview);
-        ScrollView scrollView = codeView.findViewById(R.id.sc_preview);
-        RoundedImageView imageView = codeView.findViewById(R.id.merchantPic_Preview);
-        TextView user = codeView.findViewById(R.id.merchantName);
-        TextView loc = codeView.findViewById(R.id.merchantLoc_Preview);
-        RecyclerView recyclerView_preview = codeView.findViewById(R.id.recycler_preview);
-        ImageButton imageButton = codeView.findViewById(R.id.close_preview_thread);
-        Button cancel = codeView.findViewById(R.id.btn_back_example_thread);
-        Button save = codeView.findViewById(R.id.btn_send_example_thread);
-
-        scrollView.smoothScrollTo(0, 0);
-
-        user.setText(prefConfig.getName());
-        loc.setText(prefConfig.getLocation());
-
-        Picasso.get().load(prefConfig.getProfilePicture()).into(imageView);
-
-        title.setText(this.title.getText().toString());
-        content.setText(this.content.getText().toString());
-        time.setText(Utils.getTime("EEEE, dd/MM/yyyy HH:mm") + " WIB");
-
-        ImagePickerAdapter imagePickerAdapter = new ImagePickerAdapter(mContext, imageList, this, ImagePickerAdapter.STATES_NO_BUTTON);
-        recyclerView_preview.setLayoutManager(new GridLayoutManager(mContext, 2));
-        recyclerView_preview.setAdapter(imagePickerAdapter);
-
-        imageButton.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        save.setOnClickListener(this);
-        codeBuilder.setView(codeView);
-        codeAlert = codeBuilder.create();
-        codeAlert.show();
     }
 
     @Override
@@ -559,7 +518,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                         || ActivityCompat.checkSelfPermission(mActivity,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                     requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}
-                            , REQUEST_CAMERA_THUMBNAIL);
+                            , Constant.PERMISSION_CAMERA_TAKER);
                 } else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, Constant.ACTIVITY_TAKE_IMAGE);
@@ -570,48 +529,12 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                         Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
                         || ActivityCompat.checkSelfPermission(mActivity,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constant.PERMISSION_CAMERA_TAKER);
+                    requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_THUMBNAIL);
                 } else {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_THUMBNAIL);
                 }
                 break;
-            case R.id.close_preview_thread:
-                codeAlert.dismiss();
-                break;
-            case R.id.btn_back_example_thread:
-                codeAlert.dismiss();
-                break;
-            case R.id.btn_send_example_thread:
-                codeAlert.dismiss();
-                frame_loading.setVisibility(View.VISIBLE);
-
-                if (THREAD_CONDITION.isEmpty()) {
-                    final String key = dbRef.push().getKey();
-
-                    Forum forum = new Forum(key, prefConfig.getMID(), content.getText().toString()
-                            , Utils.getTime("EEEE, dd/MM/yyyy HH:mm"), title.getText().toString()
-                            , forumCategory.getFcid(), "", 0, 1, false);
-
-                    if (imageList.size() == 0) {
-                        String path = Constant.DB_REFERENCE_FORUM + "/" + key;
-                        presenter.onSendNewThread(path, forum);
-                    } else {
-                        presenter.onSendNewThread(key, storageReference, forum, imageList, prefConfig);
-                    }
-                }
-
-//                FragmentManager fragmentManager = getFragmentManager();
-//                assert fragmentManager != null;
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                if (THREAD_CONDITION.isEmpty())
-//                    // direct it to specific thread
-//                    fragmentTransaction.replace(R.id.main_frame, new MainForum());
-//                else
-//                    onBackPress(false, mContext);
-//                fragmentTransaction.commit();
-                    break;
-
             case R.id.image_button_question_mark_new_thread:
                 if (!isTooltipAppear) {
                     isTooltipAppear = true;
@@ -621,6 +544,16 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     builder.setBackgroundColor(mContext.getResources().getColor(R.color.blue_palette));
                     builder.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/sniglet_reguler.ttf"));
                     toolTipsManager.show(builder.build());
+                }
+                break;
+            case R.id.text_delete_thumbnail_new_thread:
+                if (thumbnail_bitmap != null) {
+                    thumbnail_bitmap.recycle();
+                    thumbnail_bitmap = null;
+                    Picasso.get()
+                            .load(Constant.SOLID_COLOR)
+                            .memoryPolicy(MemoryPolicy.NO_STORE)
+                            .into(image_thumbnail);
                 }
                 break;
         }

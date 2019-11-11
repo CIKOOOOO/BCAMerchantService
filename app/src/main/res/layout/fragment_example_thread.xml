@@ -30,9 +30,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="6dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/blackPalette" />
+                android:background="@color/iron_palette" />
         </LinearLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -49,6 +49,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sniglet_reguler"
+                        android:text="Bagian Depan"
+                        android:textAlignment="center"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="25sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/blackPalette" />
+
+                    <include layout="@layout/recycler_thread_mainforum" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/sniglet_reguler"
+                        android:text="Bagian Isi"
+                        android:textAlignment="center"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="25sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/blackPalette" />
 
                     <TextView
                         android:id="@+id/text_category_example_new_thread"

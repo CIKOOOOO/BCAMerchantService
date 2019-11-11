@@ -111,11 +111,6 @@ public class ForumOtherProfile extends Fragment implements OtherProfileAdapter.o
     }
 
     @Override
-    public void profileOnClick(int pos, Merchant merchant) {
-
-    }
-
-    @Override
     public void onHide(String FID) {
         presenter.onHide(FID, prefConfig.getMID());
     }
