@@ -26,6 +26,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -229,6 +230,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         skip.setOnClickListener(this);
         skip.setOnTouchListener(onTouchListener);
         reverse.setOnTouchListener(onTouchListener);
+        frame_loading.setOnClickListener(this);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {

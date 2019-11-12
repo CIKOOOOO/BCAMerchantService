@@ -185,7 +185,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         setRecyclerView();
 
         presenter.onLoadCategory();
-        frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
 
         submit.setOnClickListener(this);
         photo.setOnClickListener(this);

@@ -25,6 +25,7 @@ public class Constant {
     public static final String DB_REFERENCE_TRANSACTION_REQUEST_PROMO = "transaction_request_promo";
     public static final String DB_REFERENCE_MERCHANT_PROFILE = "merchant_profile";
     public static final String DB_REFERENCE_MERCHANT_STORY = "merchant_story";
+    public static final String DB_REFERENCE_MERCHANT_CATALOG = "merchant_catalog";
     public static final String DB_REFERENCE_FORUM = "forum";
     public static final String DB_REFERENCE_FORUM_REPLY = "forum_reply";
     public static final String DB_REFERENCE_FORUM_IMAGE = "forum_image";

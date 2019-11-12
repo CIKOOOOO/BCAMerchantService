@@ -187,18 +187,18 @@
 
                     <TextView
                         android:id="@+id/text_delete_thumbnail_new_thread"
-                        android:text="Hapus"
-                        android:textSize="17sp"
-                        android:fontFamily="@font/sniglet_font"
-                        android:paddingTop="7dp"
-                        android:textColor="@color/blue_palette"
-                        android:paddingBottom="7dp"
-                        android:gravity="center"
-                        android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:background="@drawable/rectangle_rounded_down_stroke_blue" />
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/rectangle_rounded_down_stroke_blue"
+                        android:fontFamily="@font/sniglet_font"
+                        android:gravity="center"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:text="Hapus"
+                        android:textColor="@color/blue_palette"
+                        android:textSize="17sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -322,18 +322,7 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <FrameLayout
+    <include
         android:id="@+id/frame_loading_new_thread"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blackPalette"
-        android:visibility="gone">
-
-        <com.developers.coolprogressviews.CircleWithArcProgress
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:arcColor="@color/blue_palette"
-            app:circleColor="@color/royal_blue_palette"
-            app:radius1="30dp" />
-    </FrameLayout>
+        layout="@layout/custom_loading_black" />
 </android.support.design.widget.CoordinatorLayout>

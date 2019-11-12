@@ -66,8 +66,8 @@
 
                 <Button
                     android:id="@+id/btn_change_home_profile"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="end|bottom"
                     android:background="@drawable/btn_plus" />
             </FrameLayout>

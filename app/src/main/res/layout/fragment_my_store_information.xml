@@ -1,14 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.mystoreinformation.MyStoreInformation">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:columnCount="5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Pemilik"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text=":"
+                    android:textColor="@color/blackPalette" />
+
+                <EditText
+                    android:id="@+id/edit_text_owner_store_information"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:enabled="false"
+                    android:fontFamily="@font/sniglet_font"
+                    android:inputType="textPersonName|textNoSuggestions"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/image_button_owner_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/image_button_check_owner_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="2dp"
+                    android:background="@drawable/ic_check_blue"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="No. Telepon"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text=":"
+                    android:textColor="@color/blackPalette" />
+
+                <EditText
+                    android:id="@+id/edit_text_phone_number_store_information"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:fontFamily="@font/sniglet_font"
+                    android:inputType="phone"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/image_button_phone_number_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/image_button_check_phone_number_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_check_blue"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Email"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text=":"
+                    android:textColor="@color/blackPalette" />
+
+                <EditText
+                    android:id="@+id/edit_text_email_store_information"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:fontFamily="@font/sniglet_font"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/image_button_email_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/image_button_check_email_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_check_blue"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Alamat Toko"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text=":"
+                    android:textColor="@color/blackPalette" />
+
+                <EditText
+                    android:id="@+id/edit_text_address_store_information"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:fontFamily="@font/sniglet_font"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxLines="2"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/image_button_address_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/image_button_check_address_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_check_blue"
+                    android:visibility="gone" />
+            </GridLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Deskripsi Singkat"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/image_button_description_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:id="@+id/image_button_check_description_store_information"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_check_blue"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edit_text_description_store_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="5dp"
+                android:background="@null"
+                android:cursorVisible="false"
+                android:fontFamily="@font/sniglet_font"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:maxLines="4"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Katalog Toko"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_store_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_store_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@color/blue_palette"
+        android:src="@drawable/ic_add_white"
+        app:layout_behavior="android.support.design.widget.FloatingActionButton$Behavior" />
+</android.support.design.widget.CoordinatorLayout>

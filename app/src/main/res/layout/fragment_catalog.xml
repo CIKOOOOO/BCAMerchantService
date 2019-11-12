@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    tools:context=".ui.profile.mystoreinformation.catalog.CatalogFragment">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rl_dummy_00_catalog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_new_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/iron_palette" />
+
+                <ImageButton
+                    android:id="@+id/image_button_add_catalog"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/add_img_transparent" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_dummy_00_catalog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_dummy_00_catalog"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Nama"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edit_text_name_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/blackPalette"
+                    android:fontFamily="@font/sniglet_font"
+                    android:hint="contoh: Minyak Goreng 1L"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textColorHint="@color/iron_palette" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Harga"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp">
+
+                    <EditText
+                        android:id="@+id/edit_text_price_catalog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:backgroundTint="@color/blackPalette"
+                        android:fontFamily="@font/sniglet_font"
+                        android:hint="contoh: 50000"
+                        android:inputType="phone"
+                        android:paddingStart="40dp"
+                        android:paddingEnd="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textColorHint="@color/iron_palette" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="Rp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="17sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Deskripsi"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edit_text_description_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/blackPalette"
+                    android:fontFamily="@font/sniglet_font"
+                    android:hint="ceritakan deskripsi katalogmu disini..."
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxEms="160"
+                    android:maxLength="160"
+                    android:maxLines="4"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/blackPalette"
+                    android:textColorHint="@color/iron_palette" />
+
+                <TextView
+                    android:id="@+id/text_counter_catalog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginEnd="20dp"
+                    android:alpha="0.7"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="0/160"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_dummy_00_catalog"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_send_catalog"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_reply"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="@string/send"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white_color"
+                    android:textSize="17sp" />
+
+                <Button
+                    android:id="@+id/btn_cancel_catalog"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rectangle_rounded_stroke_blue"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue_palette"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/frame_loading_catalog"
+        layout="@layout/custom_loading_black" />
+</android.support.design.widget.CoordinatorLayout>

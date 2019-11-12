@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 public class Merchant implements Parcelable {
 
-    private String mid, merchant_name, merchant_location, merchant_profile_picture, merchant_email
-            , merchant_background_picture, merchant_position, merchant_phone_number, merchant_owner_name
-            , merchant_address;
+    private String mid, merchant_name, merchant_location, merchant_profile_picture, merchant_email, merchant_background_picture, merchant_position, merchant_phone_number, merchant_owner_name, merchant_address, merchant_description;
     private int merchant_coin, merchant_exp;
 
-    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture, String merchant_email, String merchant_background_picture, String merchant_position, String merchant_phone_number, String merchant_owner_name, String merchant_address, int merchant_coin, int merchant_exp) {
+    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture
+            , String merchant_email, String merchant_background_picture, String merchant_position
+            , String merchant_phone_number, String merchant_owner_name, String merchant_address
+            , String merchant_description, int merchant_coin, int merchant_exp) {
         this.mid = mid;
         this.merchant_name = merchant_name;
         this.merchant_location = merchant_location;
@@ -21,12 +22,14 @@ public class Merchant implements Parcelable {
         this.merchant_phone_number = merchant_phone_number;
         this.merchant_owner_name = merchant_owner_name;
         this.merchant_address = merchant_address;
+        this.merchant_description = merchant_description;
         this.merchant_coin = merchant_coin;
         this.merchant_exp = merchant_exp;
     }
 
     public Merchant() {
     }
+
 
     protected Merchant(Parcel in) {
         mid = in.readString();
@@ -39,6 +42,7 @@ public class Merchant implements Parcelable {
         merchant_phone_number = in.readString();
         merchant_owner_name = in.readString();
         merchant_address = in.readString();
+        merchant_description = in.readString();
         merchant_coin = in.readInt();
         merchant_exp = in.readInt();
     }
@@ -103,6 +107,10 @@ public class Merchant implements Parcelable {
         return merchant_address;
     }
 
+    public String getMerchant_description() {
+        return merchant_description;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -120,10 +128,10 @@ public class Merchant implements Parcelable {
         parcel.writeString(merchant_phone_number);
         parcel.writeString(merchant_owner_name);
         parcel.writeString(merchant_address);
+        parcel.writeString(merchant_description);
         parcel.writeInt(merchant_coin);
         parcel.writeInt(merchant_exp);
     }
-
 
     public static class MerchantStory {
         private String story_picture, sid, story_date, mid;
@@ -152,6 +160,42 @@ public class Merchant implements Parcelable {
 
         public String getMid() {
             return mid;
+        }
+    }
+
+    public static class MerchantCatalog {
+        private String cid, catalog_name, catalog_description, catalog_image;
+        private int catalog_price;
+
+        public MerchantCatalog(String cid, String catalog_name, String catalog_description, String catalog_image, int catalog_price) {
+            this.cid = cid;
+            this.catalog_name = catalog_name;
+            this.catalog_description = catalog_description;
+            this.catalog_image = catalog_image;
+            this.catalog_price = catalog_price;
+        }
+
+        public MerchantCatalog() {
+        }
+
+        public String getCid() {
+            return cid;
+        }
+
+        public String getCatalog_name() {
+            return catalog_name;
+        }
+
+        public String getCatalog_description() {
+            return catalog_description;
+        }
+
+        public String getCatalog_image() {
+            return catalog_image;
+        }
+
+        public int getCatalog_price() {
+            return catalog_price;
         }
     }
 }

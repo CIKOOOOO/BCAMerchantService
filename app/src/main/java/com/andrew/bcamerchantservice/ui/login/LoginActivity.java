@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +21,7 @@ import com.google.firebase.FirebaseApp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends BaseActivity implements ILoginView, View.OnClickListener, LoginAdapter.onClickItem {
+public class LoginActivity extends BaseActivity implements ILoginView, LoginAdapter.onClickItem {
 
     private ILoginPresenter iLoginPresenter;
 
@@ -39,7 +40,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         exit = false;
         iLoginPresenter = new LoginPresenter(this);
 
-        Button btn_login = findViewById(R.id.btn_login);
         RecyclerView recycler_merchant_list = findViewById(R.id.recycler_merchant_login);
 
         loginAdapter = new LoginAdapter(this, new ArrayList<Merchant>(), this);
@@ -47,7 +47,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         recycler_merchant_list.setLayoutManager(new LinearLayoutManager(this));
         recycler_merchant_list.setAdapter(loginAdapter);
 
-        btn_login.setOnClickListener(this);
         iLoginPresenter.onLoadData();
     }
 
@@ -66,15 +65,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     @Override
     public void onLoginFailed(String result) {
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_login:
-                iLoginPresenter.onLogin(((EditText) findViewById(R.id.edit_text_login_mid)).getText().toString());
-                break;
-        }
     }
 
     @Override

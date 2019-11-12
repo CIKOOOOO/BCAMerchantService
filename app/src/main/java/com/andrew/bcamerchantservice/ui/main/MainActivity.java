@@ -8,6 +8,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
+import com.andrew.bcamerchantservice.ui.profile.hiddenforum.HiddenForumFragment;
+import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.previewproquest.PreviewProquest;
@@ -118,6 +121,29 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             onBackPressFragment.onBackPress(false, fragment.getContext());
         } else if (fragment instanceof OtherProfile) {
             iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+        } else if (fragment instanceof HiddenForumFragment) {
+            Profile profile = new Profile();
+            Bundle bundle = new Bundle();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            bundle.putInt(Profile.GET_CURRENT_ITEM_VIEW_PAGER, 1);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, profile);
+
+            profile.setArguments(bundle);
+            fragmentTransaction.commit();
+        } else if (fragment instanceof CatalogFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, new Profile());
+
+            fragmentTransaction.commit();
         }
     }
 
@@ -145,6 +171,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        MainActivity.floatingActionButton.hide();
         switch (menuItem.getItemId()) {
             case R.id.profile:
                 break;

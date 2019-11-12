@@ -22,8 +22,8 @@
                 android:id="@+id/img_btn_back_selected_thread"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/ic_back" />
 
             <TextView
@@ -528,18 +528,7 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <FrameLayout
+    <include
         android:id="@+id/frame_loading_selected_thread"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blackPalette"
-        android:visibility="gone">
-
-        <com.developers.coolprogressviews.CircleWithArcProgress
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:arcColor="@color/blue_palette"
-            app:circleColor="@color/royal_blue_palette"
-            app:radius1="30dp" />
-    </FrameLayout>
+        layout="@layout/custom_loading_black" />
 </android.support.design.widget.CoordinatorLayout>
