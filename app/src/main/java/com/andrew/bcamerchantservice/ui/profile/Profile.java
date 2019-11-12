@@ -133,6 +133,7 @@ public class Profile extends Fragment implements
             viewPager.setCurrentItem(bundle.getInt(GET_CURRENT_ITEM_VIEW_PAGER, 0));
         }
 
+        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 
         Picasso.get()
                 .load(prefConfig.getProfilePicture())
