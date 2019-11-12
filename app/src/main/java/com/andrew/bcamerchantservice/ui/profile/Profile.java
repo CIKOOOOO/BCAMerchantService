@@ -65,6 +65,8 @@ import java.util.List;
  */
 public class Profile extends Fragment implements
         View.OnClickListener, IProfileView {
+    public static final String GET_CURRENT_ITEM_VIEW_PAGER = "get_current_item_view_pager";
+
     private static final String TAG = Profile.class.getSimpleName();
     private static final int PERMISSION_READ_PROFILE = 1001;
     private static final int PERMISSION_READ_SHOW_CASE = 1002;
@@ -125,6 +127,12 @@ public class Profile extends Fragment implements
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            viewPager.setCurrentItem(bundle.getInt(GET_CURRENT_ITEM_VIEW_PAGER, 0));
+        }
+
 
         Picasso.get()
                 .load(prefConfig.getProfilePicture())
