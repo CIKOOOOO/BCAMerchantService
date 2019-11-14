@@ -164,14 +164,15 @@ public class Merchant implements Parcelable {
     }
 
     public static class MerchantCatalog {
-        private String cid, catalog_name, catalog_description, catalog_image;
+        private String cid, catalog_name, catalog_description, catalog_image, catalog_date;
         private int catalog_price;
 
-        public MerchantCatalog(String cid, String catalog_name, String catalog_description, String catalog_image, int catalog_price) {
+        public MerchantCatalog(String cid, String catalog_name, String catalog_description, String catalog_image, String catalog_date, int catalog_price) {
             this.cid = cid;
             this.catalog_name = catalog_name;
             this.catalog_description = catalog_description;
             this.catalog_image = catalog_image;
+            this.catalog_date = catalog_date;
             this.catalog_price = catalog_price;
         }
 
@@ -196,6 +197,10 @@ public class Merchant implements Parcelable {
 
         public int getCatalog_price() {
             return catalog_price;
+        }
+
+        public String getCatalog_date() {
+            return catalog_date;
         }
     }
 }

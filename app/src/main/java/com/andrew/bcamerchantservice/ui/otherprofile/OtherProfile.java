@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.otherprofile;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,20 +14,24 @@ import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.otherprofile.baseinformation.InformationProfile;
 import com.andrew.bcamerchantservice.ui.otherprofile.forum.ForumOtherProfile;
+import com.andrew.bcamerchantservice.ui.profile.Profile;
+import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OtherProfile extends Fragment {
+public class OtherProfile extends Fragment implements MainActivity.onBackPressFragment, View.OnClickListener {
 
     public static final String GET_DATA_PROFILE = "get_data_profile";
 
-    private View v;
+    private static View view_description, v;
 
     public OtherProfile() {
         // Required empty public constructor
@@ -47,6 +52,8 @@ public class OtherProfile extends Fragment {
         TextView text_merchant = v.findViewById(R.id.text_name_other_profile);
         TabLayout tabLayout = v.findViewById(R.id.tab_other_profile);
         ViewPager viewPager = v.findViewById(R.id.view_pager_other_profile);
+
+        view_description = v.findViewById(R.id.custom_description_other_profile);
 
         InformationProfile informationProfile = new InformationProfile();
         ForumOtherProfile forumOtherProfile = new ForumOtherProfile();
@@ -83,5 +90,40 @@ public class OtherProfile extends Fragment {
                 tabLayout.setupWithViewPager(viewPager);
             }
         }
+
+        view_description.setOnClickListener(this);
+    }
+
+    public static void showDescriptionCatalog(Merchant.MerchantCatalog merchantCatalog) {
+        MainActivity.bottomNavigationView.setVisibility(View.GONE);
+        OtherProfile.view_description.setVisibility(View.VISIBLE);
+        TextView text_title, text_price, text_description;
+        ImageView image_catalog;
+
+        text_title = v.findViewById(R.id.text_title_catalog_custom);
+        text_price = v.findViewById(R.id.text_price_catalog_custom);
+        text_description = v.findViewById(R.id.text_description_catalog_custom);
+        image_catalog = v.findViewById(R.id.image_catalog_custom);
+
+        text_title.setText(merchantCatalog.getCatalog_name());
+        text_price.setText("Price: Rp " + Utils.priceFormat(merchantCatalog.getCatalog_price()));
+        text_description.setText(merchantCatalog.getCatalog_description());
+        Picasso.get()
+                .load(merchantCatalog.getCatalog_image())
+                .into(image_catalog);
+    }
+
+    @Override
+    public void onBackPress(boolean check, Context context) {
+        if (InformationProfile.isDescriptionClick) {
+            InformationProfile.isDescriptionClick = false;
+            view_description.setVisibility(View.GONE);
+            MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

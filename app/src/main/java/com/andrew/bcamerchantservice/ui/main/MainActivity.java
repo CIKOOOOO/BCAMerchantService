@@ -19,8 +19,10 @@ import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
+import com.andrew.bcamerchantservice.ui.otherprofile.baseinformation.InformationProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.profile.hiddenforum.HiddenForumFragment;
+import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
@@ -106,7 +108,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof FavoriteFragment) {
             iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof Profile) {
-            finish();
+            onBackPressFragment = new Profile();
+            if (MyStoreInformation.isDescriptionClick) {
+                onBackPressFragment.onBackPress(false, fragment.getContext());
+            } else
+                finish();
 //                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof TabPromoRequest) {
             onBackPressFragment = new PromoRequest();
@@ -120,7 +126,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             onBackPressFragment = new PreviewProquest();
             onBackPressFragment.onBackPress(false, fragment.getContext());
         } else if (fragment instanceof OtherProfile) {
-            iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+            onBackPressFragment = new OtherProfile();
+            if (InformationProfile.isDescriptionClick)
+                onBackPressFragment.onBackPress(false, fragment.getContext());
+            else
+                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof HiddenForumFragment) {
             Profile profile = new Profile();
             Bundle bundle = new Bundle();

@@ -60,7 +60,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
             Picasso.get()
                     .load(R.drawable.ic_globe)
                     .into(holder.imageView);
-            holder.text_name.setText("General");
+            holder.text_name.setText("All Category");
         } else {
             Forum.ForumCategory category = categoryList.get(position - 1);
             Picasso.get()

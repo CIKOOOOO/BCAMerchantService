@@ -51,6 +51,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -64,8 +65,10 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class Profile extends Fragment implements
-        View.OnClickListener, IProfileView {
+        View.OnClickListener, IProfileView, MainActivity.onBackPressFragment {
     public static final String GET_CURRENT_ITEM_VIEW_PAGER = "get_current_item_view_pager";
+
+    private static View view_description, v;
 
     private static final String TAG = Profile.class.getSimpleName();
     private static final int PERMISSION_READ_PROFILE = 1001;
@@ -73,7 +76,6 @@ public class Profile extends Fragment implements
     private static final int PROFILE_REQUEST_CODE = 1003;
     private static final int HOME_REQUEST_CODE = 1004;
 
-    private View v;
     private ImageView profilePic;
     private RoundedImageView homePic;
     private ScaleDrawable scaleDrawable;
@@ -117,6 +119,8 @@ public class Profile extends Fragment implements
 
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
 
+        view_description = v.findViewById(R.id.custom_description_catalog);
+
         profilePic = v.findViewById(R.id.image_profile_picture_profile);
         homePic = v.findViewById(R.id.image_background_profile);
         frame_loading = v.findViewById(R.id.frame_loading_profile);
@@ -147,8 +151,28 @@ public class Profile extends Fragment implements
 
         text_name.setText(prefConfig.getName());
 
+        view_description.setOnClickListener(this);
         profileAdd.setOnClickListener(this);
         homeAdd.setOnClickListener(this);
+    }
+
+    public static void showDescriptionCatalog(Merchant.MerchantCatalog merchantCatalog) {
+        MainActivity.bottomNavigationView.setVisibility(View.GONE);
+        Profile.view_description.setVisibility(View.VISIBLE);
+        TextView text_title, text_price, text_description;
+        ImageView image_catalog;
+
+        text_title = v.findViewById(R.id.text_title_catalog_custom);
+        text_price = v.findViewById(R.id.text_price_catalog_custom);
+        text_description = v.findViewById(R.id.text_description_catalog_custom);
+        image_catalog = v.findViewById(R.id.image_catalog_custom);
+
+        text_title.setText(merchantCatalog.getCatalog_name());
+        text_price.setText("Price: Rp " + Utils.priceFormat(merchantCatalog.getCatalog_price()));
+        text_description.setText(merchantCatalog.getCatalog_description());
+        Picasso.get()
+                .load(merchantCatalog.getCatalog_image())
+                .into(image_catalog);
     }
 
     @Override
@@ -283,5 +307,14 @@ public class Profile extends Fragment implements
 
         MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         frame_loading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPress(boolean check, Context context) {
+        if (MyStoreInformation.isDescriptionClick) {
+            MyStoreInformation.isDescriptionClick = false;
+            view_description.setVisibility(View.GONE);
+            MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 }

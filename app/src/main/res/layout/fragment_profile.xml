@@ -111,6 +111,11 @@
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <include
+        android:id="@+id/custom_description_catalog"
+        layout="@layout/custom_description_catalog"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/frame_loading_profile"
         android:layout_width="match_parent"

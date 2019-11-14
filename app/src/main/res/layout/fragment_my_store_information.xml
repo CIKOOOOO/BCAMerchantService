@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +18,6 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
@@ -105,6 +104,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:cursorVisible="false"
+                    android:enabled="false"
                     android:fontFamily="@font/sniglet_font"
                     android:inputType="phone"
                     android:maxLines="2"
@@ -162,6 +162,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:cursorVisible="false"
+                    android:enabled="false"
                     android:fontFamily="@font/sniglet_font"
                     android:inputType="textEmailAddress|textNoSuggestions"
                     android:maxLines="2"
@@ -219,6 +220,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:cursorVisible="false"
+                    android:enabled="false"
                     android:fontFamily="@font/sniglet_font"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:maxLines="2"
@@ -290,6 +292,7 @@
                 android:layout_marginEnd="5dp"
                 android:background="@null"
                 android:cursorVisible="false"
+                android:enabled="false"
                 android:fontFamily="@font/sniglet_font"
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:maxLines="4"
@@ -315,7 +318,8 @@
                 android:id="@+id/recycler_store_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:nestedScrollingEnabled="false" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -323,10 +327,11 @@
         android:id="@+id/fab_add_store_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="70dp"
         android:backgroundTint="@color/blue_palette"
         android:src="@drawable/ic_add_white"
         app:layout_behavior="android.support.design.widget.FloatingActionButton$Behavior" />
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

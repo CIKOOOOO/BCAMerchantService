@@ -4,28 +4,28 @@ package com.andrew.bcamerchantservice.ui.profile.mystoreinformation;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
+import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
-import com.andrew.bcamerchantservice.utils.FloatingActionButtonBehavior;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyStoreInformation extends Fragment implements View.OnClickListener, IMyStoreInformationView {
+public class MyStoreInformation extends Fragment implements View.OnClickListener
+        , IMyStoreInformationView, CatalogAdapter.onItemClick {
+
+    public static boolean isDescriptionClick;
 
     private View v;
     private EditText edit_text_owner, edit_text_phone_number, edit_text_email, edit_text_address, edit_text_description;
@@ -42,6 +45,7 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     private Context mContext;
     private Activity mActivity;
     private PrefConfig prefConfig;
+    private CatalogAdapter adapter;
 
     private IMyStoreInformationPresenter presenter;
 
@@ -66,13 +70,14 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     }
 
     private void initVar() {
+        isDescriptionClick = false;
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
         presenter = new MyStoreInformationPresenter(this);
 
         RecyclerView recycler_catalog = v.findViewById(R.id.recycler_store_information);
         FloatingActionButton fab = v.findViewById(R.id.fab_add_store_information);
-        CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+//        CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
 
         edit_text_owner = v.findViewById(R.id.edit_text_owner_store_information);
         edit_text_phone_number = v.findViewById(R.id.edit_text_phone_number_store_information);
@@ -92,10 +97,15 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         img_btn_address = v.findViewById(R.id.image_button_address_store_information);
         img_btn_description = v.findViewById(R.id.image_button_description_store_information);
 
-//        recycler_catalog.setLayoutManager(new StaggeredGridLayoutManager());
-        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
+        recycler_catalog.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        adapter = new CatalogAdapter(mContext, true, this);
+//        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
+
+        presenter.onLoadCatalog(prefConfig.getMID());
 
         fab.setOnClickListener(this);
+
+        recycler_catalog.setAdapter(adapter);
 
         edit_text_owner.setText(prefConfig.getOwnerName());
         edit_text_phone_number.setText(prefConfig.getPhoneNumber());
@@ -219,5 +229,28 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
                 prefConfig.insertPhoneNumber(value);
                 break;
         }
+    }
+
+    @Override
+    public void onLoadCatalog(List<Merchant.MerchantCatalog> catalogList) {
+        adapter.setCatalogList(catalogList);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessDeleteCatalog(int pos) {
+        adapter.setLastPosition(-1);
+        adapter.notifyItemChanged(pos);
+    }
+
+    @Override
+    public void onClick(Merchant.MerchantCatalog merchantCatalog) {
+        isDescriptionClick = true;
+        Profile.showDescriptionCatalog(merchantCatalog);
+    }
+
+    @Override
+    public void onDelete(Merchant.MerchantCatalog merchantCatalog, int pos) {
+        presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), pos);
     }
 }

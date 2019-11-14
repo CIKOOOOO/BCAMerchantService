@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/image_background_other_profile"
             app:tabSelectedTextColor="@color/blackPalette"
+            app:tabTextAppearance="@style/MyCustomTabTextAppearance"
             app:tabTextColor="@color/dark_grey_palette" />
 
         <android.support.v4.view.ViewPager
@@ -78,4 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tab_other_profile" />
     </RelativeLayout>
+
+    <include
+        android:id="@+id/custom_description_other_profile"
+        layout="@layout/custom_description_catalog"
+        android:visibility="gone" />
 </android.support.design.widget.CoordinatorLayout>

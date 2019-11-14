@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/rectangle_rounded_stroke_black">
+
+    <TextView
+        android:id="@+id/recycler_text_title_catalog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/sniglet_font"
+        android:textAlignment="center"
+        android:textColor="@color/blackPalette"
+        android:textSize="17sp" />
+
+    <ImageView
+        android:id="@+id/recycler_image_catalog"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_title_catalog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:adjustViewBounds="true"
+        android:maxHeight="160dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/recycler_text_description_catalog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_image_catalog"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/sniglet_font"
+        android:maxLines="3"
+        android:textAlignment="center"
+        android:textColor="@color/blackPalette" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_description_catalog"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/recycler_text_price_catalog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/rectangle_rounded_stroke_blue"
+            android:fontFamily="@font/sniglet_font"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/blackPalette" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/recycler_linear_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/recycler_button_cancel_catalog"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_rounded_top_blue_fill"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white_color"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/recycler_button_delete_catalog"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_rounded_down_stroke_blue"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_palette"
+            android:textSize="17sp" />
+    </LinearLayout>
+</RelativeLayout>

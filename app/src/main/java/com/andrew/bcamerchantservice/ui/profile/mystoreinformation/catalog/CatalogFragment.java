@@ -182,7 +182,7 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Constant.ACTIVITY_CHOOSE_IMAGE:
-                if (data.getData() == null)
+                if (data == null || data.getData() == null)
                     break;
 
                 Uri targetUri = data.getData();

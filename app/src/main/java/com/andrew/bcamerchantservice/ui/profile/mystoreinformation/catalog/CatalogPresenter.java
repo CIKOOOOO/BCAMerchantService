@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -51,7 +52,10 @@ public class CatalogPresenter implements ICatalogPresenter {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String URL = uri.toString();
-                                Merchant.MerchantCatalog merchantCatalog = new Merchant.MerchantCatalog(key, catalog_name, catalog_desc, URL, price);
+                                Merchant.MerchantCatalog merchantCatalog =
+                                        new Merchant.MerchantCatalog(key, catalog_name, catalog_desc
+                                                , URL, Utils.getTime("dd/MM/yyyy HH:mm"), price);
+
                                 dbRef.child(path + "/" + key)
                                         .setValue(merchantCatalog)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {

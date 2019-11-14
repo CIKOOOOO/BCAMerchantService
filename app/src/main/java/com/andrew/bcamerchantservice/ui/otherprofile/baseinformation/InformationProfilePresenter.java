@@ -1,11 +1,10 @@
-package com.andrew.bcamerchantservice.ui.profile.mystoreinformation;
+package com.andrew.bcamerchantservice.ui.otherprofile.baseinformation;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,27 +14,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyStoreInformationPresenter implements IMyStoreInformationPresenter {
-    private static final String TAG = MyStoreInformationPresenter.class.getSimpleName();
+public class InformationProfilePresenter implements IInformationProfilePresenter {
+    private static final String TAG = InformationProfilePresenter.class.getSimpleName();
+    private IInformationProfileView view;
     private DatabaseReference dbRef;
-    private IMyStoreInformationView view;
 
-    public MyStoreInformationPresenter(IMyStoreInformationView view) {
+    public InformationProfilePresenter(IInformationProfileView view) {
         this.view = view;
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
-    @Override
-    public void editProfile(String MID, final String key, final String value) {
-        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/" + key)
-                .setValue(value)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        view.onSuccessEditProfile(value, key);
-                    }
-                });
-    }
 
     @Override
     public void onLoadCatalog(String MID) {
@@ -48,7 +36,7 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
                             Log.e(TAG, "MID doesn't have any catalog");
                         else {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                catalogList.add(0, snapshot.getValue(Merchant.MerchantCatalog.class));
+                                catalogList.add(0,snapshot.getValue(Merchant.MerchantCatalog.class));
                             }
                         }
                         view.onLoadCatalog(catalogList);
@@ -57,18 +45,6 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-    }
-
-    @Override
-    public void onDeleteCatalog(String MID, String CID, final int pos) {
-        dbRef.child(Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID + "/" + CID)
-                .removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        view.onSuccessDeleteCatalog(pos);
                     }
                 });
     }

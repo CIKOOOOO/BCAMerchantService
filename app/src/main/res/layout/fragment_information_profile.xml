@@ -5,64 +5,99 @@
     android:layout_height="match_parent"
     tools:context=".ui.otherprofile.baseinformation.InformationProfile">
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:columnCount="2">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pemilik"
-            android:textColor="@color/blackPalette" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_owner_name_information_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/blackPalette" />
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:columnCount="2">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No Telepon"
-            android:textColor="@color/blackPalette" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Pemilik"
+                    android:textColor="@color/blackPalette" />
 
-        <TextView
-            android:id="@+id/text_phone_number_information_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/blackPalette" />
+                <TextView
+                    android:id="@+id/text_owner_name_information_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="@color/blackPalette" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="No Telepon"
+                    android:textColor="@color/blackPalette" />
 
-        <TextView
-            android:id="@+id/text_email_information_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/blackPalette" />
+                <TextView
+                    android:id="@+id/text_phone_number_information_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Alamat Toko"
-            android:textColor="@color/blackPalette" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Email"
+                    android:textColor="@color/blackPalette" />
 
-        <TextView
-            android:id="@+id/text_address_information_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/blackPalette" />
-    </GridLayout>
+                <TextView
+                    android:id="@+id/text_email_information_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Alamat Toko"
+                    android:textColor="@color/blackPalette" />
+
+                <TextView
+                    android:id="@+id/text_address_information_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
+            </GridLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Katalog Toko"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_information_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
