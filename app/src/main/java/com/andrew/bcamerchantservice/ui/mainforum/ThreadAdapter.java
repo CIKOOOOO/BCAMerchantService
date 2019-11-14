@@ -165,21 +165,17 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 }
             });
 
+            viewHolder.rippleView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return true;
+                }
+            });
+
             viewHolder.relative_profile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onItemClick.profileOnClick(position, merchant);
-                }
-            });
-
-
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    int pos = viewHolder.getAdapterPosition();
-//                    onItemClick.onClick(position);
-//                    onItemClick.onClick(position, merchant);
-
                 }
             });
 

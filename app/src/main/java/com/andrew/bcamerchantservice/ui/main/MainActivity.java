@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -57,6 +58,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         bottomNavigationView = findViewById(R.id.bottom_navigation_main);
         floatingActionButton = findViewById(R.id.fab_add_main);
 
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
+        CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
+
+//        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
+//        layoutParams.setBehavior(new BottomNavigationViewBehavior());
+
         iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -64,11 +71,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         bottomNavigationView.setVisibility(View.VISIBLE);
         floatingActionButton.show();
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
-        CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
-        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
-        layoutParams.setBehavior(new BottomNavigationViewBehavior());
     }
 
     @Override
@@ -159,12 +161,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @Override
     public void onUserInteraction() {
-        super.onUserInteraction();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frame);
         if (fragment instanceof MainForum && !MainForum.isStoryVisible && !MainForum.isCategoryBottomSheetVisible) {
             bottomNavigationView.setVisibility(View.VISIBLE);
+//            layoutParams.height = bot_nav_height;
             floatingActionButton.show();
         } else floatingActionButton.hide();
+        super.onUserInteraction();
     }
 
     @Override

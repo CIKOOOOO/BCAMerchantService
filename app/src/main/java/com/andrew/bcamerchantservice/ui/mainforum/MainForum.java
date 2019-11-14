@@ -215,7 +215,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
         setAdapter();
 
-        text_category.setText("Category: General");
+        text_category.setText("Category: All Category");
 
         presenter.loadForum(prefConfig.getMID(), "0");
         presenter.loadShowCase();
@@ -730,7 +730,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     public void onClickCategory(int pos) {
         String category;
         if (pos == 0) {
-            category = "General";
+            category = "All Category";
             presenter.loadForum(prefConfig.getMID(), "0");
         } else {
             category = categoryList.get(pos - 1).getCategory_name();

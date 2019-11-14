@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,6 +117,8 @@ public class Profile extends Fragment implements
         TextView text_name = v.findViewById(R.id.tv_merchant_name_profile);
         ViewPager viewPager = v.findViewById(R.id.view_pager_profile);
         TabLayout tabLayout = v.findViewById(R.id.tab_layout_profile);
+        FrameLayout frame_catalog = v.findViewById(R.id.frame_description_catalog);
+        LinearLayout linear_catalog = v.findViewById(R.id.linear_description_catalog);
 
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
 
@@ -152,6 +155,8 @@ public class Profile extends Fragment implements
         text_name.setText(prefConfig.getName());
 
         view_description.setOnClickListener(this);
+        frame_catalog.setOnClickListener(this);
+        linear_catalog.setOnClickListener(this);
         profileAdd.setOnClickListener(this);
         homeAdd.setOnClickListener(this);
     }
@@ -213,6 +218,10 @@ public class Profile extends Fragment implements
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, Constant.ACTIVITY_CHOOSE_IMAGE);
                 }
+                break;
+            case R.id.frame_description_catalog:
+                view_description.setVisibility(View.GONE);
+                MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
                 break;
         }
     }

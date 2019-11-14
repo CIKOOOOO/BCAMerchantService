@@ -4,12 +4,14 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/frame_description_catalog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.6"
         android:background="@color/blackPalette" />
 
     <LinearLayout
+        android:id="@+id/linear_description_catalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

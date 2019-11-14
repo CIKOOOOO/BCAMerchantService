@@ -120,7 +120,6 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.Holder> 
                 }
             });
         }
-
     }
 
     @Override

@@ -199,7 +199,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         img_favorite = v.findViewById(R.id.image_button_favorite_selected_thread);
 
         frameLayout.getBackground().setAlpha(Constant.MAX_ALPHA);
-        frame_loading.getBackground().setAlpha(Constant.MAX_ALPHA);
 
         threadList = new ArrayList<>();
         imageList = new ArrayList<>();

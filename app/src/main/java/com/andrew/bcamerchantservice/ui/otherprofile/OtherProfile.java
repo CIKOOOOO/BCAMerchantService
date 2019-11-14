@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
@@ -52,6 +54,8 @@ public class OtherProfile extends Fragment implements MainActivity.onBackPressFr
         TextView text_merchant = v.findViewById(R.id.text_name_other_profile);
         TabLayout tabLayout = v.findViewById(R.id.tab_other_profile);
         ViewPager viewPager = v.findViewById(R.id.view_pager_other_profile);
+        FrameLayout frame_catalog = v.findViewById(R.id.frame_description_catalog);
+        LinearLayout linear_catalog = v.findViewById(R.id.linear_description_catalog);
 
         view_description = v.findViewById(R.id.custom_description_other_profile);
 
@@ -91,6 +95,8 @@ public class OtherProfile extends Fragment implements MainActivity.onBackPressFr
             }
         }
 
+        frame_catalog.setOnClickListener(this);
+        linear_catalog.setOnClickListener(this);
         view_description.setOnClickListener(this);
     }
 
@@ -124,6 +130,9 @@ public class OtherProfile extends Fragment implements MainActivity.onBackPressFr
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId() == R.id.frame_description_catalog) {
+            view_description.setVisibility(View.GONE);
+            MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        }
     }
 }
