@@ -1,12 +1,16 @@
 package com.andrew.bcamerchantservice.ui.mainforum;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Forum;
+import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
+import com.andrew.bcamerchantservice.ui.newthread.ImagePickerAdapter;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -193,7 +199,6 @@ public class ForumPresenter implements IForumPresenter {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Report> reportList = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Log.e("asd", snapshot.getValue().toString());
                             reportList.add(snapshot.getValue(Report.class));
                         }
                         iForumView.onSuccessLoadReport(reportList);

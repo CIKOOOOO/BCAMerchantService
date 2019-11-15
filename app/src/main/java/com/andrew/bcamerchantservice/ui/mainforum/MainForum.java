@@ -11,9 +11,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -26,7 +28,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -45,12 +46,14 @@ import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
+import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
+import com.andrew.bcamerchantservice.ui.newthread.ImagePickerAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
@@ -62,6 +65,7 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -404,6 +408,23 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         });
 
         dialog_report.show();
+    }
+
+    @Override
+    public void onEditThread(Forum forum) {
+        NewThread newThread = new NewThread();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(NewThread.EDIT_THREAD, forum);
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, newThread);
+
+        newThread.setArguments(bundle);
+        fragmentTransaction.commit();
     }
 
     @Override

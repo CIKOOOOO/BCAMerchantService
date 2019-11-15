@@ -20,6 +20,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.mainforum.ThreadAdapter;
+import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.profile.hiddenforum.HiddenForumFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
@@ -151,6 +152,23 @@ public class MyForumFragment extends Fragment implements IMyForumView, ThreadAda
     @Override
     public void onShowReport(Merchant merchant, Forum forum) {
 
+    }
+
+    @Override
+    public void onEditThread(Forum forum) {
+        NewThread newThread = new NewThread();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(NewThread.EDIT_THREAD, forum);
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, newThread);
+
+        newThread.setArguments(bundle);
+        fragmentTransaction.commit();
     }
 
     @Override

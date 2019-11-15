@@ -82,6 +82,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         void onHide(String FID);
 
         void onShowReport(Merchant merchant, Forum forum);
+
+        void onEditThread(Forum forum);
     }
 
     private onItemClick onItemClick;
@@ -158,9 +160,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             viewHolder.like.setText(String.valueOf(forumThread.getForum_like()));
             viewHolder.content.setText(forumThread.getForum_content());
 
-            viewHolder.rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+            viewHolder.rippleView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onComplete(RippleView rippleView) {
+                public void onClick(View view) {
                     onItemClick.onClick(position);
                 }
             });
@@ -194,24 +196,10 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             switch (menuItem.getItemId()) {
                                 case R.id.menu_delete:
-                                    onItemClick.onDelete(position, forumList.get(position));
+                                    onItemClick.onDelete(position, forumThread);
                                     break;
                                 case R.id.menu_edit:
-                                    NewThread newThread = new NewThread();
-
-                                    AppCompatActivity activity = (AppCompatActivity) context;
-
-                                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                                    Bundle bundle = new Bundle();
-                                    bundle.putParcelable(NewThread.EDIT_THREAD, forumList.get(position));
-
-                                    fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                                    fragmentTransaction.replace(R.id.main_frame, newThread);
-
-                                    newThread.setArguments(bundle);
-                                    fragmentTransaction.commit();
+                                    onItemClick.onEditThread(forumThread);
                                     break;
                                 case R.id.menu_report:
                                     onItemClick.onShowReport(merchant, forumThread);

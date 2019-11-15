@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,7 +86,6 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
     public static final String EDIT_THREAD_REPLY = "EDIT_THREAD_REPLY";
     public static final String EDIT_THREAD_REPLY_BACK = "EDIT_THREAD_REPLY_BACK";
     public static final String EDIT_THREAD_MERCHANT = "EDIT_THREAD_MERCHANT";
-    public static final String EDIT_THREAD_REPLY_BACK_LIST = "EDIT_THREAD_REPLY_BACK_LIST";
 
     private static final String TAG = NewThread.class.getSimpleName();
     private static final int CAMERA_THUMBNAIL = 191, GALLERY_THUMBNAIL = 192;
@@ -207,7 +207,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 } else if (bundle.getParcelable(EDIT_THREAD_SELECTED) != null) {
                     THREAD_CONDITION = EDIT_THREAD_SELECTED;
                 }
-                frame_loading.setVisibility(View.VISIBLE);
+//                frame_loading.setVisibility(View.VISIBLE);
                 forum = bundle.getParcelable(THREAD_CONDITION);
                 if (forum != null) {
                     title.setText(forum.getForum_title());
@@ -226,6 +226,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE;
                     presenter.onLoadImage(path);
                 }
+
                 tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
             } else if (bundle.getParcelable(EDIT_THREAD_REPLY) != null) {
                 THREAD_CONDITION = EDIT_THREAD_REPLY;

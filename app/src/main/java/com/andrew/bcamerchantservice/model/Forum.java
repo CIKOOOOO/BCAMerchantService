@@ -121,7 +121,7 @@ public class Forum implements Parcelable {
         parcel.writeByte((byte) (isLike ? 1 : 0));
     }
 
-    public static class ForumImage {
+    public static class ForumImage implements Parcelable {
         private String fiid, image_name, image_url;
 
         public ForumImage(String fiid, String image_name, String image_url) {
@@ -133,6 +133,24 @@ public class Forum implements Parcelable {
         public ForumImage() {
         }
 
+        protected ForumImage(Parcel in) {
+            fiid = in.readString();
+            image_name = in.readString();
+            image_url = in.readString();
+        }
+
+        public static final Creator<ForumImage> CREATOR = new Creator<ForumImage>() {
+            @Override
+            public ForumImage createFromParcel(Parcel in) {
+                return new ForumImage(in);
+            }
+
+            @Override
+            public ForumImage[] newArray(int size) {
+                return new ForumImage[size];
+            }
+        };
+
         public String getFiid() {
             return fiid;
         }
@@ -143,6 +161,18 @@ public class Forum implements Parcelable {
 
         public String getImage_url() {
             return image_url;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(fiid);
+            parcel.writeString(image_name);
+            parcel.writeString(image_url);
         }
     }
 
