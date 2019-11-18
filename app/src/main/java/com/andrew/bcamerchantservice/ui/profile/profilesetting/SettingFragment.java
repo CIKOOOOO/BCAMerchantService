@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.ProfileModel;
+import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
-import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.profile.ProfileAdapter;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -79,14 +79,14 @@ public class SettingFragment extends Fragment implements ProfileAdapter.onClick 
     @Override
     public void onSettingClick(int pos) {
         switch (pos) {
+            case 0:
+                changeFragment(new LoyaltyFragment());
+                break;
             case 3:
                 changeFragment(new TabPromoRequest());
                 break;
             case 4:
                 changeFragment(new MainForum());
-                break;
-            case 5:
-//                changeFragment(new Loyalty());
                 break;
             case 8:
                 // Untuk kembali ke halaman login MID

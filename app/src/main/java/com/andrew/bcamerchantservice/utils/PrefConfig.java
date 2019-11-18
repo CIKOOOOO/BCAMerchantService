@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 
 
@@ -19,7 +20,7 @@ public class PrefConfig {
     public void insertMerchantData(Merchant merchant) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(context.getString(R.string.pref_mid), merchant.getMid());
-        editor.putInt(context.getString(R.string.pref_coin), merchant.getMerchant_coin());
+        editor.putInt(context.getString(R.string.pref_point), merchant.getMerchant_point());
         editor.putInt(context.getString(R.string.pref_exp), merchant.getMerchant_exp());
         editor.putString(context.getString(R.string.pref_name), merchant.getMerchant_name());
         editor.putString(context.getString(R.string.pref_location), merchant.getMerchant_location());
@@ -31,6 +32,7 @@ public class PrefConfig {
         editor.putString(context.getString(R.string.pref_address), merchant.getMerchant_address());
         editor.putString(context.getString(R.string.pref_description), merchant.getMerchant_description());
         editor.putString(context.getString(R.string.pref_owner), merchant.getMerchant_owner_name());
+        editor.putString(context.getString(R.string.pref_loyalty_id), merchant.getMerchant_loyalty_rank_id());
         editor.apply();
     }
 
@@ -88,6 +90,10 @@ public class PrefConfig {
         editor.apply();
     }
 
+    public String getLoyaltyId() {
+        return sharedPreferences.getString(context.getString(R.string.pref_loyalty_id), "-1");
+    }
+
     public int getExp() {
         return sharedPreferences.getInt(context.getString(R.string.pref_exp), 0);
     }
@@ -104,12 +110,12 @@ public class PrefConfig {
         return sharedPreferences.getString(context.getString(R.string.pref_background_picture), "");
     }
 
-    public int getCoin() {
-        return sharedPreferences.getInt(context.getString(R.string.pref_coin), 0);
+    public int getPoint() {
+        return sharedPreferences.getInt(context.getString(R.string.pref_point), 0);
     }
 
     public int getPrefID() {
-        return sharedPreferences.getInt(context.getString(R.string.pref_coin), 0);
+        return sharedPreferences.getInt(context.getString(R.string.pref_point), 0);
     }
 
     public String getPosition() {
@@ -147,7 +153,7 @@ public class PrefConfig {
     public Merchant getMerchantData() {
         return new Merchant(getMID(), getName(), getLocation(), getProfilePicture(), getEmail()
                 , getBackgroundPicture(), getPosition(), getPhoneNumber(), getOwnerName()
-                , getStoreAddress(), getDescription(), getCoin(), getExp());
+                , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp());
     }
 }
 

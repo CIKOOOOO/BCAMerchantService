@@ -5,13 +5,10 @@ import android.os.Parcelable;
 
 public class Merchant implements Parcelable {
 
-    private String mid, merchant_name, merchant_location, merchant_profile_picture, merchant_email, merchant_background_picture, merchant_position, merchant_phone_number, merchant_owner_name, merchant_address, merchant_description;
-    private int merchant_coin, merchant_exp;
+    private String mid, merchant_name, merchant_location, merchant_profile_picture, merchant_email, merchant_background_picture, merchant_position, merchant_phone_number, merchant_owner_name, merchant_address, merchant_description, merchant_loyalty_rank_id;
+    private int merchant_point, merchant_exp;
 
-    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture
-            , String merchant_email, String merchant_background_picture, String merchant_position
-            , String merchant_phone_number, String merchant_owner_name, String merchant_address
-            , String merchant_description, int merchant_coin, int merchant_exp) {
+    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture, String merchant_email, String merchant_background_picture, String merchant_position, String merchant_phone_number, String merchant_owner_name, String merchant_address, String merchant_description, String merchant_loyalty_rank_id, int merchant_point, int merchant_exp) {
         this.mid = mid;
         this.merchant_name = merchant_name;
         this.merchant_location = merchant_location;
@@ -23,7 +20,8 @@ public class Merchant implements Parcelable {
         this.merchant_owner_name = merchant_owner_name;
         this.merchant_address = merchant_address;
         this.merchant_description = merchant_description;
-        this.merchant_coin = merchant_coin;
+        this.merchant_loyalty_rank_id = merchant_loyalty_rank_id;
+        this.merchant_point = merchant_point;
         this.merchant_exp = merchant_exp;
     }
 
@@ -43,7 +41,8 @@ public class Merchant implements Parcelable {
         merchant_owner_name = in.readString();
         merchant_address = in.readString();
         merchant_description = in.readString();
-        merchant_coin = in.readInt();
+        merchant_loyalty_rank_id = in.readString();
+        merchant_point = in.readInt();
         merchant_exp = in.readInt();
     }
 
@@ -87,8 +86,8 @@ public class Merchant implements Parcelable {
         return merchant_position;
     }
 
-    public int getMerchant_coin() {
-        return merchant_coin;
+    public int getMerchant_point() {
+        return merchant_point;
     }
 
     public int getMerchant_exp() {
@@ -111,6 +110,10 @@ public class Merchant implements Parcelable {
         return merchant_description;
     }
 
+    public String getMerchant_loyalty_rank_id() {
+        return merchant_loyalty_rank_id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,9 +132,11 @@ public class Merchant implements Parcelable {
         parcel.writeString(merchant_owner_name);
         parcel.writeString(merchant_address);
         parcel.writeString(merchant_description);
-        parcel.writeInt(merchant_coin);
+        parcel.writeString(merchant_loyalty_rank_id);
+        parcel.writeInt(merchant_point);
         parcel.writeInt(merchant_exp);
     }
+
 
     public static class MerchantStory {
         private String story_picture, sid, story_date, mid;

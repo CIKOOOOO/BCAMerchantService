@@ -1,11 +1,7 @@
 package com.andrew.bcamerchantservice.utils;
 
-import android.content.Context;
-import android.graphics.BitmapFactory;
-
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.ProfileModel;
-import com.andrew.bcamerchantservice.model.Report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,22 +34,24 @@ public class Constant {
     public static final String DB_REFERENCE_FORUM_REPORT_REPLY = "forum_report_reply";
     public static final String DB_REFERENCE_FORUM_REPORTER = "forum_reporter";
     public static final String DB_REFERENCE_FORUM_REPORT_LIST = "forum_report_list";
+    public static final String DB_REFERENCE_LOYALTY = "loyalty";
+    public static final String DB_REFERENCE_LOYALTY_TYPE = "loyalty_rank_type";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
 
     public static final int MAX_ALPHA = 220;
 
     // START PROFILE FRAGMENT
 
-    private static final int[] icon = {R.drawable.ic_group_people, R.drawable.ic_people_setting
-            , R.drawable.ic_store_add, R.drawable.ic_request_black, R.drawable.ic_forum_black, R.drawable.ic_card_giftcard
-            , R.drawable.ic_help_center, R.drawable.ic_phone, R.drawable.ic_logout};
+    private static final int[] icon = {R.drawable.ic_card_giftcard, R.drawable.ic_group_people
+            , R.drawable.ic_people_setting, R.drawable.ic_store_add, R.drawable.ic_request_black
+            , R.drawable.ic_forum_black, R.drawable.ic_help_center, R.drawable.ic_phone, R.drawable.ic_logout};
 
-    private static final String[] parent = {"Kelola Anggota", "Pengaturan Profile", "Tambah Cabang"
-            , "Ajukan Promo", "Merchant Forum", "Merchant Loyalti", "Pusat Bantuan", "Tentang Aplikasi", "Keluar"};
+    private static final String[] parent = {"Merchant Loyalti", "Kelola Anggota", "Pengaturan Profile", "Tambah Cabang"
+            , "Ajukan Promo", "Merchant Forum", "Pusat Bantuan", "Tentang Aplikasi", "Keluar"};
 
-    private static final String[] child = {"Lihat & atur anggota Anda", "Lihat & atur email dan password Anda"
+    private static final String[] child = {"Lihat loyalti Anda", "Lihat & atur anggota Anda", "Lihat & atur email dan password Anda"
             , "Ajukan penambahan cabang yang belum", "Ajukan promosi kerja sama Anda", "Diskusi dengan sesama merchant"
-            , "Lihat loyalti Anda", "Lihat solusi terbaik dan hubungi Kami", "Pastikan Anda menggunakan versi terbaru"
+            , "Lihat solusi terbaik dan hubungi Kami", "Pastikan Anda menggunakan versi terbaru"
             , "Keluar akun"};
 
     //END PROFILE FRAGMENT
