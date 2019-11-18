@@ -34,4 +34,25 @@ public class Loyalty {
     public int getLoyalty_exp() {
         return loyalty_exp;
     }
+
+    public static class Mission{
+        private String mission_id;
+        private long mission_minimum_transaction;
+        private int mission_prize;
+
+        public Mission() {
+        }
+
+        public String getMission_id() {
+            return mission_id;
+        }
+
+        public long getMission_minimum_transaction() {
+            return mission_minimum_transaction;
+        }
+
+        public int getMission_prize() {
+            return mission_prize;
+        }
+    }
 }

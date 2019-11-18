@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/rectangle_rounded_stroke_blue">
+
+    <LinearLayout
+        android:id="@+id/recycler_ll_dummy_00_loyalty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Reach total"
+            android:textColor="@color/silver_palette" />
+
+        <TextView
+            android:id="@+id/recycler_min_transaction_loyalty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Rp 300.000.000,-"
+            android:textColor="@color/blackPalette" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/recycler_text_time_limit_loyalty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_ll_dummy_00_loyalty"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/sniglet_font"
+        android:text="transaction by 1 December 2019 to get"
+        android:textColor="@color/silver_palette" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_time_limit_loyalty"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_coin_bca" />
+
+        <TextView
+            android:id="@+id/recycler_point_loyalty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/sniglet_font"
+            android:text="1500 Points"
+            android:textColor="@color/blackPalette" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/recycler_status_mission_loyalty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_time_limit_loyalty"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rectangle_rounded_stroke_blue"
+        android:fontFamily="@font/sniglet_font"
+        android:paddingStart="20dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="3dp"
+        android:text="Collect" />
+
+</RelativeLayout>

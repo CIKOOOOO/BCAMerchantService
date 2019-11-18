@@ -13,4 +13,6 @@ public interface ILoyaltyPresenter {
     int totalExpLoyalty(List<Loyalty> loyaltyList, Loyalty loyalty);
 
     void loadMerchantLoyaltyListener(String MID);
+
+    void loadMission();
 }

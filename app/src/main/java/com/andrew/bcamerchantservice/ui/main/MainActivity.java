@@ -1,21 +1,19 @@
 package com.andrew.bcamerchantservice.ui.main;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
@@ -30,8 +28,6 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.previewproquest.PreviewProquest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequest;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
-import com.andrew.bcamerchantservice.utils.BottomNavigationViewBehavior;
-import com.andrew.bcamerchantservice.utils.FloatingActionButtonBehavior;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
         , IMainView, View.OnClickListener {
@@ -155,6 +151,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             fragmentTransaction.replace(R.id.main_frame, new Profile());
 
+            fragmentTransaction.commit();
+        } else if (fragment instanceof LoyaltyFragment) {
+            Profile profile = new Profile();
+            Bundle bundle = new Bundle();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            bundle.putInt(Profile.GET_CURRENT_ITEM_VIEW_PAGER, 2);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, profile);
+
+            profile.setArguments(bundle);
             fragmentTransaction.commit();
         }
     }

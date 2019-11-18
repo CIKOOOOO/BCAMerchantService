@@ -96,4 +96,25 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
                     }
                 });
     }
+
+    @Override
+    public void loadMission() {
+        dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_MISSION)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Loyalty.Mission> missionList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            missionList.add(snapshot.getValue(Loyalty.Mission.class));
+                        }
+                        view.onLoadMission(missionList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+    }
 }

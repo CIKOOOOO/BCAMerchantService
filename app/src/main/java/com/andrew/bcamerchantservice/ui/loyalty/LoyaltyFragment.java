@@ -1,26 +1,29 @@
 package com.andrew.bcamerchantservice.ui.loyalty;
 
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +37,19 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
     private View v;
     private Context mContext;
     private PrefConfig prefConfig;
-    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result;
+    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result, text_benefit_type;
     private LoyaltyAdapter loyaltyAdapter;
+    private RoundCornerProgressBar progress_bar;
+    private Loyalty loyalty;
+    private ImageView image_check;
+    private RelativeLayout rl_wrap_progress_bar;
+    private LoyaltyBenefitAdapter loyaltyBenefitAdapter;
+    private MissionAdapter missionAdapter;
 
     private ILoyaltyPresenter presenter;
 
     private List<Loyalty> loyaltyList;
+    private List<Loyalty.Mission> missionList;
 
     public LoyaltyFragment() {
         // Required empty public constructor
@@ -61,6 +71,8 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         presenter = new LoyaltyPresenter(this);
 
         RecyclerView recycler_loyalty = v.findViewById(R.id.recycler_merchant_rank_loyalty);
+        RecyclerView recycler_benefit_loyalty = v.findViewById(R.id.recycler_benefit_loyalty);
+        RecyclerView recycler_mission_loyalty = v.findViewById(R.id.recycler_mission_loyalty);
         ImageButton img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
         TextView text_title = v.findViewById(R.id.text_title_toolbar_back);
 
@@ -68,12 +80,26 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         text_expired_point = v.findViewById(R.id.text_expire_point_loyalty);
         text_rank_name = v.findViewById(R.id.text_rank_loyalty);
         text_rank_type_result = v.findViewById(R.id.text_rank_type_loyalty);
+        progress_bar = v.findViewById(R.id.progress_loyalty);
+        image_check = v.findViewById(R.id.image_check_loyalty);
+        rl_wrap_progress_bar = v.findViewById(R.id.rl_dummy_00_loyalty);
+        text_benefit_type = v.findViewById(R.id.text_rank_benefit_loyalty);
 
         loyaltyList = new ArrayList<>();
+        missionList = new ArrayList<>();
 
         loyaltyAdapter = new LoyaltyAdapter(mContext, loyaltyList, prefConfig.getLoyaltyId(), this);
+        loyaltyBenefitAdapter = new LoyaltyBenefitAdapter(mContext);
+        missionAdapter = new MissionAdapter(mContext, missionList);
+
+        progress_bar.setMax(100);
+        image_check.setVisibility(View.VISIBLE);
+        rl_wrap_progress_bar.setVisibility(View.GONE);
 
         text_title.setText("Membership Info");
+
+        recycler_benefit_loyalty.setLayoutManager(new LinearLayoutManager(mContext));
+        recycler_mission_loyalty.setLayoutManager(new LinearLayoutManager(mContext));
 
         recycler_loyalty.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false) {
             @Override
@@ -82,17 +108,14 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
             }
         });
 
-//        SnappingRecyclerView snappingRecyclerView = new SnappingRecyclerView(mContext);
-//        snappingRecyclerView.
-//        snapHelper.attachToRecyclerView(recycler_loyalty);
-
-//        GravitySnapHelper snapHelper = new GravitySnapHelper(Gravity.START);
-//        snapHelper.attachToRecyclerView(recycler_loyalty);
         recycler_loyalty.setAdapter(loyaltyAdapter);
+        recycler_benefit_loyalty.setAdapter(loyaltyBenefitAdapter);
+        recycler_mission_loyalty.setAdapter(missionAdapter);
 
         presenter.loadMerchantLoyaltyListener(prefConfig.getMID());
         presenter.loadLoyaltyType();
         presenter.loadLoyalty(prefConfig.getLoyaltyId());
+        presenter.loadMission();
 
         img_btn_back.setOnClickListener(this);
     }
@@ -106,11 +129,19 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
     @Override
     public void loyaltyListener(Loyalty loyalty) {
-        text_rank_name.setText(loyalty.getLoyalty_name());
         int textSizeInSp = (int) getResources().getDimension(R.dimen.text_17);
+
+        text_rank_name.setText(loyalty.getLoyalty_name());
         text_rank_type_result.setText("You have unlocked this rank.");
         text_rank_type_result.setTextColor(mContext.getResources().getColor(R.color.blackPalette));
+
         setTextSize(textSizeInSp);
+
+        String[] loyaltySplit = loyalty.getLoyalty_benefit().split("##");
+        loyaltyBenefitAdapter.setLoyaltyArray(loyaltySplit, loyalty.getLoyalty_id());
+        loyaltyBenefitAdapter.notifyDataSetChanged();
+
+        text_benefit_type.setText(loyalty.getLoyalty_name() + " Merchant Benefit");
     }
 
     @Override
@@ -118,25 +149,58 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         prefConfig.insertMerchantData(merchant);
         text_point.setText(String.valueOf(prefConfig.getPoint()));
         text_expired_point.setText(prefConfig.getPoint() + " points will expire on 1 January " + (Integer.valueOf(Utils.getTime("yyyy")) + 1));
-
+        if (loyaltyList != null && loyalty != null) {
+            progressCondition();
+        }
     }
 
     @Override
-    public void onClick(Loyalty loyalty, boolean isMyLoyalty, Loyalty nextLoyalty) {
+    public void onLoadMission(List<Loyalty.Mission> missionList) {
+        this.missionList = missionList;
+        missionAdapter.setMissionList(missionList);
+        missionAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(Loyalty loyalty, boolean isMyLoyalty) {
+        this.loyalty = loyalty;
         text_rank_name.setText(loyalty.getLoyalty_name());
-        int textSizeInSp = 0;
+        text_benefit_type.setText(loyalty.getLoyalty_name() + " Merchant Benefit");
+
+        String[] loyaltySplit = loyalty.getLoyalty_benefit().split("##");
+        loyaltyBenefitAdapter.setLoyaltyArray(loyaltySplit, loyalty.getLoyalty_id());
+        loyaltyBenefitAdapter.notifyDataSetChanged();
+
         if (isMyLoyalty) {
-            textSizeInSp = (int) getResources().getDimension(R.dimen.text_17);
+            image_check.setVisibility(View.VISIBLE);
+            rl_wrap_progress_bar.setVisibility(View.GONE);
+
+            int textSizeInSp = (int) getResources().getDimension(R.dimen.text_17);
             text_rank_type_result.setText("You have unlocked this rank.");
             text_rank_type_result.setTextColor(mContext.getResources().getColor(R.color.blackPalette));
+            setTextSize(textSizeInSp);
         } else {
-            int totalExp = presenter.totalExpLoyalty(loyaltyList, loyalty);
-            int totalEarning = loyalty.getLoyalty_exp() - (prefConfig.getExp() - totalExp);
-            textSizeInSp = (int) getResources().getDimension(R.dimen.text_12);
-            text_rank_type_result.setText("Earn " + totalEarning + " points to unlock " + loyalty.getLoyalty_name());
-            text_rank_type_result.setTextColor(mContext.getResources().getColor(R.color.silver_palette));
+            rl_wrap_progress_bar.setVisibility(View.VISIBLE);
+            image_check.setVisibility(View.GONE);
+            progressCondition();
         }
+    }
+
+    private void progressCondition() {
+        int totalExp = presenter.totalExpLoyalty(loyaltyList, loyalty);
+        int totalEarning = loyalty.getLoyalty_exp() - (prefConfig.getExp() - totalExp);
+        int textSizeInSp = (int) getResources().getDimension(R.dimen.text_12);
+        text_rank_type_result.setText("Earn " + totalEarning + " points to unlock " + loyalty.getLoyalty_name());
+        text_rank_type_result.setTextColor(mContext.getResources().getColor(R.color.silver_palette));
+
+        float currentExp = (float) prefConfig.getExp() - (float) totalExp;
+        float progress = (currentExp / (float) loyalty.getLoyalty_exp()) * 100;
         setTextSize(textSizeInSp);
+
+        ObjectAnimator animation = ObjectAnimator.ofFloat(progress_bar, "progress", progress);
+        animation.setDuration(1250);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
     private void setTextSize(int textSizeInSp) {
