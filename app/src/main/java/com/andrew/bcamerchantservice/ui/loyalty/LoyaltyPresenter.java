@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,7 +14,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LoyaltyPresenter implements ILoyaltyPresenter {
 
@@ -86,8 +92,24 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Merchant.Income> incomeList = new ArrayList<>();
+                        List<Merchant.Mission> missionList = new ArrayList<>();
                         Merchant merchant = dataSnapshot.getValue(Merchant.class);
-                        view.onMerchantListener(merchant);
+                        if (dataSnapshot.child("merchant_income" + "/"
+                                + Utils.getTime("MM-yyyy")).getChildrenCount() > 0) {
+                            for (DataSnapshot snapshot : dataSnapshot.child("merchant_income" + "/" + Utils.getTime("MM-yyyy")).getChildren()) {
+                                incomeList.add(snapshot.getValue(Merchant.Income.class));
+                            }
+                        }
+
+                        if (dataSnapshot.child(Constant.DB_REFERENCE_MERCHANT_MISSION
+                                + "/" + Utils.getTime("MM-yyyy")).getChildrenCount() > 0) {
+                            for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_MERCHANT_MISSION
+                                    + "/" + Utils.getTime("MM-yyyy")).getChildren()) {
+                                missionList.add(snapshot.getValue(Merchant.Mission.class));
+                            }
+                        }
+                        view.onMerchantListener(merchant, incomeList, missionList);
                     }
 
                     @Override
@@ -98,16 +120,53 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
     }
 
     @Override
-    public void loadMission() {
+    public void loadMission(final List<Merchant.Mission> missionMerchantList) {
         dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_MISSION)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Loyalty.Mission> missionList = new ArrayList<>();
+                        List<Loyalty.Mission> missionLoyaltyList = new ArrayList<>();
+
+                        List<Loyalty.Mission> collectedList = new ArrayList<>();
+                        List<Loyalty.Mission> nonCollectedList = new ArrayList<>();
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            missionList.add(snapshot.getValue(Loyalty.Mission.class));
+                            Loyalty.Mission missionLoyalty = snapshot.getValue(Loyalty.Mission.class);
+                            assert missionLoyalty != null;
+                            missionLoyalty.setCollected(false);
+                            boolean c = false;
+                            for (int i = 0; i < missionMerchantList.size(); i++) {
+                                Merchant.Mission missions = missionMerchantList.get(i);
+                                if (missions.getMission_id().equals(missionLoyalty.getMission_id())) {
+                                    c = true;
+                                    missionLoyalty.setCollected(true);
+                                    break;
+                                }
+                            }
+
+                            if (c)
+                                collectedList.add(missionLoyalty);
+                            else
+                                nonCollectedList.add(missionLoyalty);
                         }
-                        view.onLoadMission(missionList);
+
+                        Collections.sort(nonCollectedList, new Comparator<Loyalty.Mission>() {
+                            @Override
+                            public int compare(Loyalty.Mission mission, Loyalty.Mission t1) {
+                                return (int) mission.getMission_minimum_transaction() - (int) t1.getMission_minimum_transaction();
+                            }
+                        });
+
+                        Collections.sort(collectedList, new Comparator<Loyalty.Mission>() {
+                            @Override
+                            public int compare(Loyalty.Mission mission, Loyalty.Mission t1) {
+                                return (int) mission.getMission_minimum_transaction() - (int) t1.getMission_minimum_transaction();
+                            }
+                        });
+
+                        missionLoyaltyList.addAll(nonCollectedList);
+                        missionLoyaltyList.addAll(collectedList);
+                        view.onLoadMission(missionLoyaltyList);
                     }
 
                     @Override
@@ -116,5 +175,42 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void sendMission(Loyalty.Mission mission, String MID, int point) {
+        String path = Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/"
+                + Constant.DB_REFERENCE_MERCHANT_MISSION + "/" + Utils.getTime("MM-yyyy");
+
+        String key = dbRef.child(path).push().getKey();
+
+        Merchant.Mission merchant_mission = new Merchant.Mission(key, mission.getMission_id(), Utils.getTime("dd/MM/yyyy HH:mm"));
+
+        dbRef.child(path + "/" + key)
+                .setValue(merchant_mission);
+
+        point += mission.getMission_prize();
+
+        String income_path = Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_POINT_HISTORY
+                + "/" + MID + "/" + Utils.getTime("MM-yyyy") + "/" + Constant.DB_REFERENCE_POINT_HISTORY_EARN;
+        String income_key = dbRef.child(income_path).push().getKey();
+
+        Map<String, Object> pointMap = new HashMap<>();
+        pointMap.put("earn_id", income_key);
+        pointMap.put("earn_date", Utils.getTime("dd/MM/yyyy HH:mm"));
+        pointMap.put("earn_point", mission.getMission_prize());
+        pointMap.put("earn_type", "reward");
+
+        dbRef.child(income_path + "/" + income_key)
+                .setValue(pointMap);
+
+        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/merchant_point")
+                .setValue(point)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                });
     }
 }

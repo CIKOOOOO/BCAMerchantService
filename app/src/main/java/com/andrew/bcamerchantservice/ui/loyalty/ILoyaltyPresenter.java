@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.loyalty;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
+import com.andrew.bcamerchantservice.model.Merchant;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ILoyaltyPresenter {
 
     void loadMerchantLoyaltyListener(String MID);
 
-    void loadMission();
+    void loadMission(List<Merchant.Mission> missionList);
+
+    void sendMission(Loyalty.Mission mission, String MID, int point);
 }

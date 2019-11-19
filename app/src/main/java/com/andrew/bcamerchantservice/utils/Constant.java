@@ -22,6 +22,8 @@ public class Constant {
     public static final String DB_REFERENCE_MERCHANT_PROFILE = "merchant_profile";
     public static final String DB_REFERENCE_MERCHANT_STORY = "merchant_story";
     public static final String DB_REFERENCE_MERCHANT_CATALOG = "merchant_catalog";
+    public static final String DB_REFERENCE_MERCHANT_MISSION = "merchant_mission";
+    public static final String DB_REFERENCE_MERCHANT_INCOME = "merchant_income";
     public static final String DB_REFERENCE_FORUM = "forum";
     public static final String DB_REFERENCE_FORUM_REPLY = "forum_reply";
     public static final String DB_REFERENCE_FORUM_IMAGE = "forum_image";
@@ -37,6 +39,8 @@ public class Constant {
     public static final String DB_REFERENCE_LOYALTY = "loyalty";
     public static final String DB_REFERENCE_LOYALTY_TYPE = "loyalty_rank_type";
     public static final String DB_REFERENCE_MISSION = "mission";
+    public static final String DB_REFERENCE_POINT_HISTORY = "point_history";
+    public static final String DB_REFERENCE_POINT_HISTORY_EARN = "earn";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
 
     public static final int MAX_ALPHA = 220;

@@ -11,7 +11,7 @@ public interface ILoyaltyView {
 
     void loyaltyListener(Loyalty loyalty);
 
-    void onMerchantListener(Merchant merchant);
+    void onMerchantListener(Merchant merchant, List<Merchant.Income> incomeList, List<Merchant.Mission> missionList);
 
     void onLoadMission(List<Loyalty.Mission> missionList);
 }

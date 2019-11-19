@@ -98,7 +98,6 @@
                 android:paddingTop="5dp"
                 android:paddingEnd="25dp"
                 android:paddingBottom="5dp"
-                android:text="Tk Sumber Jaya"
                 android:textColor="@color/blackPalette"
                 android:textSize="20sp" />
 

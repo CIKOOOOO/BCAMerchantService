@@ -39,8 +39,17 @@ public class Loyalty {
         private String mission_id;
         private long mission_minimum_transaction;
         private int mission_prize;
+        private boolean isCollected;
 
         public Mission() {
+        }
+
+        public boolean isCollected() {
+            return isCollected;
+        }
+
+        public void setCollected(boolean collected) {
+            isCollected = collected;
         }
 
         public String getMission_id() {

@@ -28,7 +28,6 @@ public class Merchant implements Parcelable {
     public Merchant() {
     }
 
-
     protected Merchant(Parcel in) {
         mid = in.readString();
         merchant_name = in.readString();
@@ -206,6 +205,51 @@ public class Merchant implements Parcelable {
 
         public String getCatalog_date() {
             return catalog_date;
+        }
+    }
+
+    public static class Income {
+        private String income_date, income_id;
+        private long income_amount;
+
+        public Income() {
+        }
+
+        public String getIncome_date() {
+            return income_date;
+        }
+
+        public String getIncome_id() {
+            return income_id;
+        }
+
+        public long getIncome_amount() {
+            return income_amount;
+        }
+    }
+
+    public static class Mission {
+        private String merchant_mission_id, mission_id, merchant_collect_mission_date;
+
+        public Mission(String merchant_mission_id, String mission_id, String merchant_collect_mission_date) {
+            this.merchant_mission_id = merchant_mission_id;
+            this.mission_id = mission_id;
+            this.merchant_collect_mission_date = merchant_collect_mission_date;
+        }
+
+        public Mission() {
+        }
+
+        public String getMerchant_mission_id() {
+            return merchant_mission_id;
+        }
+
+        public String getMission_id() {
+            return mission_id;
+        }
+
+        public String getMerchant_collect_mission_date() {
+            return merchant_collect_mission_date;
         }
     }
 }

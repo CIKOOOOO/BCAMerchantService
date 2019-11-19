@@ -31,13 +31,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAdapter.onItemClick, View.OnClickListener {
+public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAdapter.onItemClick, View.OnClickListener, MissionAdapter.onItemClick {
 
 
     private View v;
     private Context mContext;
     private PrefConfig prefConfig;
-    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result, text_benefit_type;
+    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result, text_benefit_type, text_progress;
     private LoyaltyAdapter loyaltyAdapter;
     private RoundCornerProgressBar progress_bar;
     private Loyalty loyalty;
@@ -50,6 +50,8 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
     private List<Loyalty> loyaltyList;
     private List<Loyalty.Mission> missionList;
+
+    private long progress_this_month;
 
     public LoyaltyFragment() {
         // Required empty public constructor
@@ -84,13 +86,16 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         image_check = v.findViewById(R.id.image_check_loyalty);
         rl_wrap_progress_bar = v.findViewById(R.id.rl_dummy_00_loyalty);
         text_benefit_type = v.findViewById(R.id.text_rank_benefit_loyalty);
+        text_progress = v.findViewById(R.id.text_progress_loyalty);
 
         loyaltyList = new ArrayList<>();
         missionList = new ArrayList<>();
 
+        progress_this_month = 0;
+
         loyaltyAdapter = new LoyaltyAdapter(mContext, loyaltyList, prefConfig.getLoyaltyId(), this);
         loyaltyBenefitAdapter = new LoyaltyBenefitAdapter(mContext);
-        missionAdapter = new MissionAdapter(mContext, missionList);
+        missionAdapter = new MissionAdapter(mContext, missionList, this);
 
         progress_bar.setMax(100);
         image_check.setVisibility(View.VISIBLE);
@@ -115,7 +120,6 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         presenter.loadMerchantLoyaltyListener(prefConfig.getMID());
         presenter.loadLoyaltyType();
         presenter.loadLoyalty(prefConfig.getLoyaltyId());
-        presenter.loadMission();
 
         img_btn_back.setOnClickListener(this);
     }
@@ -145,19 +149,25 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
     }
 
     @Override
-    public void onMerchantListener(Merchant merchant) {
+    public void onMerchantListener(Merchant merchant, List<Merchant.Income> incomeList, List<Merchant.Mission> missionList) {
         prefConfig.insertMerchantData(merchant);
         text_point.setText(String.valueOf(prefConfig.getPoint()));
         text_expired_point.setText(prefConfig.getPoint() + " points will expire on 1 January " + (Integer.valueOf(Utils.getTime("yyyy")) + 1));
         if (loyaltyList != null && loyalty != null) {
             progressCondition();
         }
+        progress_this_month = 0;
+        for (Merchant.Income income : incomeList) {
+            progress_this_month += income.getIncome_amount();
+        }
+        text_progress.setText("Rp " + Utils.priceFormat(progress_this_month));
+        presenter.loadMission(missionList);
     }
 
     @Override
     public void onLoadMission(List<Loyalty.Mission> missionList) {
         this.missionList = missionList;
-        missionAdapter.setMissionList(missionList);
+        missionAdapter.setMissionList(missionList, progress_this_month);
         missionAdapter.notifyDataSetChanged();
     }
 
@@ -221,5 +231,10 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
                 fragmentTransaction.commit();
                 break;
         }
+    }
+
+    @Override
+    public void onCollectMission(Loyalty.Mission mission) {
+        presenter.sendMission(mission, prefConfig.getMID(), prefConfig.getPoint());
     }
 }

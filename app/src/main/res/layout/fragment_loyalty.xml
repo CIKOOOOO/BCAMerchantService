@@ -211,6 +211,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -219,7 +221,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
                     android:background="@drawable/ic_tooltip" />
 
                 <TextView
@@ -239,7 +240,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/sniglet_font"
-                    android:text="Rp 300.000.000,-"
                     android:textColor="@color/blackPalette"
                     android:textSize="12sp" />
             </LinearLayout>

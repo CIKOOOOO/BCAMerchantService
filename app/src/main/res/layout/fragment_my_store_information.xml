@@ -62,6 +62,7 @@
                 <ImageButton
                     android:id="@+id/image_button_owner_store_information"
                     android:layout_width="20dp"
+                    android:visibility="gone"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginStart="5dp"
@@ -175,6 +176,7 @@
 
                 <ImageButton
                     android:id="@+id/image_button_email_store_information"
+                    android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical|end"
@@ -234,6 +236,7 @@
                 <ImageButton
                     android:id="@+id/image_button_address_store_information"
                     android:layout_width="20dp"
+                    android:visibility="gone"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginStart="5dp"
