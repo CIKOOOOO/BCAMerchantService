@@ -13,6 +13,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> {
@@ -26,9 +27,9 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
         void onCollectMission(Loyalty.Mission mission);
     }
 
-    public MissionAdapter(Context mContext, List<Loyalty.Mission> missionList, MissionAdapter.onItemClick onItemClick) {
+    public MissionAdapter(Context mContext, MissionAdapter.onItemClick onItemClick) {
         this.mContext = mContext;
-        this.missionList = missionList;
+        missionList = new ArrayList<>();
         this.onItemClick = onItemClick;
     }
 
@@ -47,7 +48,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
     @Override
     public void onBindViewHolder(@NonNull final Holder holder, int i) {
         final int pos = holder.getAdapterPosition();
-        final Loyalty.Mission mission = missionList.get(pos);
+        final Loyalty.Mission mission = missionList.get(i);
 
         holder.text_point.setText(mission.getMission_prize() + " Points");
         holder.text_time.setText("transaction by 1 " + "" + "to get");
@@ -56,7 +57,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
         Drawable drawable = null;
         int color = 0;
         String status = "";
-        boolean inComplete = true;
+        boolean c = false;
 
         if (mission.isCollected()) {
             status = "Collected";
@@ -65,11 +66,11 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
         } else {
             if (merchant_full_transaction >= mission.getMission_minimum_transaction()) {
                 status = "Collect";
+                c = true;
                 drawable = mContext.getDrawable(R.drawable.background_reply_idle);
                 color = mContext.getResources().getColor(R.color.white_color);
             } else {
                 status = "Incomplete";
-                inComplete = false;
                 drawable = mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron);
                 color = mContext.getResources().getColor(R.color.iron_palette);
             }
@@ -79,13 +80,21 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
         holder.text_status_mission.setTextColor(color);
         holder.text_status_mission.setText(status);
 
-        if (!mission.isCollected() && inComplete)
-            holder.text_status_mission.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClick.onCollectMission(mission);
-                }
-            });
+        if (c)
+            /*
+            * Saya gatau kenapa, it's work. so don't ever change it!!!!!!!
+            * */
+            holder.text_status_mission.setEnabled(true);
+        else {
+            holder.text_status_mission.setEnabled(false);
+        }
+
+        holder.text_status_mission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onCollectMission(mission);
+            }
+        });
     }
 
     @Override

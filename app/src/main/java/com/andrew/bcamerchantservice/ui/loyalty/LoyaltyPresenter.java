@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.loyalty;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -132,22 +133,23 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Loyalty.Mission missionLoyalty = snapshot.getValue(Loyalty.Mission.class);
-                            assert missionLoyalty != null;
-                            missionLoyalty.setCollected(false);
-                            boolean c = false;
-                            for (int i = 0; i < missionMerchantList.size(); i++) {
-                                Merchant.Mission missions = missionMerchantList.get(i);
-                                if (missions.getMission_id().equals(missionLoyalty.getMission_id())) {
-                                    c = true;
-                                    missionLoyalty.setCollected(true);
-                                    break;
+                            if (missionLoyalty != null) {
+                                boolean c = false;
+                                for (int i = 0; i < missionMerchantList.size(); i++) {
+                                    Merchant.Mission missions = missionMerchantList.get(i);
+                                    if (missions.getMission_id().equals(missionLoyalty.getMission_id())) {
+                                        c = true;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (c)
-                                collectedList.add(missionLoyalty);
-                            else
-                                nonCollectedList.add(missionLoyalty);
+                                missionLoyalty.setCollected(c);
+
+                                if (c)
+                                    collectedList.add(missionLoyalty);
+                                else
+                                    nonCollectedList.add(missionLoyalty);
+                            }
                         }
 
                         Collections.sort(nonCollectedList, new Comparator<Loyalty.Mission>() {
@@ -166,6 +168,11 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
 
                         missionLoyaltyList.addAll(nonCollectedList);
                         missionLoyaltyList.addAll(collectedList);
+
+                        for (Loyalty.Mission mission : missionLoyaltyList) {
+//                            Log.e("asd", mission.getMission_id());
+                        }
+
                         view.onLoadMission(missionLoyaltyList);
                     }
 

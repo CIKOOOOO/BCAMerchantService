@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,6 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
     private ILoyaltyPresenter presenter;
 
     private List<Loyalty> loyaltyList;
-    private List<Loyalty.Mission> missionList;
 
     private long progress_this_month;
 
@@ -89,13 +89,12 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         text_progress = v.findViewById(R.id.text_progress_loyalty);
 
         loyaltyList = new ArrayList<>();
-        missionList = new ArrayList<>();
 
         progress_this_month = 0;
 
         loyaltyAdapter = new LoyaltyAdapter(mContext, loyaltyList, prefConfig.getLoyaltyId(), this);
         loyaltyBenefitAdapter = new LoyaltyBenefitAdapter(mContext);
-        missionAdapter = new MissionAdapter(mContext, missionList, this);
+        missionAdapter = new MissionAdapter(mContext, this);
 
         progress_bar.setMax(100);
         image_check.setVisibility(View.VISIBLE);
@@ -166,7 +165,6 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
     @Override
     public void onLoadMission(List<Loyalty.Mission> missionList) {
-        this.missionList = missionList;
         missionAdapter.setMissionList(missionList, progress_this_month);
         missionAdapter.notifyDataSetChanged();
     }
