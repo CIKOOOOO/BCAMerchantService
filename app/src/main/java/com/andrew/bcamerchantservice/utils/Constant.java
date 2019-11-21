@@ -42,6 +42,7 @@ public class Constant {
     public static final String DB_REFERENCE_POINT_HISTORY = "point_history";
     public static final String DB_REFERENCE_POINT_HISTORY_EARN = "earn";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
+    public static final String FULL_DATE_FORMAT = "EEE MMM dd hh:mm:ss 'GMT'Z yyyy";
 
     public static final int MAX_ALPHA = 220;
 

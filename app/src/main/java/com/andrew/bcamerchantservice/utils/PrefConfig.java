@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.andrew.bcamerchantservice.R;
-import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 
 
@@ -57,6 +56,12 @@ public class PrefConfig {
     public void insertId(int id) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(context.getString(R.string.pref_id), id);
+        editor.apply();
+    }
+
+    public void insertPoint(int point) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(context.getString(R.string.pref_point), point);
         editor.apply();
     }
 

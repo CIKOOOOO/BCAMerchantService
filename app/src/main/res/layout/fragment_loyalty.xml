@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,247 +7,257 @@
     android:background="@color/white_color"
     tools:context=".ui.loyalty.LoyaltyFragment">
 
-    <include
-        android:id="@+id/toolbar_back_loyalty_fragment"
-        layout="@layout/toolbar_back"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:layout_below="@id/toolbar_back_loyalty_fragment"
-        android:background="@color/silver_palette" />
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_below="@id/toolbar_back_loyalty_fragment"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="50dp"
-        android:overScrollMode="never"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <include
+            android:id="@+id/toolbar_back_loyalty_fragment"
+            layout="@layout/toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_below="@id/toolbar_back_loyalty_fragment"
+            android:background="@color/silver_palette" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll_loyalty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:text="Redeemable Points"
-                android:textColor="@color/blackPalette"
-                android:textSize="15sp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/text_points_loyalty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/text_browse_rewards_loyalty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/background_reply"
-                    android:fontFamily="@font/sniglet_font"
-                    android:paddingStart="10dp"
-                    android:paddingTop="4dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="4dp"
-                    android:text="Browse Rewards"
-                    android:textColor="@color/white_color"
-                    android:textSize="12sp" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/text_expire_point_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:textColor="@color/silver_palette"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/text_point_history_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/sniglet_font"
-                android:text="@string/point_history"
-                android:textColor="@color/silver_palette"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="5dp"
-                android:alpha="0.1"
-                android:background="@color/blackPalette" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:text="Merchant Rank"
-                android:textColor="@color/blackPalette"
-                android:textSize="17sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_merchant_rank_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:overScrollMode="never" />
-
-            <TextView
-                android:id="@+id/text_rank_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:textColor="@color/blackPalette" />
-
-            <ImageView
-                android:id="@+id/image_check_loyalty"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/ic_check_rounded_blue" />
-
-            <RelativeLayout
-                android:id="@+id/rl_dummy_00_loyalty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rectangle_rounded_stroke_blue"
-                android:padding="1dp">
-
-                <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                    android:id="@+id/progress_loyalty"
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    app:rcBackgroundColor="@color/white_color"
-                    app:rcProgressColor="@color/blue_palette"
-                    app:rcRadius="5dp"
-                    app:rcReverse="false" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/text_rank_type_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/sniglet_font"
-                android:textColor="@color/blackPalette" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_margin="10dp"
-                android:alpha="0.1"
-                android:background="@color/blackPalette" />
-
-            <TextView
-                android:id="@+id/text_rank_benefit_loyalty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:textColor="@color/blackPalette"
-                android:textSize="17sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_benefit_loyalty"
-                android:layout_width="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="10dp"
-                android:alpha="0.1"
-                android:background="@color/blackPalette" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/sniglet_font"
-                android:text="Monthly Bonus Mission"
-                android:textColor="@color/blackPalette"
-                android:textSize="17sp" />
+            android:layout_below="@id/toolbar_back_loyalty_fragment"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="50dp"
+            android:overScrollMode="never">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/image_button_question_mark_loyalty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_tooltip" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/sniglet_font"
-                    android:text="Current Progress"
+                    android:text="Redeemable Points"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/text_points_loyalty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/text_browse_rewards_loyalty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/background_reply"
+                        android:fontFamily="@font/sniglet_font"
+                        android:paddingStart="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="4dp"
+                        android:text="Browse Rewards"
+                        android:textColor="@color/white_color"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/text_expire_point_loyalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sniglet_font"
                     android:textColor="@color/silver_palette"
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/text_progress_loyalty"
+                    android:id="@+id/text_point_history_loyalty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="@string/point_history"
+                    android:textColor="@color/silver_palette"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.1"
+                    android:background="@color/blackPalette" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Merchant Rank"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_merchant_rank_loyalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:overScrollMode="never" />
+
+                <TextView
+                    android:id="@+id/text_rank_loyalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
+
+                <ImageView
+                    android:id="@+id/image_check_loyalty"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/ic_check_rounded_blue" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_dummy_00_loyalty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rectangle_rounded_stroke_blue"
+                    android:padding="1dp">
+
+                    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                        android:id="@+id/progress_loyalty"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        app:rcBackgroundColor="@color/white_color"
+                        app:rcProgressColor="@color/blue_palette"
+                        app:rcRadius="5dp"
+                        app:rcReverse="false" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/text_rank_type_loyalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_margin="10dp"
+                    android:alpha="0.1"
+                    android:background="@color/blackPalette" />
+
+                <TextView
+                    android:id="@+id/text_rank_benefit_loyalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/sniglet_font"
                     android:textColor="@color/blackPalette"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:textSize="17sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_mission_loyalty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_benefit_loyalty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="10dp"
+                    android:alpha="0.1"
+                    android:background="@color/blackPalette" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Monthly Bonus Mission"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/image_button_question_mark_loyalty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_tooltip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="Current Progress"
+                        android:textColor="@color/silver_palette"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/text_progress_loyalty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_mission_loyalty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/bottom_sheet_current_progress_loyalty"
+        layout="@layout/bottom_sheet_current_progress" />
+</android.support.design.widget.CoordinatorLayout>

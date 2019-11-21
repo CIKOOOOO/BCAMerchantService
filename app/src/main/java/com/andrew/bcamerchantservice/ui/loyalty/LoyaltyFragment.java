@@ -4,17 +4,20 @@ package com.andrew.bcamerchantservice.ui.loyalty;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,11 +25,16 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
+import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,11 +42,14 @@ import java.util.List;
  */
 public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAdapter.onItemClick, View.OnClickListener, MissionAdapter.onItemClick {
 
+    // Should static, to bind context in progressCondition() function.
+    // it will affect when we delete the transaction from db, well it's not possible
+    // that income will decrease, but we have to make sure all condition won't harm the apps
+    private static Context mContext;
 
     private View v;
-    private Context mContext;
     private PrefConfig prefConfig;
-    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result, text_benefit_type, text_progress;
+    private TextView text_point, text_expired_point, text_rank_name, text_rank_type_result, text_benefit_type, text_progress, text_current_progress_sheet;
     private LoyaltyAdapter loyaltyAdapter;
     private RoundCornerProgressBar progress_bar;
     private Loyalty loyalty;
@@ -46,6 +57,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
     private RelativeLayout rl_wrap_progress_bar;
     private LoyaltyBenefitAdapter loyaltyBenefitAdapter;
     private MissionAdapter missionAdapter;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     private ILoyaltyPresenter presenter;
 
@@ -77,6 +89,12 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         RecyclerView recycler_mission_loyalty = v.findViewById(R.id.recycler_mission_loyalty);
         ImageButton img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
         TextView text_title = v.findViewById(R.id.text_title_toolbar_back);
+        ImageButton img_btn_current_progress = v.findViewById(R.id.image_button_question_mark_loyalty);
+        LinearLayout linear_sheet = v.findViewById(R.id.bottom_sheet_current_progress_loyalty);
+        ImageButton img_btn_close = v.findViewById(R.id.img_btn_close_current_progress_sheet);
+        Button btn_back_current_progress = v.findViewById(R.id.btn_back_current_progress_sheet);
+        NestedScrollView nestedScrollView = v.findViewById(R.id.nested_scroll_loyalty);
+        TextView text_browse_rewards = v.findViewById(R.id.text_browse_rewards_loyalty);
 
         text_point = v.findViewById(R.id.text_points_loyalty);
         text_expired_point = v.findViewById(R.id.text_expire_point_loyalty);
@@ -87,6 +105,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         rl_wrap_progress_bar = v.findViewById(R.id.rl_dummy_00_loyalty);
         text_benefit_type = v.findViewById(R.id.text_rank_benefit_loyalty);
         text_progress = v.findViewById(R.id.text_progress_loyalty);
+        text_current_progress_sheet = v.findViewById(R.id.text_current_progress_sheet);
 
         loyaltyList = new ArrayList<>();
 
@@ -96,6 +115,8 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         loyaltyBenefitAdapter = new LoyaltyBenefitAdapter(mContext);
         missionAdapter = new MissionAdapter(mContext, this);
 
+        bottomSheetBehavior = BottomSheetBehavior.from(linear_sheet);
+
         progress_bar.setMax(100);
         image_check.setVisibility(View.VISIBLE);
         rl_wrap_progress_bar.setVisibility(View.GONE);
@@ -104,6 +125,19 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
         recycler_benefit_loyalty.setLayoutManager(new LinearLayoutManager(mContext));
         recycler_mission_loyalty.setLayoutManager(new LinearLayoutManager(mContext));
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                } else {
+                    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED)
+                        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         recycler_loyalty.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false) {
             @Override
@@ -120,7 +154,11 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         presenter.loadLoyaltyType();
         presenter.loadLoyalty(prefConfig.getLoyaltyId());
 
+        text_browse_rewards.setOnClickListener(this);
+        img_btn_current_progress.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
+        img_btn_close.setOnClickListener(this);
+        btn_back_current_progress.setOnClickListener(this);
     }
 
     @Override
@@ -217,15 +255,36 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
     @Override
     public void onClick(View view) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.img_btn_back_toolbar_back:
                 Profile profile = new Profile();
                 Bundle bundle = new Bundle();
                 bundle.putInt(Profile.GET_CURRENT_ITEM_VIEW_PAGER, 2);
                 profile.setArguments(bundle);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, profile);
+                fragmentTransaction.commit();
+                break;
+            case R.id.image_button_question_mark_loyalty:
+                try {
+                    text_current_progress_sheet.setText("The progress for this month will reset on 1 " + Utils.formatDateFromDateString(Constant.FULL_DATE_FORMAT
+                            , "MMMM yyyy", String.valueOf(Utils.getCurrentDatePlusMonth(Calendar.MONTH, 1))) + ".");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                MainActivity.bottomNavigationView.setVisibility(View.GONE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+            case R.id.btn_back_current_progress_sheet:
+            case R.id.img_btn_close_current_progress_sheet:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                break;
+            case R.id.text_browse_rewards_loyalty:
+                MainActivity.bottomNavigationView.setVisibility(View.GONE);
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.main_frame, new RewardsFragment());
                 fragmentTransaction.commit();
                 break;
         }

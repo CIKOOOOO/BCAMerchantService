@@ -6,12 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +34,14 @@ public class Utils {
     public static String getTime(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date());
+    }
+
+    public static Date getCurrentDatePlusMonth(int type, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(type, month);
+        Date newDate = calendar.getTime();
+        return newDate;
     }
 
     public static String gettingAmountDaysOfMonth() {

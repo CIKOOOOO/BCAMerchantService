@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
+import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
@@ -166,18 +167,23 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
             profile.setArguments(bundle);
             fragmentTransaction.commit();
+        } else if (fragment instanceof RewardsFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
+            fragmentTransaction.commit();
         }
     }
 
     @Override
     public void onUserInteraction() {
+        super.onUserInteraction();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_frame);
         if (fragment instanceof MainForum && !MainForum.isStoryVisible && !MainForum.isCategoryBottomSheetVisible) {
             bottomNavigationView.setVisibility(View.VISIBLE);
-//            layoutParams.height = bot_nav_height;
             floatingActionButton.show();
         } else floatingActionButton.hide();
-        super.onUserInteraction();
     }
 
     @Override

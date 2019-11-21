@@ -17,6 +17,16 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         titleList = new ArrayList<>();
     }
 
+    public void setTitleTab(Fragment fragment, String title) {
+        for (int i = 0; i < fragmentList.size(); i++) {
+            if (fragmentList.get(i) == fragment) {
+                titleList.set(i, title);
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public void addTab(Fragment fragment, String title) {
         fragmentList.add(fragment);
         titleList.add(title);

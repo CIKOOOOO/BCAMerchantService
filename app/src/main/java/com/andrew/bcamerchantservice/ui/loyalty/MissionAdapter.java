@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
+import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> {
@@ -22,6 +25,7 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
     private List<Loyalty.Mission> missionList;
     private long merchant_full_transaction;
     private onItemClick onItemClick;
+    private String nextMonth;
 
     public interface onItemClick {
         void onCollectMission(Loyalty.Mission mission);
@@ -31,6 +35,12 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
         this.mContext = mContext;
         missionList = new ArrayList<>();
         this.onItemClick = onItemClick;
+        try {
+            nextMonth = Utils.formatDateFromDateString(Constant.FULL_DATE_FORMAT
+                    , "MMMM yyyy", String.valueOf(Utils.getCurrentDatePlusMonth(Calendar.MONTH, 1)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMissionList(List<Loyalty.Mission> missionList, long merchant_full_transaction) {
@@ -47,11 +57,10 @@ public class MissionAdapter extends RecyclerView.Adapter<MissionAdapter.Holder> 
 
     @Override
     public void onBindViewHolder(@NonNull final Holder holder, int i) {
-        final int pos = holder.getAdapterPosition();
         final Loyalty.Mission mission = missionList.get(i);
 
         holder.text_point.setText(mission.getMission_prize() + " Points");
-        holder.text_time.setText("transaction by 1 " + "" + "to get");
+        holder.text_time.setText("transaction by 1 " + nextMonth + " to get");
         holder.text_transaction.setText("Rp " + Utils.priceFormat(mission.getMission_minimum_transaction()) + ",-");
 
         Drawable drawable = null;

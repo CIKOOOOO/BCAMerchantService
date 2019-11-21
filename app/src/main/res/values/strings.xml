@@ -90,8 +90,8 @@
     <string name="pref_address">address</string>
     <string name="pref_owner">owner</string>
     <string name="pref_description">description</string>
-    <string name="pref_loyalty_name"/>
-    <string name="pref_loyalty_id"/>
+    <string name="pref_loyalty_name" />
+    <string name="pref_loyalty_id" />
 
     <string name="menu_help">EDC Help and Support</string>
     <string name="menu_qr">QR Code</string>

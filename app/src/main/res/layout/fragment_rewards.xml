@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    tools:context=".ui.loyalty.rewards.RewardsFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/toolbar_back_rewards_fragment"
+            layout="@layout/toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_below="@id/toolbar_back_rewards_fragment"
+            android:background="@color/silver_palette" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout_rewards_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar_back_rewards_fragment"
+            android:layout_marginTop="6dp"
+            android:textAlignment="center"
+            app:tabBackground="@color/white_color"
+            app:tabSelectedTextColor="@color/blackPalette"
+            app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+            app:tabTextColor="@color/iron_palette" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager_rewards_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rl_dummy_00_rewards_fragment"
+            android:layout_below="@id/tab_layout_rewards_fragment" />
+
+        <RelativeLayout
+            android:id="@+id/rl_dummy_00_rewards_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/iron_palette" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Redeemable Points"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_point_rewards_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="1000 Points"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
