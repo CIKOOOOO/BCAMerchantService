@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_redeem_point"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/custom_frame_00_dummy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:background="@color/blackPalette" />
+
+    <LinearLayout
+        android:id="@+id/custom_ll_dummy_00"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/rectangle_rounded_stroke_blue"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_warning_custom_redeem_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/sniglet_font"
+            android:text="Apakah Anda yakin untuk me-redeem voucher ini? Point Anda akan berkurang sebesar 700 points"
+            android:textAlignment="center"
+            android:textColor="@color/blackPalette"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel_custom_redeem_point"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rectangle_rounded_stroke_blue"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Batal"
+                android:textAllCaps="false"
+                android:textColor="@color/blue_palette" />
+
+            <Button
+                android:id="@+id/btn_yes_custom_redeem_point"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/background_reply"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Ya"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

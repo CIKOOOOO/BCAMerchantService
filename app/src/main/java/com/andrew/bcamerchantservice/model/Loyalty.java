@@ -154,4 +154,35 @@ public class Loyalty {
             parcel.writeInt(rewards_point);
         }
     }
+
+    public static class Spend {
+        private String spend_id, rewards_id, spend_date;
+        private int spend_point;
+
+        public Spend() {
+        }
+
+        public Spend(String spend_id, String rewards_id, String spend_date, int spend_point) {
+            this.spend_id = spend_id;
+            this.rewards_id = rewards_id;
+            this.spend_date = spend_date;
+            this.spend_point = spend_point;
+        }
+
+        public String getSpend_id() {
+            return spend_id;
+        }
+
+        public String getRewards_id() {
+            return rewards_id;
+        }
+
+        public String getSpend_date() {
+            return spend_date;
+        }
+
+        public int getSpend_point() {
+            return spend_point;
+        }
+    }
 }

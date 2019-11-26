@@ -138,4 +138,13 @@
             android:textColor="@color/white_color"
             android:textSize="20sp" />
     </RelativeLayout>
+
+    <include
+        layout="@layout/custom_redeem_point"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/custom_loading_detail_rewards"
+        layout="@layout/custom_loading_black"
+        android:visibility="gone" />
 </RelativeLayout>

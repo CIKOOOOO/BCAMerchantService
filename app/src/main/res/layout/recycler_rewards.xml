@@ -81,6 +81,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:alpha="0.5"
+        android:visibility="gone"
         android:background="@drawable/rectangle_fill_black" />
 
     <TextView
@@ -88,6 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:fontFamily="@font/sniglet_font"
         android:text="Locked"
         android:textColor="@color/blackPalette"

@@ -114,6 +114,7 @@ public class AllRewardsFragment extends Fragment implements LoyaltyAdapter.onIte
         FragmentManager fragmentManager = getFragmentManager();
 
         bundle.putParcelable(DetailRewardsFragment.GET_REWARDS_DATA, rewards);
+        bundle.putString(DetailRewardsFragment.CONDITION, DetailRewardsFragment.REDEEM_CONDITION);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

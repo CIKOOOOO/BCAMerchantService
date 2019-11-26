@@ -252,4 +252,45 @@ public class Merchant implements Parcelable {
             return merchant_collect_mission_date;
         }
     }
+
+    public static class Rewards {
+        private String merchant_rewards_id, rewards_id, merchant_rewards_code, merchant_rewards_date_collect, merchant_collect_mission_date;
+        private boolean rewards_is_used;
+
+        public Rewards(String merchant_rewards_id, String rewards_id, String merchant_rewards_code, String merchant_rewards_date_collect, String merchant_collect_mission_date, boolean rewards_is_used) {
+            this.merchant_rewards_id = merchant_rewards_id;
+            this.rewards_id = rewards_id;
+            this.merchant_rewards_code = merchant_rewards_code;
+            this.merchant_rewards_date_collect = merchant_rewards_date_collect;
+            this.merchant_collect_mission_date = merchant_collect_mission_date;
+            this.rewards_is_used = rewards_is_used;
+        }
+
+        public Rewards() {
+        }
+
+        public String getMerchant_rewards_id() {
+            return merchant_rewards_id;
+        }
+
+        public String getRewards_id() {
+            return rewards_id;
+        }
+
+        public String getMerchant_rewards_code() {
+            return merchant_rewards_code;
+        }
+
+        public String getMerchant_rewards_date_collect() {
+            return merchant_rewards_date_collect;
+        }
+
+        public String getMerchant_collect_mission_date() {
+            return merchant_collect_mission_date;
+        }
+
+        public boolean isRewards_is_used() {
+            return rewards_is_used;
+        }
+    }
 }
