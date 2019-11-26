@@ -39,13 +39,13 @@ public class LoyaltyBenefitAdapter extends RecyclerView.Adapter<LoyaltyBenefitAd
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         int drawable = 0;
         switch (loyaltyId) {
-            case "1":
+            case "loyalty_type_1":
                 drawable = R.drawable.circle_fill_bronze;
                 break;
-            case "2":
+            case "loyalty_type_2":
                 drawable = R.drawable.circle_fill_silver;
                 break;
-            case "3":
+            case "loyalty_type_3":
                 drawable = R.drawable.circler_fill_gold;
                 break;
         }

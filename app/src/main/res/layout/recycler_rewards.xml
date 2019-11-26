@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/rectangle_rounded_stroke_black">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/recycler_image_thumbnail_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="@color/silver_palette"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius_top_left="10dp"
+        app:riv_corner_radius_top_right="10dp"
+        app:riv_mutate_background="true" />
+
+    <TextView
+        android:id="@+id/recycler_text_title_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_image_thumbnail_rewards"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/sniglet_font"
+        android:text="Voucher Discount Rp 500.000 Tokopedia"
+        android:textColor="@color/blackPalette"
+        android:textSize="15sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_title_rewards"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/recycler_image_coin_bca_rewards"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_coin_bca" />
+
+        <TextView
+            android:id="@+id/recycler_text_point_rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/recycler_image_coin_bca_rewards"
+            android:fontFamily="@font/sniglet_font"
+            android:text="700 Points"
+            android:textColor="@color/blackPalette" />
+
+        <TextView
+            android:id="@+id/recycler_text_redeem_rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/rectangle_fill_blue"
+            android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="2dp"
+            android:text="Redeem"
+            android:textColor="@color/white_color"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/recycler_frame_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:alpha="0.5"
+        android:background="@drawable/rectangle_fill_black" />
+
+    <TextView
+        android:id="@+id/recycler_text_lock_rewards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/sniglet_font"
+        android:text="Locked"
+        android:textColor="@color/blackPalette"
+        android:textSize="50sp" />
+</RelativeLayout>

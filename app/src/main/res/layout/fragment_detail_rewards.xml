@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    tools:context=".ui.loyalty.rewards.detailrewards.DetailRewardsFragment">
+
+    <include
+        android:id="@+id/toolbar_back_detail_rewards"
+        layout="@layout/toolbar_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/toolbar_back_detail_rewards"
+        android:background="@color/silver_palette" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_dummy_00_detail_rewards"
+        android:layout_below="@id/toolbar_back_detail_rewards"
+        android:layout_marginTop="6dp"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/image_detail_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@color/silver_palette"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true" />
+
+            <TextView
+                android:id="@+id/text_title_detail_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_detail_rewards"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/sniglet_font"
+                android:textColor="@color/blackPalette"
+                android:textSize="17sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_dummy_00_detail_rewards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_title_detail_rewards"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Redeem with"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_coin_bca" />
+
+                <TextView
+                    android:id="@+id/text_amount_point_detail_rewards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:textColor="@color/blackPalette" />
+            </LinearLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_detail_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_dummy_00_detail_rewards"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                app:tabBackground="@color/white_color"
+                app:tabSelectedTextColor="@color/blackPalette"
+                app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+                app:tabTextColor="@color/iron_palette" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager_detail_rewards"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tab_layout_detail_rewards"
+                android:animateLayoutChanges="true" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rl_dummy_00_detail_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/silver_palette" />
+
+        <TextView
+            android:id="@+id/text_conditional_redeem_status_detail_rewards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background_reply"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Redeem Now"
+            android:textAlignment="center"
+            android:textColor="@color/white_color"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</RelativeLayout>

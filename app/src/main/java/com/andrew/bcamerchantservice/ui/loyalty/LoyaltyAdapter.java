@@ -3,7 +3,6 @@ package com.andrew.bcamerchantservice.ui.loyalty;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,11 @@ public class LoyaltyAdapter extends RecyclerView.Adapter<LoyaltyAdapter.Holder> 
     }
 
     public void setLastPosition(int lastPosition) {
-        this.lastPosition = lastPosition;
+        this.lastPosition = this.myPosition = lastPosition;
+    }
+
+    public int getLastPosition() {
+        return lastPosition;
     }
 
     public LoyaltyAdapter(Context mContext, List<Loyalty> loyaltyList, String loyalty_id, LoyaltyAdapter.onItemClick onItemClick) {
@@ -47,7 +50,6 @@ public class LoyaltyAdapter extends RecyclerView.Adapter<LoyaltyAdapter.Holder> 
         this.loyaltyList = loyaltyList;
         this.loyalty_id = loyalty_id;
         this.onItemClick = onItemClick;
-
     }
 
     @NonNull

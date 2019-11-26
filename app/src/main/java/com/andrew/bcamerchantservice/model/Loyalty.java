@@ -1,5 +1,8 @@
 package com.andrew.bcamerchantservice.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class Loyalty {
     private String loyalty_id, loyalty_benefit, loyalty_logo, loyalty_name;
     private int loyalty_exp;
@@ -62,6 +65,93 @@ public class Loyalty {
 
         public int getMission_prize() {
             return mission_prize;
+        }
+    }
+
+    public static class Rewards implements Parcelable {
+        private String rewards_id,
+                rewards_name,
+                rewards_thumbnail,
+                rewards_image,
+                rewards_tnc,
+                rewards_description,
+                rewards_tutorial;
+
+        private int rewards_point;
+
+        public Rewards() {
+        }
+
+        protected Rewards(Parcel in) {
+            rewards_id = in.readString();
+            rewards_name = in.readString();
+            rewards_thumbnail = in.readString();
+            rewards_image = in.readString();
+            rewards_tnc = in.readString();
+            rewards_description = in.readString();
+            rewards_tutorial = in.readString();
+            rewards_point = in.readInt();
+        }
+
+        public static final Creator<Rewards> CREATOR = new Creator<Rewards>() {
+            @Override
+            public Rewards createFromParcel(Parcel in) {
+                return new Rewards(in);
+            }
+
+            @Override
+            public Rewards[] newArray(int size) {
+                return new Rewards[size];
+            }
+        };
+
+        public String getRewards_id() {
+            return rewards_id;
+        }
+
+        public String getRewards_name() {
+            return rewards_name;
+        }
+
+        public String getRewards_thumbnail() {
+            return rewards_thumbnail;
+        }
+
+        public String getRewards_image() {
+            return rewards_image;
+        }
+
+        public String getRewards_tnc() {
+            return rewards_tnc;
+        }
+
+        public String getRewards_description() {
+            return rewards_description;
+        }
+
+        public String getRewards_tutorial() {
+            return rewards_tutorial;
+        }
+
+        public int getRewards_point() {
+            return rewards_point;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(rewards_id);
+            parcel.writeString(rewards_name);
+            parcel.writeString(rewards_thumbnail);
+            parcel.writeString(rewards_image);
+            parcel.writeString(rewards_tnc);
+            parcel.writeString(rewards_description);
+            parcel.writeString(rewards_tutorial);
+            parcel.writeInt(rewards_point);
         }
     }
 }
