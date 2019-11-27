@@ -49,62 +49,74 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.Hold
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.recycler_rewards, viewGroup, false);
+        View v;
+        if (i == 1)
+            v = LayoutInflater.from(mContext).inflate(R.layout.custom_loading, viewGroup, false);
+        else
+            v = LayoutInflater.from(mContext).inflate(R.layout.recycler_rewards, viewGroup, false);
         return new Holder(v);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return merchantRewardList.size() == 0 ? 1 : 0;
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        final int pos = holder.getAdapterPosition();
+        if (getItemViewType(i) == 0) {
+            final int pos = holder.getAdapterPosition();
 
-        if (merchantRewardList.size() > 0) {
-            final Merchant.Rewards merchant_rewards = merchantRewardList.get(pos);
-            String status;
-            int text_color;
-            Drawable text_drawable;
+            if (merchantRewardList.size() > 0) {
+                final Merchant.Rewards merchant_rewards = merchantRewardList.get(pos);
+                String status;
+                int text_color;
+                Drawable text_drawable;
 
-            if (merchant_rewards.isRewards_is_used()) {
-                status = "Used";
-                text_color = mContext.getResources().getColor(R.color.silver_palette);
-                text_drawable = mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron);
-            } else {
-                status = "Use";
-                text_color = mContext.getResources().getColor(R.color.white_color);
-                text_drawable = mContext.getDrawable(R.drawable.background_reply);
+                if (merchant_rewards.isRewards_is_used()) {
+                    status = "Used";
+                    text_color = mContext.getResources().getColor(R.color.silver_palette);
+                    text_drawable = mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron);
+                } else {
+                    status = "Use";
+                    text_color = mContext.getResources().getColor(R.color.white_color);
+                    text_drawable = mContext.getDrawable(R.drawable.background_reply);
+                }
+
+                holder.text_use_rewards.setText(status);
+                holder.text_use_rewards.setTextColor(text_color);
+                holder.text_use_rewards.setBackground(text_drawable);
+
+                if (rewardsMap.size() > 0) {
+                    final Loyalty.Rewards loyalty_rewards = rewardsMap.get(merchant_rewards.getRewards_id());
+                    if (loyalty_rewards.getRewards_thumbnail().isEmpty())
+                        Picasso.get()
+                                .load(R.color.iron_palette)
+                                .into(holder.rounded_image);
+                    else
+                        Picasso.get()
+                                .load(loyalty_rewards.getRewards_thumbnail())
+                                .into(holder.rounded_image);
+
+                    holder.text_point.setText(loyalty_rewards.getRewards_point() + " Points");
+                    holder.text_title.setText(loyalty_rewards.getRewards_name());
+                }
             }
 
-            holder.text_use_rewards.setText(status);
-            holder.text_use_rewards.setTextColor(text_color);
-            holder.text_use_rewards.setBackground(text_drawable);
-
-            if (rewardsMap.size() > 0) {
-                final Loyalty.Rewards loyalty_rewards = rewardsMap.get(merchant_rewards.getRewards_id());
-                if (loyalty_rewards.getRewards_thumbnail().isEmpty())
-                    Picasso.get()
-                            .load(R.color.iron_palette)
-                            .into(holder.rounded_image);
-                else
-                    Picasso.get()
-                            .load(loyalty_rewards.getRewards_thumbnail())
-                            .into(holder.rounded_image);
-
-                holder.text_point.setText(loyalty_rewards.getRewards_point() + " Points");
-                holder.text_title.setText(loyalty_rewards.getRewards_name());
+            if (merchantRewardList.size() > 0 && rewardsMap.size() > 0) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClick.onItemClick(merchantRewardList.get(pos), rewardsMap.get(merchantRewardList.get(pos).getRewards_id()));
+                    }
+                });
             }
         }
-
-        if (merchantRewardList.size() > 0 && rewardsMap.size() > 0)
-            holder.text_use_rewards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClick.onItemClick(merchantRewardList.get(pos), rewardsMap.get(merchantRewardList.get(pos).getRewards_id()));
-                }
-            });
     }
 
     @Override
     public int getItemCount() {
-        return merchantRewardList.size();
+        return merchantRewardList.size() == 0 ? 1 : merchantRewardList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

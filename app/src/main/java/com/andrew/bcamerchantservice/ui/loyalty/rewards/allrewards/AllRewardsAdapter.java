@@ -49,77 +49,88 @@ public class AllRewardsAdapter extends RecyclerView.Adapter<AllRewardsAdapter.Ho
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.recycler_rewards, viewGroup, false);
+        View v;
+        if (i == 1)
+            v = LayoutInflater.from(mContext).inflate(R.layout.recycler_rewards, viewGroup, false);
+        else
+            v = LayoutInflater.from(mContext).inflate(R.layout.custom_loading, viewGroup, false);
         return new Holder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        final int pos = holder.getAdapterPosition();
-        final Loyalty.Rewards rewards = rewardsList.get(pos);
+        if (getItemViewType(i) == 1) {
+            final int pos = holder.getAdapterPosition();
+            final Loyalty.Rewards rewards = rewardsList.get(pos);
 
-        holder.text_point.setText(rewards.getRewards_point() + " Points");
-        holder.text_title.setText(rewards.getRewards_name());
+            holder.text_point.setText(rewards.getRewards_point() + " Points");
+            holder.text_title.setText(rewards.getRewards_name());
 
-        if (!rewards.getRewards_thumbnail().isEmpty())
-            Picasso.get()
-                    .load(rewards.getRewards_thumbnail())
-                    .into(holder.thumbnail_image);
-        else
-            Picasso.get()
-                    .load(R.color.iron_palette)
-                    .into(holder.thumbnail_image);
+            if (!rewards.getRewards_thumbnail().isEmpty())
+                Picasso.get()
+                        .load(rewards.getRewards_thumbnail())
+                        .into(holder.thumbnail_image);
+            else
+                Picasso.get()
+                        .load(R.color.iron_palette)
+                        .into(holder.thumbnail_image);
 
-        String redeem_status;
-        int text_color;
-        Drawable drawable_status;
+            String redeem_status;
+            int text_color;
+            Drawable drawable_status;
 
-        if (myPoint >= rewards.getRewards_point()) {
-            redeem_status = "Redeem";
-            text_color = mContext.getResources().getColor(R.color.white_color);
-            drawable_status = mContext.getDrawable(R.drawable.rectangle_fill_blue);
-        } else {
-            redeem_status = "Point not enough";
-            text_color = mContext.getResources().getColor(R.color.iron_palette);
-            drawable_status = mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron);
-        }
+            if (myPoint >= rewards.getRewards_point()) {
+                redeem_status = "Redeem";
+                text_color = mContext.getResources().getColor(R.color.white_color);
+                drawable_status = mContext.getDrawable(R.drawable.rectangle_fill_blue);
+            } else {
+                redeem_status = "Point not enough";
+                text_color = mContext.getResources().getColor(R.color.iron_palette);
+                drawable_status = mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron);
+            }
 
-        holder.text_redeem.setText(redeem_status);
-        holder.text_redeem.setTextColor(text_color);
-        holder.text_redeem.setBackground(drawable_status);
+            holder.text_redeem.setText(redeem_status);
+            holder.text_redeem.setTextColor(text_color);
+            holder.text_redeem.setBackground(drawable_status);
 
-        holder.relativeLayout.setVisibility(View.GONE);
-        holder.text_locked.setVisibility(View.GONE);
+            holder.relativeLayout.setVisibility(View.GONE);
+            holder.text_locked.setVisibility(View.GONE);
 
-        if (isRankEnough) {
-            holder.text_redeem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClick.onRewardsClick(rewards);
-                }
-            });
+            if (isRankEnough) {
+                holder.text_redeem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClick.onRewardsClick(rewards);
+                    }
+                });
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClick.onRewardsClick(rewards);
-                }
-            });
-        } else {
-            holder.relativeLayout.setVisibility(View.VISIBLE);
-            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClick.onRewardsClick(rewards);
+                    }
+                });
+            } else {
+                holder.relativeLayout.setVisibility(View.VISIBLE);
+                holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                }
-            });
-            holder.text_locked.setVisibility(View.VISIBLE);
+                    }
+                });
+                holder.text_locked.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return rewardsList.size() == 0 ? 0 : 1;
+    }
+
+    @Override
     public int getItemCount() {
-        return rewardsList.size();
+        return rewardsList.size() == 0 ? 1 : rewardsList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

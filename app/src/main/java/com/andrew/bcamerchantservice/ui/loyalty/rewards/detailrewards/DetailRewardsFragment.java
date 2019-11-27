@@ -28,7 +28,10 @@ import com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards.about.Abou
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards.termcondition.TermConditionDetailRewards;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.squareup.picasso.Picasso;
+
+import java.text.ParseException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +39,7 @@ import com.squareup.picasso.Picasso;
 public class DetailRewardsFragment extends Fragment implements View.OnClickListener, IDetailView {
 
     public static final String GET_REWARDS_DATA = "get_rewards_data";
+    public static final String GET_MERCHANT_REWARDS_DATA = "get_merchant_rewards_data";
     public static final String CONDITION = "condition";
     public static final String REDEEM_CONDITION = "redeem";
     public static final String USE_CONDITION = "use";
@@ -44,13 +48,16 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
     private View v, custom_loading;
     private Context mContext;
     private Loyalty.Rewards rewards;
-    private TextView text_conditional_status;
+    private TextView text_conditional_status, text_voucher_use, text_voucher_date, text_voucher;
     private PrefConfig prefConfig;
     private RelativeLayout custom_relative_redeem_point;
     private FrameLayout custom_frame_redeem_point;
-    private LinearLayout linear_custom_redeem_point;
+    private LinearLayout linear_custom_redeem_point, linear_voucher_code;
+    private Merchant.Rewards merchant_rewards;
 
     private DetailRewardsPresenter presenter;
+
+    private String condition;
 
     public DetailRewardsFragment() {
         // Required empty public constructor
@@ -73,12 +80,17 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         TextView text_toolbar = v.findViewById(R.id.text_title_toolbar_back);
         TabLayout tabLayout = v.findViewById(R.id.tab_layout_detail_rewards);
         ViewPager viewPager = v.findViewById(R.id.view_pager_detail_rewards);
+        LinearLayout linear_redeem = v.findViewById(R.id.ll_dummy_00_detail_rewards);
 
         text_conditional_status = v.findViewById(R.id.text_conditional_redeem_status_detail_rewards);
         custom_relative_redeem_point = v.findViewById(R.id.custom_redeem_point);
         custom_frame_redeem_point = v.findViewById(R.id.custom_frame_00_dummy);
         linear_custom_redeem_point = v.findViewById(R.id.custom_ll_dummy_00);
         custom_loading = v.findViewById(R.id.custom_loading_detail_rewards);
+        linear_voucher_code = v.findViewById(R.id.ll_dummy_01_detail_rewards);
+        text_voucher_use = v.findViewById(R.id.text_voucher_use_on_detail_rewards);
+        text_voucher_date = v.findViewById(R.id.text_voucher_using_date_detail_rewards);
+        text_voucher = v.findViewById(R.id.text_voucher_detail_rewards);
 
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
         Bundle bundle = getArguments();
@@ -115,10 +127,12 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                     boolean isRedeemAble = true;
 
                     if (bundle.getString(CONDITION) != null) {
-                        String condition = bundle.getString(CONDITION);
+                        condition = bundle.getString(CONDITION);
                         if (condition != null) {
+                            text_conditional_status.setVisibility(View.VISIBLE);
                             switch (condition) {
                                 case REDEEM_CONDITION:
+                                    linear_redeem.setVisibility(View.VISIBLE);
                                     if (prefConfig.getPoint() >= rewards.getRewards_point()) {
                                         status_redeem = "Redeem now";
                                         drawable_status_redeem = mContext.getDrawable(R.drawable.background_reply);
@@ -131,12 +145,31 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                                     }
                                     break;
                                 case USE_CONDITION:
+                                    if (bundle.getParcelable(GET_MERCHANT_REWARDS_DATA) != null) {
+                                        merchant_rewards = bundle.getParcelable(GET_MERCHANT_REWARDS_DATA);
+                                    }
                                     status_redeem = "Use now";
                                     drawable_status_redeem = mContext.getDrawable(R.drawable.background_reply);
                                     color_status = mContext.getResources().getColor(R.color.white_color);
                                     break;
                                 case IS_USED_CONDITION:
+                                    if (bundle.getParcelable(GET_MERCHANT_REWARDS_DATA) != null) {
+                                        merchant_rewards = bundle.getParcelable(GET_MERCHANT_REWARDS_DATA);
+                                    }
                                     text_conditional_status.setVisibility(View.GONE);
+                                    text_voucher_date.setVisibility(View.VISIBLE);
+                                    text_voucher_use.setVisibility(View.VISIBLE);
+                                    linear_voucher_code.setVisibility(View.VISIBLE);
+
+                                    text_voucher.setText("Voucher code: xxxxxxxxxxxxxxx");
+
+                                    try {
+                                        text_voucher_date.setText(Utils.formatDateFromDateString(
+                                                "dd/MM/yyyy HH:mm", "EEEE, dd MMM yyyy HH:mm"
+                                                , merchant_rewards.getMerchant_rewards_date_collect()) + " WIB");
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                             }
                         }
@@ -166,7 +199,6 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                     viewPager.setCurrentItem(1);
 
                     custom_frame_redeem_point.setOnClickListener(this);
-
                     linear_custom_redeem_point.setOnClickListener(this);
                 }
             }
@@ -195,17 +227,27 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                 fragmentTransaction.commit();
                 break;
             case R.id.text_conditional_redeem_status_detail_rewards:
-                if (rewards != null) {
-                    TextView text = v.findViewById(R.id.text_warning_custom_redeem_point);
-                    Button btn_cancel = v.findViewById(R.id.btn_cancel_custom_redeem_point);
-                    Button btn_send = v.findViewById(R.id.btn_yes_custom_redeem_point);
+                if (!condition.isEmpty())
+                    switch (condition) {
+                        case REDEEM_CONDITION:
+                            if (rewards != null) {
+                                TextView text = v.findViewById(R.id.text_warning_custom_redeem_point);
+                                Button btn_cancel = v.findViewById(R.id.btn_cancel_custom_redeem_point);
+                                Button btn_send = v.findViewById(R.id.btn_yes_custom_redeem_point);
 
-                    custom_relative_redeem_point.setVisibility(View.VISIBLE);
+                                custom_relative_redeem_point.setVisibility(View.VISIBLE);
 
-                    text.setText("Apakah Anda yakin untuk me-redeem voucher ini? Point Anda akan berkurang sebesar " + rewards.getRewards_point() + " points");
+                                text.setText("Apakah Anda yakin untuk me-redeem voucher ini? Point Anda akan berkurang sebesar " + rewards.getRewards_point() + " points");
 
-                    btn_cancel.setOnClickListener(this);
-                    btn_send.setOnClickListener(this);
+                                btn_cancel.setOnClickListener(this);
+                                btn_send.setOnClickListener(this);
+                            }
+                            break;
+                        case IS_USED_CONDITION:
+                            break;
+                        case USE_CONDITION:
+                            presenter.useReward(prefConfig.getMID(), merchant_rewards.getMerchant_rewards_id());
+                            break;
                 }
                 break;
             case R.id.btn_cancel_custom_redeem_point:
@@ -227,6 +269,24 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         linear_custom_redeem_point.setVisibility(View.GONE);
         custom_loading.setVisibility(View.GONE);
 
+        condition = USE_CONDITION;
+        text_conditional_status.setText("Use now");
+    }
 
+    @Override
+    public void onUseSuccess(String date) {
+        merchant_rewards.setRewards_is_used(true);
+        merchant_rewards.setMerchant_rewards_date_collect(date);
+        text_conditional_status.setVisibility(View.GONE);
+        text_voucher_date.setVisibility(View.VISIBLE);
+        text_voucher_use.setVisibility(View.VISIBLE);
+        linear_voucher_code.setVisibility(View.VISIBLE);
+        text_voucher.setText("Voucher code: xxxxxxxxxxxxxxx");
+        try {
+            text_voucher_date.setText(Utils.formatDateFromDateString("dd/MM/yyyy HH:mm"
+                    , "EEEE, dd MMM yyyy HH:mm WIB", date) + " WIB");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -63,4 +63,24 @@ public class DetailRewardsPresenter implements IDetailRewardsPresenter {
                     }
                 });
     }
+
+    @Override
+    public void useReward(String MID, String merchant_rewards_id) {
+        final String date = Utils.getTime("dd/MM/yyyy HH:mm");
+
+        String path = Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/"
+                + Constant.DB_REFERENCE_MERCHANT_REWARDS + "/" + merchant_rewards_id;
+
+        Map<String, Object> rewardUpdate = new HashMap<>();
+        rewardUpdate.put(path + "/merchant_rewards_date_collect", date);
+        rewardUpdate.put(path + "/rewards_is_used", true);
+
+        dbRef.updateChildren(rewardUpdate)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        view.onUseSuccess(date);
+                    }
+                });
+    }
 }

@@ -253,7 +253,7 @@ public class Merchant implements Parcelable {
         }
     }
 
-    public static class Rewards {
+    public static class Rewards implements Parcelable {
         private String merchant_rewards_id, rewards_id, merchant_rewards_code, merchant_rewards_date_collect, merchant_collect_mission_date;
         private boolean rewards_is_used;
 
@@ -267,6 +267,35 @@ public class Merchant implements Parcelable {
         }
 
         public Rewards() {
+        }
+
+        protected Rewards(Parcel in) {
+            merchant_rewards_id = in.readString();
+            rewards_id = in.readString();
+            merchant_rewards_code = in.readString();
+            merchant_rewards_date_collect = in.readString();
+            merchant_collect_mission_date = in.readString();
+            rewards_is_used = in.readByte() != 0;
+        }
+
+        public static final Creator<Rewards> CREATOR = new Creator<Rewards>() {
+            @Override
+            public Rewards createFromParcel(Parcel in) {
+                return new Rewards(in);
+            }
+
+            @Override
+            public Rewards[] newArray(int size) {
+                return new Rewards[size];
+            }
+        };
+
+        public void setMerchant_rewards_date_collect(String merchant_rewards_date_collect) {
+            this.merchant_rewards_date_collect = merchant_rewards_date_collect;
+        }
+
+        public void setRewards_is_used(boolean rewards_is_used) {
+            this.rewards_is_used = rewards_is_used;
         }
 
         public String getMerchant_rewards_id() {
@@ -291,6 +320,21 @@ public class Merchant implements Parcelable {
 
         public boolean isRewards_is_used() {
             return rewards_is_used;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(merchant_rewards_id);
+            parcel.writeString(rewards_id);
+            parcel.writeString(merchant_rewards_code);
+            parcel.writeString(merchant_rewards_date_collect);
+            parcel.writeString(merchant_collect_mission_date);
+            parcel.writeByte((byte) (rewards_is_used ? 1 : 0));
         }
     }
 }

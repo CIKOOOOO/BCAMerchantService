@@ -170,7 +170,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
 
     @Override
     public void loyaltyListener(Loyalty loyalty) {
-        int textSizeInSp = (int) getResources().getDimension(R.dimen.text_17);
+        int textSizeInSp = (int) mContext.getResources().getDimension(R.dimen.text_17);
 
         text_rank_name.setText(loyalty.getLoyalty_name());
         text_rank_type_result.setText("You have unlocked this rank.");
