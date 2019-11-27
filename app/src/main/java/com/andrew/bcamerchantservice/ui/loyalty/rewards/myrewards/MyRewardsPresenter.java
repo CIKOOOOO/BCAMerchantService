@@ -1,17 +1,22 @@
 package com.andrew.bcamerchantservice.ui.loyalty.rewards.myrewards;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MyRewardsPresenter implements IMyRewardsPresenter {
@@ -54,8 +59,19 @@ public class MyRewardsPresenter implements IMyRewardsPresenter {
                         List<Merchant.Rewards> rewardsList = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Merchant.Rewards rewards = snapshot.getValue(Merchant.Rewards.class);
-                            loadRewardLoyalty(rewards.getRewards_id());
-                            rewardsList.add(rewards);
+                            try {
+                                Date date = new SimpleDateFormat("dd/MM/yyyy").parse(rewards.getMerchant_voucher_valid_date());
+
+                                if (new Date().before(date) || Utils.getTime("dd/MM/yyyy")
+                                        .equals(Utils.formatDateFromDateString("dd/MM/yyyy HH:mm"
+                                                , "dd/MM/yyyy", rewards.getMerchant_voucher_valid_date()))) {
+                                    loadRewardLoyalty(rewards.getRewards_id());
+                                    rewardsList.add(rewards);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                         view.onLoadMerchantRewards(rewardsList);
                     }

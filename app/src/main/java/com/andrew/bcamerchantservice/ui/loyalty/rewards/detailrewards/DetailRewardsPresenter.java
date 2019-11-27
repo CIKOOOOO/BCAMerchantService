@@ -1,5 +1,7 @@
 package com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards;
 
+import android.util.Log;
+
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -10,6 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +37,21 @@ public class DetailRewardsPresenter implements IDetailRewardsPresenter {
         String easy = RandomString.digits + "ACEFGHJKLMNPQRUVWXYabcdefhijkprstuvwx";
         RandomString tickets = new RandomString(23, new SecureRandom(), easy);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date myDate = null;
+        try {
+            myDate = dateFormat.parse(Utils.getTime("dd/MM/yyyy HH:mm"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(myDate);
+        calendar.add(Calendar.DAY_OF_YEAR, +7);
+        Date newDate = calendar.getTime();
+        String date = dateFormat.format(newDate);
+        Log.e("asd", date);
         final Merchant.Rewards rewards = new Merchant.Rewards(key, loyalty_rewards.getRewards_id(), tickets.nextString()
-                , "", Utils.getTime("dd/MM/yyyy HH:mm"), false);
+                , "", Utils.getTime("dd/MM/yyyy HH:mm"), date, false);
 
         dbRef.child(path + "/" + key)
                 .setValue(rewards)

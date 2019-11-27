@@ -1,6 +1,8 @@
 package com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
@@ -58,6 +61,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
     private DetailRewardsPresenter presenter;
 
     private String condition;
+    private boolean isVoucherVisible;
 
     public DetailRewardsFragment() {
         // Required empty public constructor
@@ -73,6 +77,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
     }
 
     private void initVar() {
+        isVoucherVisible = false;
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
 
@@ -81,6 +86,8 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         TabLayout tabLayout = v.findViewById(R.id.tab_layout_detail_rewards);
         ViewPager viewPager = v.findViewById(R.id.view_pager_detail_rewards);
         LinearLayout linear_redeem = v.findViewById(R.id.ll_dummy_00_detail_rewards);
+        ImageButton img_btn_eye = v.findViewById(R.id.img_btn_eye_detail_rewards);
+        ImageButton img_btn_copy = v.findViewById(R.id.img_btn_copy_voucher_detail_rewards);
 
         text_conditional_status = v.findViewById(R.id.text_conditional_redeem_status_detail_rewards);
         custom_relative_redeem_point = v.findViewById(R.id.custom_redeem_point);
@@ -112,13 +119,13 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                     TextView text_title = v.findViewById(R.id.text_title_detail_rewards);
                     TextView text_amount_point = v.findViewById(R.id.text_amount_point_detail_rewards);
 
-                    if (rewards.getRewards_image().isEmpty())
+                    if (rewards.getRewards_thumbnail().isEmpty())
                         Picasso.get()
                                 .load(R.color.iron_palette)
                                 .into(img_detail_rewards);
                     else
                         Picasso.get()
-                                .load(rewards.getRewards_image())
+                                .load(rewards.getRewards_thumbnail())
                                 .into(img_detail_rewards);
 
                     String status_redeem = "";
@@ -206,6 +213,8 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
 
         text_conditional_status.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
+        img_btn_copy.setOnClickListener(this);
+        img_btn_eye.setOnClickListener(this);
     }
 
     @Override
@@ -216,14 +225,14 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                 Bundle bundle = new Bundle();
                 FragmentManager fragmentManager = getFragmentManager();
 
-//                bundle.putInt(AllRewardsFragment.GET_DATA, 1);
+                bundle.putInt(RewardsFragment.GET_DATA, 1);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, rewardsFragment);
 
-//                allRewardsFragment.setArguments(bundle);
+                rewardsFragment.setArguments(bundle);
                 fragmentTransaction.commit();
                 break;
             case R.id.text_conditional_redeem_status_detail_rewards:
@@ -260,6 +269,26 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                 int point = prefConfig.getPoint() - rewards.getRewards_point();
                 presenter.sendReward(prefConfig.getMID(), rewards, point);
                 break;
+            case R.id.img_btn_eye_detail_rewards:
+                ImageButton imageButton = v.findViewById(R.id.img_btn_eye_detail_rewards);
+                Drawable drawable = null;
+                if (isVoucherVisible) {
+                    text_voucher.setText("Voucher code: xxxxxxxxxxxxxxx");
+                    isVoucherVisible = false;
+                    drawable = mContext.getDrawable(R.drawable.ic_closed_eye);
+                } else {
+                    text_voucher.setText("Voucher code: " + merchant_rewards.getMerchant_rewards_code());
+                    isVoucherVisible = true;
+                    drawable = mContext.getDrawable(R.drawable.ic_eye);
+                }
+                imageButton.setBackground(drawable);
+                break;
+            case R.id.img_btn_copy_voucher_detail_rewards:
+                Toast.makeText(mContext, "Kode telah disalin", Toast.LENGTH_SHORT).show();
+                ClipboardManager clipboard = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Voucher code:", merchant_rewards.getMerchant_rewards_code());
+                clipboard.setPrimaryClip(clip);
+                break;
         }
     }
 
@@ -275,6 +304,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onUseSuccess(String date) {
+        condition = IS_USED_CONDITION;
         merchant_rewards.setRewards_is_used(true);
         merchant_rewards.setMerchant_rewards_date_collect(date);
         text_conditional_status.setVisibility(View.GONE);
@@ -284,7 +314,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         text_voucher.setText("Voucher code: xxxxxxxxxxxxxxx");
         try {
             text_voucher_date.setText(Utils.formatDateFromDateString("dd/MM/yyyy HH:mm"
-                    , "EEEE, dd MMM yyyy HH:mm WIB", date) + " WIB");
+                    , "EEEE, dd MMM yyyy HH:mm", date) + " WIB");
         } catch (ParseException e) {
             e.printStackTrace();
         }

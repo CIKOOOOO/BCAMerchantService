@@ -25,6 +25,8 @@ import com.andrew.bcamerchantservice.utils.PrefConfig;
  */
 public class RewardsFragment extends Fragment implements View.OnClickListener, IRewardsView {
 
+    public static final String GET_DATA = "get_data";
+
     private View v;
     private Context mContext;
     private PrefConfig prefConfig;
@@ -65,6 +67,13 @@ public class RewardsFragment extends Fragment implements View.OnClickListener, I
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            viewPager.setCurrentItem(bundle.getInt(GET_DATA, 0));
+        } else
+            viewPager.setCurrentItem(0);
 
         presenter.merchantListener(prefConfig.getMID());
 
