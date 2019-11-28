@@ -18,6 +18,7 @@ import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.earn.EarnFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.spend.SpendFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
 
 /**
@@ -43,6 +44,7 @@ public class PointHistoryFragment extends Fragment implements View.OnClickListen
 
     private void initVar() {
         mContext = v.getContext();
+        MainActivity.bottomNavigationView.setVisibility(View.GONE);
 
         TabLayout tabLayout = v.findViewById(R.id.tab_layout_point_history);
         ViewPager viewPager = v.findViewById(R.id.view_pager_point_history);
@@ -68,7 +70,7 @@ public class PointHistoryFragment extends Fragment implements View.OnClickListen
             case R.id.img_btn_back_toolbar_back:
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                fragmentTransaction.replace(R.id.main_frame, new RewardsFragment());
+                fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
                 fragmentTransaction.commit();
                 break;
         }

@@ -169,6 +169,10 @@ public class Loyalty {
             this.spend_point = spend_point;
         }
 
+        public void setSpend_id(String spend_id) {
+            this.spend_id = spend_id;
+        }
+
         public String getSpend_id() {
             return spend_id;
         }
