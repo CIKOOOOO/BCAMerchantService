@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
+import com.andrew.bcamerchantservice.ui.loyalty.point_history.PointHistoryFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
@@ -170,6 +171,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof RewardsFragment) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
+            fragmentTransaction.commit();
+        }else if(fragment instanceof PointHistoryFragment){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
             fragmentTransaction.commit();

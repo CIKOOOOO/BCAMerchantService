@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.loyalty.point_history.spend;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -85,6 +86,10 @@ public class SpendPresenter implements ISpendPresenter {
                                 return t1.getSpend_date().compareTo(spend.getSpend_date());
                             }
                         });
+                        for (Loyalty.Spend earn : spendList) {
+//                            Log.e("asd", earn.getSpend_id());
+                        }
+
                         view.onLoadSpendList(spendList);
                     }
 

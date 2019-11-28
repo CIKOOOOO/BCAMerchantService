@@ -110,8 +110,8 @@ public class HiddenForumAdapter extends RecyclerView.Adapter<HiddenForumAdapter.
         holder.rippleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (merchantMap.get(forum.getMid()) != null)
-                    forumOnClick.onClick(forum, merchantMap.get(forum.getMid()));
+//                if (merchantMap.get(forum.getMid()) != null)
+//                    forumOnClick.onClick(forum, merchantMap.get(forum.getMid()));
             }
         });
     }

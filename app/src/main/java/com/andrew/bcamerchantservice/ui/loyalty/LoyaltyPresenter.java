@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.loyalty;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -17,9 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LoyaltyPresenter implements ILoyaltyPresenter {
 
@@ -202,14 +199,17 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
                 + "/" + MID + "/" + Utils.getTime("MM-yyyy") + "/" + Constant.DB_REFERENCE_POINT_HISTORY_EARN;
         String income_key = dbRef.child(income_path).push().getKey();
 
-        Map<String, Object> pointMap = new HashMap<>();
-        pointMap.put("earn_id", income_key);
-        pointMap.put("earn_date", Utils.getTime("dd/MM/yyyy HH:mm"));
-        pointMap.put("earn_point", mission.getMission_prize());
-        pointMap.put("earn_type", "reward");
+        Loyalty.Earn earn = new Loyalty.Earn(income_key, Utils.getTime("dd/MM/yyyy")
+                , "reward", mission.getMission_prize());
+
+//        Map<String, Object> pointMap = new HashMap<>();
+//        pointMap.put("earn_id", income_key);
+//        pointMap.put("earn_date", Utils.getTime("dd/MM/yyyy HH:mm"));
+//        pointMap.put("earn_point", mission.getMission_prize());
+//        pointMap.put("earn_type", "reward");
 
         dbRef.child(income_path + "/" + income_key)
-                .setValue(pointMap);
+                .setValue(earn);
 
         dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/merchant_point")
                 .setValue(point)

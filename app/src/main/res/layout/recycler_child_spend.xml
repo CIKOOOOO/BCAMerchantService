@@ -12,16 +12,17 @@
         android:id="@+id/recycler_text_title_spend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/sniglet_font"
         android:text="Voucher discount Rp 500.000 Traveloka"
         android:textColor="@color/blackPalette" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/recycler_text_type_spend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_rounded_stroke_blue"

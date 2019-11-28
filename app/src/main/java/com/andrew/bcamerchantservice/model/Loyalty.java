@@ -189,4 +189,35 @@ public class Loyalty {
             return spend_point;
         }
     }
+
+    public static class Earn {
+        private String earn_id, earn_date, earn_type;
+        private int earn_point;
+
+        public Earn() {
+        }
+
+        public Earn(String earn_id, String earn_date, String earn_type, int earn_point) {
+            this.earn_id = earn_id;
+            this.earn_date = earn_date;
+            this.earn_type = earn_type;
+            this.earn_point = earn_point;
+        }
+
+        public String getEarn_id() {
+            return earn_id;
+        }
+
+        public String getEarn_date() {
+            return earn_date;
+        }
+
+        public String getEarn_type() {
+            return earn_type;
+        }
+
+        public int getEarn_point() {
+            return earn_point;
+        }
+    }
 }
