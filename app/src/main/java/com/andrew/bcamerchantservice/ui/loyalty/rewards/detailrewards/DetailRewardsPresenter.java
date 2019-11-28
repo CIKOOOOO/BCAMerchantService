@@ -37,21 +37,9 @@ public class DetailRewardsPresenter implements IDetailRewardsPresenter {
         String easy = RandomString.digits + "ACEFGHJKLMNPQRUVWXYabcdefhijkprstuvwx";
         RandomString tickets = new RandomString(23, new SecureRandom(), easy);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date myDate = null;
-        try {
-            myDate = dateFormat.parse(Utils.getTime("dd/MM/yyyy HH:mm"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(myDate);
-        calendar.add(Calendar.DAY_OF_YEAR, +7);
-        Date newDate = calendar.getTime();
-        String date = dateFormat.format(newDate);
-        Log.e("asd", date);
+
         final Merchant.Rewards rewards = new Merchant.Rewards(key, loyalty_rewards.getRewards_id(), tickets.nextString()
-                , "", Utils.getTime("dd/MM/yyyy HH:mm"), date, false);
+                , "", Utils.getTime("dd/MM/yyyy HH:mm"), "", false);
 
         dbRef.child(path + "/" + key)
                 .setValue(rewards)
@@ -85,20 +73,34 @@ public class DetailRewardsPresenter implements IDetailRewardsPresenter {
 
     @Override
     public void useReward(String MID, String merchant_rewards_id) {
-        final String date = Utils.getTime("dd/MM/yyyy HH:mm");
+        final String current_date = Utils.getTime("dd/MM/yyyy HH:mm");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date myDate = null;
+        try {
+            myDate = dateFormat.parse(Utils.getTime("dd/MM/yyyy HH:mm"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(myDate);
+        calendar.add(Calendar.DAY_OF_YEAR, +7);
+        Date newDate = calendar.getTime();
+        String valid_date = dateFormat.format(newDate);
 
         String path = Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/"
                 + Constant.DB_REFERENCE_MERCHANT_REWARDS + "/" + merchant_rewards_id;
 
         Map<String, Object> rewardUpdate = new HashMap<>();
-        rewardUpdate.put(path + "/merchant_rewards_date_collect", date);
+        rewardUpdate.put(path + "/merchant_rewards_date_collect", current_date);
         rewardUpdate.put(path + "/rewards_is_used", true);
+        rewardUpdate.put(path + "/merchant_voucher_valid_date", valid_date);
 
         dbRef.updateChildren(rewardUpdate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        view.onUseSuccess(date);
+                        view.onUseSuccess(current_date);
                     }
                 });
     }

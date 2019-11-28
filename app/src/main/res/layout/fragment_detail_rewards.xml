@@ -189,7 +189,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/sniglet_font"
-            android:text="Voucher used on"
+            android:text="Voucher valid until"
             android:textColor="@color/blackPalette"
             android:textSize="15sp"
             android:visibility="gone" />
@@ -206,7 +206,7 @@
             android:fontFamily="@font/sniglet_font"
             android:text="Friday, 15 Nov 2019 09:16 WIB"
             android:textColor="@color/blackPalette"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:visibility="gone" />
     </RelativeLayout>
 

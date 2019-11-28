@@ -25,6 +25,7 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
+import com.andrew.bcamerchantservice.ui.loyalty.point_history.PointHistoryFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
@@ -95,6 +96,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         Button btn_back_current_progress = v.findViewById(R.id.btn_back_current_progress_sheet);
         NestedScrollView nestedScrollView = v.findViewById(R.id.nested_scroll_loyalty);
         TextView text_browse_rewards = v.findViewById(R.id.text_browse_rewards_loyalty);
+        TextView text_point_history = v.findViewById(R.id.text_point_history_loyalty);
 
         text_point = v.findViewById(R.id.text_points_loyalty);
         text_expired_point = v.findViewById(R.id.text_expire_point_loyalty);
@@ -154,6 +156,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         presenter.loadLoyaltyType();
         presenter.loadLoyalty(prefConfig.getLoyaltyId());
 
+        text_point_history.setOnClickListener(this);
         text_browse_rewards.setOnClickListener(this);
         img_btn_current_progress.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
@@ -285,6 +288,11 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
                 MainActivity.bottomNavigationView.setVisibility(View.GONE);
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, new RewardsFragment());
+                fragmentTransaction.commit();
+                break;
+            case R.id.text_point_history_loyalty:
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.main_frame, new PointHistoryFragment());
                 fragmentTransaction.commit();
                 break;
         }

@@ -293,6 +293,10 @@ public class Merchant implements Parcelable {
             }
         };
 
+        public void setMerchant_voucher_valid_date(String merchant_voucher_valid_date) {
+            this.merchant_voucher_valid_date = merchant_voucher_valid_date;
+        }
+
         public void setMerchant_rewards_date_collect(String merchant_rewards_date_collect) {
             this.merchant_rewards_date_collect = merchant_rewards_date_collect;
         }

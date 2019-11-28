@@ -43,7 +43,7 @@
 
             <Button
                 android:id="@+id/btn_cancel_custom_redeem_point"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/rectangle_rounded_stroke_blue"
@@ -54,7 +54,7 @@
 
             <Button
                 android:id="@+id/btn_yes_custom_redeem_point"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/background_reply"

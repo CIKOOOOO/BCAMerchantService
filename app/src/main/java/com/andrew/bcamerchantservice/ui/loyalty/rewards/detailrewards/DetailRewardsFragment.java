@@ -173,7 +173,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                                     try {
                                         text_voucher_date.setText(Utils.formatDateFromDateString(
                                                 "dd/MM/yyyy HH:mm", "EEEE, dd MMM yyyy HH:mm"
-                                                , merchant_rewards.getMerchant_rewards_date_collect()) + " WIB");
+                                                , merchant_rewards.getMerchant_voucher_valid_date()) + " WIB");
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
