@@ -30,7 +30,7 @@ public class ForumOtherProfilePresenter implements IForumOtherPresenter {
     }
 
     @Override
-    public void onLoadForum(final String MID) {
+    public void onLoadForum(final String MID, final String merchant_owner_id) {
         dbRef.child(Constant.DB_REFERENCE_FORUM)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -38,19 +38,48 @@ public class ForumOtherProfilePresenter implements IForumOtherPresenter {
                         List<Forum> forumList = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             if (snapshot.child("mid").getValue().toString().equals(MID)) {
-                                forumList.add(0, snapshot.getValue(Forum.class));
-                                dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID)
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                view.onMerchantProfile(dataSnapshot.getValue(Merchant.class));
-                                            }
+                                if (snapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
+                                    forumList.add(0, snapshot.getValue(Forum.class));
+                                    dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    view.onMerchantProfile(dataSnapshot.getValue(Merchant.class));
+                                                }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                            }
-                                        });
+                                                }
+                                            });
+                                } else {
+                                    boolean isHide = false;
+                                    for (DataSnapshot hiddenSnapshot : snapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildren()) {
+                                        if (hiddenSnapshot.getKey().equals(merchant_owner_id)) {
+                                            isHide = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!isHide) {
+                                        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
+                                                .child(MID)
+                                                .addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
+                                                        if (dataSnapshots.getValue(Merchant.class) == null)
+                                                            return;
+                                                        view.onMerchantProfile(dataSnapshots.getValue(Merchant.class));
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                        forumList.add(0, snapshot.getValue(Forum.class));
+                                    }
+                                }
                             }
                         }
                         view.onGettingData(forumList);
@@ -91,7 +120,6 @@ public class ForumOtherProfilePresenter implements IForumOtherPresenter {
         map.put("report_id", key);
         map.put("report_date", Utils.getTime("dd/MM/yyyy HH:mm"));
         map.put("report_mid", MID);
-
         map.put("report_content", content);
 
         for (Report report : reportList) {
@@ -136,63 +164,101 @@ public class ForumOtherProfilePresenter implements IForumOtherPresenter {
         final String key = dbRef.push().getKey();
         final Forum.ForumHidden forumHidden = new Forum.ForumHidden(key, FID, Utils.getTime("dd/MM/yyyy HH:mm"));
 
-        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
+                .setValue(forumHidden)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
-                            dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
-                                    .setValue(forumHidden)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-
-                                        }
-                                    });
-
-                            dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
-                                    .setValue(forumHidden)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-
-                                        }
-                                    });
-                        } else {
-                            boolean isHide = false;
-                            for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildren()) {
-                                if (snapshot.getKey().equals(MID)) {
-                                    isHide = true;
-                                    break;
-                                }
-                            }
-                            if (!isHide) {
-                                dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
-                                        .setValue(forumHidden)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-
-                                            }
-                                        });
-
-                                dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
-                                        .setValue(forumHidden)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-
-                                            }
-                                        });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    public void onSuccess(Void aVoid) {
 
                     }
                 });
+
+        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
+                .setValue(forumHidden)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        final String forum_favorite_path = Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
+                        dbRef.child(forum_favorite_path)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.getValue() != null) {
+                                            dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID).removeValue();
+                                            dbRef.child(forum_favorite_path).removeValue();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                    }
+                });
+
+//        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        /*
+         * Ini untuk ngecek, apakah data sudah pernah ada atau belum
+         * Harusnya ga perlu di validasi kembali,..
+         * */
+//                        if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
+//                            dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
+//                                    .setValue(forumHidden)
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//
+//                                        }
+//                                    });
+//
+//                            dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
+//                                    .setValue(forumHidden)
+//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//
+//                                        }
+//                                    });
+//                        }
+//                        else {
+//                            boolean isHide = false;
+//                            for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildren()) {
+//                                if (snapshot.getKey().equals(MID)) {
+//                                    isHide = true;
+//                                    break;
+//                                }
+//                            }
+//                            if (!isHide) {
+//                                dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
+//                                        .setValue(forumHidden)
+//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                            @Override
+//                                            public void onSuccess(Void aVoid) {
+//
+//                                            }
+//                                        });
+//
+//                                dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
+//                                        .setValue(forumHidden)
+//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                            @Override
+//                                            public void onSuccess(Void aVoid) {
+//
+//                                            }
+//                                        });
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
     }
 
     @Override

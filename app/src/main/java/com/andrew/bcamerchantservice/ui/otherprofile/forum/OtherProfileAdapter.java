@@ -56,7 +56,7 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
 
         void onDelete(int pos, Forum forum);
 
-        void onHide(String FID);
+        void onHide(String FID, String title);
 
         void onShowReport(Merchant merchant, Forum forum);
     }
@@ -169,7 +169,7 @@ public class OtherProfileAdapter extends RecyclerView.Adapter<OtherProfileAdapte
                                     onItemClick.onShowReport(merchant, forumThread);
                                     break;
                                 case R.id.menu_hide:
-                                    onItemClick.onHide(forumThread.getFid());
+                                    onItemClick.onHide(forumThread.getFid(), forumThread.getForum_title());
                                     break;
                             }
                             return false;

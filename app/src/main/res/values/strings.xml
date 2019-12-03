@@ -18,7 +18,7 @@
     <string name="bottom_navigation_account">Akun</string>
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
-    <string name="thread_title">Judul Thread</string>
+    <string name="thread_title">Judul Forum</string>
     <string name="choose_thumbnail">Pilih Thumbnail</string>
     <string name="category_title">Pilih Kategori</string>
     <string name="merchant_forum_discussion">Merchant Forum Discussion</string>
@@ -29,7 +29,7 @@
     <string name="exit">Tekan tombol \'Kembali\' untuk keluar</string>
     <string name="find_here"><i>Cari disini . .</i></string>
     <string name="find_search">Klik pencarian</string>
-    <string name="trending_thread" tools:ignore="Typos">Thread Populer</string>
+    <string name="trending_thread" tools:ignore="Typos">Forum Populer</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -37,15 +37,15 @@
         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
         proident, sunt in culpa qui </string>
 
-    <string name="edit_thread">Sunting Thread</string>
-    <string name="delete_thread">Hapus thread</string>
-    <string name="hide_thread">Sembunyikan thread</string>
-    <string name="report_thread">Laporkan Thread</string>
-    <string name="dont_show_thread">Jangan perlihatkan thread akun ini</string>
-    <string name="new_thread">Thread Baru</string>
+    <string name="edit_thread">Sunting Forum</string>
+    <string name="delete_thread">Hapus Forum</string>
+    <string name="hide_thread">Sembunyikan Forum</string>
+    <string name="report_thread">Laporkan Forum</string>
+    <string name="dont_show_thread">Jangan perlihatkan Forum akun ini</string>
+    <string name="new_thread">Forum Baru</string>
     <string name="parent">Judul</string>
     <string name="content">Konten</string>
-    <string name="preview_thread">Tampilan Thread</string>
+    <string name="preview_thread">Tampilan Forum</string>
     <string name="cancel">Batalkan</string>
     <string name="back">Kembali</string>
     <string name="send">Kirim</string>
@@ -62,12 +62,12 @@
     <string name="end">Akhir</string>
     <string name="next">Selanjutnya</string>
 
-    <string name="thread_deleted">Thread is deleted</string>
-    <string name="thread_not_appear">This thread will not appear in your Main Forum</string>
-    <string name="thread_hidden">Thread is hidden</string>
+    <string name="thread_deleted">Forum is deleted</string>
+    <string name="thread_not_appear">This Forum will not appear in your Main Forum</string>
+    <string name="thread_hidden">Forum is hidden</string>
 
     <string name="info_name">Nama pengguna</string>
-    <string name="info_title">Judul thread</string>
+    <string name="info_title">Judul Forum</string>
     <string name="report_sent">Report has been sent</string>
     <string name="check_hate_speech">Ujaran Kebencian</string>
     <string name="check_fake_news">Berita Bohong / Palsu</string>

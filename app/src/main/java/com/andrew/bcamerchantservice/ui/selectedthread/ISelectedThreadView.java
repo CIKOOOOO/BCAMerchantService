@@ -27,4 +27,6 @@ public interface ISelectedThreadView {
     void onSuccessDelete(int pos);
 
     void onGetForum(Forum.ForumCategory forumCategory);
+
+    void onSuccessHide();
 }

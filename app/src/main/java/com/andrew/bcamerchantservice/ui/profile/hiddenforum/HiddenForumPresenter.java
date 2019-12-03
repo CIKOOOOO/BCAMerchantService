@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.profile.hiddenforum;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -14,9 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HiddenForumPresenter implements IHiddenForumPresenter {
     private DatabaseReference dbRef;
@@ -34,10 +31,11 @@ public class HiddenForumPresenter implements IHiddenForumPresenter {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final List<Forum> forumList = new ArrayList<>();
                         if (dataSnapshot.getChildrenCount() == 0) {
                             // Data is null
+                            view.onLoadHiddenForum(forumList, "");
                         } else {
-                            final List<Forum> forumList = new ArrayList<>();
                             for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + snapshot.child("fid").getValue().toString())
                                         .addListenerForSingleValueEvent(new ValueEventListener() {

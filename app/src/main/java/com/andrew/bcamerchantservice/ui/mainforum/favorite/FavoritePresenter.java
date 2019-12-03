@@ -31,13 +31,13 @@ public class FavoritePresenter implements IFavoritePresenter {
     @Override
     public void onGetFavoriteList(final String MID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final List<Forum> forumList = new ArrayList<>();
                         for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + snapshot.getKey())
-                                    .addValueEventListener(new ValueEventListener() {
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             Forum forum = dataSnapshot.getValue(Forum.class);
@@ -45,7 +45,7 @@ public class FavoritePresenter implements IFavoritePresenter {
                                                 if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() == 0) {
                                                     dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
                                                             .child(forum.getMid())
-                                                            .addValueEventListener(new ValueEventListener() {
+                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
                                                                     if (dataSnapshots.getValue(Merchant.class) == null)
@@ -71,7 +71,7 @@ public class FavoritePresenter implements IFavoritePresenter {
                                                     if (!isHide) {
                                                         dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
                                                                 .child(forum.getMid())
-                                                                .addValueEventListener(new ValueEventListener() {
+                                                                .addListenerForSingleValueEvent(new ValueEventListener() {
                                                                     @Override
                                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshots) {
                                                                         if (dataSnapshots.getValue(Merchant.class) == null)

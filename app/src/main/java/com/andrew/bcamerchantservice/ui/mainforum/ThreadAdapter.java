@@ -79,7 +79,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
         void profileOnClick(int pos, Merchant merchant);
 
-        void onHide(String FID);
+        void onHide(String FID, String forum_title);
 
         void onShowReport(Merchant merchant, Forum forum);
 
@@ -205,7 +205,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                                     onItemClick.onShowReport(merchant, forumThread);
                                     break;
                                 case R.id.menu_hide:
-                                    onItemClick.onHide(forumThread.getFid());
+                                    onItemClick.onHide(forumThread.getFid(), forumThread.getForum_title());
                                     break;
                             }
                             return false;

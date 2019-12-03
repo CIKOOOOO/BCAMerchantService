@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IForumOtherPresenter {
-    void onLoadForum(String MID);
+    void onLoadForum(String MID, String merchant_owner_id);
 
     void loadReportList();
 

@@ -33,5 +33,7 @@ public interface ISelectedThreadPresenter {
 
     void onSendReplyReport();
 
+    void onHideForum(String FID, String MID);
+
     void getCategoryName(String FCID);
 }

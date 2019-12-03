@@ -11,11 +11,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -46,14 +44,12 @@ import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
-import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
-import com.andrew.bcamerchantservice.ui.newthread.ImagePickerAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
@@ -65,7 +61,6 @@ import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -297,7 +292,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     @Override
     public void onDelete(final int pos, final Forum forum) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Apa Anda yakin untuk menghapus thread berjudul " + forum.getForum_title() + " ?")
+        builder.setMessage("Apa Anda yakin untuk menghapus forum berjudul " + forum.getForum_title() + " ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
@@ -330,8 +325,22 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
-    public void onHide(String FID) {
-        presenter.onHide(FID, prefConfig.getMID());
+    public void onHide(final String FID, String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Apa Anda yakin untuk menyembunyikan forum berjudul " + title + " ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int a) {
+                        presenter.onHide(FID, prefConfig.getMID());
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
     }
 
     @Override

@@ -27,7 +27,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -298,6 +297,19 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     @Override
     public void onGetForum(Forum.ForumCategory forumCategory) {
         text_category.setText("Kategori : " + forumCategory.getCategory_name());
+    }
+
+    @Override
+    public void onSuccessHide() {
+        Toast.makeText(mContext, "Success to hide forum!", Toast.LENGTH_SHORT).show();
+        FragmentManager fragmentManager = getFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, new MainForum());
+
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -810,6 +822,22 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 });
 
                 codeAlert.show();
+                break;
+            case R.id.menu_hide:
+                AlertDialog.Builder builders = new AlertDialog.Builder(mContext);
+                builders.setMessage("Apa Anda yakin untuk menyembunyikan forum berjudul " + forum.getForum_title() + " ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int a) {
+                                presenter.onHideForum(forum.getFid(), prefConfig.getMID());
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
                 break;
         }
         return false;

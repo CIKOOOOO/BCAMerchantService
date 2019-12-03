@@ -89,6 +89,26 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/sniglet_font"
+                android:text="Deskripsi Singkat"
+                android:textColor="@color/blackPalette" />
+
+            <TextView
+                android:id="@+id/text_description_information_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/sniglet_font"
+                android:textAlignment="center"
+                android:textColor="@color/blackPalette" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/sniglet_font"
                 android:text="Katalog Toko"
                 android:textColor="@color/blackPalette"
                 android:textSize="15sp" />

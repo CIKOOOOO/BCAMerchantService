@@ -168,7 +168,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
                 PopupMenu popupMenu = new PopupMenu(wrap, holder.option_menu);
                 if (prefConfig.getMID().equals(merchant.getMid())) {
                     popupMenu.inflate(R.menu.option_menu_forum_owner);
-                } else popupMenu.inflate(R.menu.option_menu_forum_general);
+                } else popupMenu.inflate(R.menu.option_menu_forum_reply_general);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

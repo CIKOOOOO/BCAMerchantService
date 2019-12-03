@@ -91,8 +91,10 @@ public class HiddenForumFragment extends Fragment implements IHiddenForumView, H
 
     @Override
     public void onLoadHiddenForum(List<Forum> forumList, String FHID) {
-        if (!hiddenMap.containsKey(forumList.get(0).getFid()))
-            hiddenMap.put(forumList.get(0).getFid(), FHID);
+        if(forumList.size() > 0){
+            if (!hiddenMap.containsKey(forumList.get(0).getFid()))
+                hiddenMap.put(forumList.get(0).getFid(), FHID);
+        }
         this.forumList = forumList;
         hiddenForumAdapter.setForumList(forumList);
         hiddenForumAdapter.notifyDataSetChanged();

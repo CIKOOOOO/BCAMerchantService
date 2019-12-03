@@ -357,6 +357,49 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
+    public void onHideForum(final String FID, final String MID) {
+        final String key = dbRef.push().getKey();
+        final Forum.ForumHidden forumHidden = new Forum.ForumHidden(key, FID
+                , Utils.getTime("dd/MM/yyyy HH:mm"));
+
+        dbRef.child(Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID + "/" + key)
+                .setValue(forumHidden)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                });
+
+        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_HIDDEN + "/" + MID)
+                .setValue(forumHidden)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        final String forum_favorite_path = Constant.DB_REFERENCE_FORUM + "/" + FID
+                                + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
+                        dbRef.child(forum_favorite_path)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.getValue() != null) {
+                                            dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/"
+                                                    + MID + "/" + FID).removeValue();
+                                            dbRef.child(forum_favorite_path).removeValue();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                        iSelectedThreadView.onSuccessHide();
+                    }
+                });
+    }
+
+    @Override
     public void getCategoryName(String FCID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM_CATEGORY + "/" + FCID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {

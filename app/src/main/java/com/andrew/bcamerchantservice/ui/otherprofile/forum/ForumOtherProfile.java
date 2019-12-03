@@ -3,6 +3,7 @@ package com.andrew.bcamerchantservice.ui.otherprofile.forum;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -88,7 +89,7 @@ public class ForumOtherProfile extends Fragment implements OtherProfileAdapter.o
         if (bundle != null) {
             if (bundle.getString(GETTING_MERCHANT_DATA) != null) {
                 String key = bundle.getString(GETTING_MERCHANT_DATA);
-                presenter.onLoadForum(key);
+                presenter.onLoadForum(key, prefConfig.getMID());
             }
         }
 
@@ -111,8 +112,21 @@ public class ForumOtherProfile extends Fragment implements OtherProfileAdapter.o
     }
 
     @Override
-    public void onHide(String FID) {
-        presenter.onHide(FID, prefConfig.getMID());
+    public void onHide(final String FID, String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Apa Anda yakin untuk menyembunyikan forum berjudul " + title + " ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int a) {
+                        presenter.onHide(FID, prefConfig.getMID());
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
     }
 
     @Override

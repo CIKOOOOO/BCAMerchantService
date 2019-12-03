@@ -145,7 +145,7 @@ public class MyForumFragment extends Fragment implements IMyForumView, ThreadAda
     }
 
     @Override
-    public void onHide(String FID) {
+    public void onHide(String FID, String a) {
 
     }
 

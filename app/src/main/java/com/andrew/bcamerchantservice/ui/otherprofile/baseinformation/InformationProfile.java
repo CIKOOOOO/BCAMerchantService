@@ -4,10 +4,8 @@ package com.andrew.bcamerchantservice.ui.otherprofile.baseinformation;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.CatalogAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,6 +54,7 @@ public class InformationProfile extends Fragment implements IInformationProfileV
         TextView text_email = v.findViewById(R.id.text_email_information_profile);
         TextView text_address = v.findViewById(R.id.text_address_information_profile);
         RecyclerView recycler_information_profile = v.findViewById(R.id.recycler_information_profile);
+        TextView text_description = v.findViewById(R.id.text_description_information_profile);
 
         presenter = new InformationProfilePresenter(this);
 
@@ -69,6 +67,7 @@ public class InformationProfile extends Fragment implements IInformationProfileV
             text_phone_number.setText(" : " + merchant.getMerchant_phone_number());
             text_email.setText(" : " + merchant.getMerchant_email());
             text_address.setText(" : " + merchant.getMerchant_address());
+            text_description.setText(merchant.getMerchant_description());
 
             presenter.onLoadCatalog(merchant.getMid());
 
