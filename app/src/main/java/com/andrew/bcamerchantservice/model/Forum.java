@@ -263,10 +263,10 @@ public class Forum implements Parcelable {
     }
 
     public static class ForumImageReply {
-        private String frid, image_name, image_url;
+        private String forum_image_reply_id, image_name, image_url;
 
-        public ForumImageReply(String frid, String image_name, String image_url) {
-            this.frid = frid;
+        public ForumImageReply(String forum_image_reply_id, String image_name, String image_url) {
+            this.forum_image_reply_id = forum_image_reply_id;
             this.image_name = image_name;
             this.image_url = image_url;
         }
@@ -274,8 +274,8 @@ public class Forum implements Parcelable {
         public ForumImageReply() {
         }
 
-        public String getFrid() {
-            return frid;
+        public String getForum_image_reply_id() {
+            return forum_image_reply_id;
         }
 
         public String getImage_name() {
