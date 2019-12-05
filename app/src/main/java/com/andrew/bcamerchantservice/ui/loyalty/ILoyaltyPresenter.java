@@ -15,7 +15,7 @@ public interface ILoyaltyPresenter {
 
     void loadMerchantLoyaltyListener(String MID);
 
-    void loadMission(List<Merchant.Mission> missionList);
+    void loadMission(List<Merchant.Mission> missionList, String position_id);
 
     void sendMission(Loyalty.Mission mission, String MID, int point);
 }

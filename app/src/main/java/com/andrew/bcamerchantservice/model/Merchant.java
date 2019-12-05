@@ -350,4 +350,24 @@ public class Merchant implements Parcelable {
             parcel.writeByte((byte) (rewards_is_used ? 1 : 0));
         }
     }
+
+    public static class Position{
+        private String position_id, position_name;
+
+        public Position(String position_id, String position_name) {
+            this.position_id = position_id;
+            this.position_name = position_name;
+        }
+
+        public Position() {
+        }
+
+        public String getPosition_id() {
+            return position_id;
+        }
+
+        public String getPosition_name() {
+            return position_name;
+        }
+    }
 }

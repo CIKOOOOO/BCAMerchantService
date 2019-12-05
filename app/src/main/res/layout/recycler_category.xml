@@ -33,4 +33,14 @@
         android:textAlignment="center"
         android:textColor="@color/blue_palette"
         android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/recycler_text_more_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/sniglet_font"
+        android:text="More"
+        android:textColor="@color/blue_palette"
+        android:visibility="gone" />
 </RelativeLayout>

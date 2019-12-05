@@ -9,7 +9,7 @@ import java.util.List;
 public class Constant {
     public static final long DELAY = 1000;
     public static final long DELAY_THREAD = 1000;
-    public static final long DURATION_STORY = 7000;
+    public static final long DURATION_STORY = 5000;
     public static final int PERMISSION_READ_GALLERY_EXTERNAL = 100;
     public static final int PERMISSION_WRITE_EXTERNAL = 101;
     public static final int PERMISSION_CAMERA_TAKER = 102;
@@ -25,6 +25,7 @@ public class Constant {
     public static final String DB_REFERENCE_MERCHANT_MISSION = "merchant_mission";
     public static final String DB_REFERENCE_MERCHANT_INCOME = "merchant_income";
     public static final String DB_REFERENCE_MERCHANT_REWARDS = "merchant_rewards";
+    public static final String DB_REFERENCE_MERCHANT_POSITION = "merchant_position";
     public static final String DB_REFERENCE_FORUM = "forum";
     public static final String DB_REFERENCE_FORUM_REPLY = "forum_reply";
     public static final String DB_REFERENCE_FORUM_IMAGE = "forum_image";

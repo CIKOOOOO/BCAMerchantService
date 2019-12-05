@@ -28,8 +28,8 @@ public class MyRewardsPresenter implements IMyRewardsPresenter {
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
-
     private void loadRewardLoyalty(final String rewards_id) {
+        //
         dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_REWARDS)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

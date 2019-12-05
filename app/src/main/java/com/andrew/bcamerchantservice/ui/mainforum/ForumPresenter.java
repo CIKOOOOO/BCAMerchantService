@@ -348,7 +348,7 @@ public class ForumPresenter implements IForumPresenter {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.getValue() != null) {
-                                            dbRef.child(forum_favorite_path).removeValue();
+                                            dbRef.child( forum_favorite_path).removeValue();
                                             dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID).removeValue();
                                         }
                                     }
@@ -421,23 +421,4 @@ public class ForumPresenter implements IForumPresenter {
 
     }
 
-    @Override
-    public void onClickStory(String MID) {
-        dbRef.child(Constant.DB_REFERENCE_MERCHANT_STORY + "/" + MID)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Merchant.MerchantStory> storyList = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            storyList.add(0, snapshot.getValue(Merchant.MerchantStory.class));
-                        }
-                        iForumView.onLoadStory(storyList);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
 }

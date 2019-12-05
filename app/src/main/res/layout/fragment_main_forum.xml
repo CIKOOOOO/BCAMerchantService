@@ -222,10 +222,11 @@
         </android.support.v4.widget.NestedScrollView>
     </com.baoyz.widget.PullRefreshLayout>
 
-    <include
-        android:id="@+id/custom_view_story"
-        layout="@layout/custom_story_view"
-        android:visibility="gone" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_main_forum"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"/>
 
     <include
         android:id="@+id/bottom_sheet_main"

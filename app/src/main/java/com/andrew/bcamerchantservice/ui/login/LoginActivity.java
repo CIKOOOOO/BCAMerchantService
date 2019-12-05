@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
@@ -16,7 +13,6 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
 import com.andrew.bcamerchantservice.utils.Constant;
-import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,26 +47,23 @@ public class LoginActivity extends BaseActivity implements ILoginView, LoginAdap
     }
 
     @Override
-    public void onLoginResult(Merchant merchant, String res) {
-        getPrefConfig().insertMerchantData(merchant);
-        startActivity(new Intent(this, MainActivity.class));
-    }
-
-    @Override
     public void onLoadData(List<Merchant> merchants) {
         loginAdapter.setMerchantList(merchants);
         loginAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLoginFailed(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+    public void onLoadPositionData(Merchant.Position position) {
+        findViewById(R.id.custom_loading_login).setVisibility(View.GONE);
+        getPrefConfig().insertMerchantPosition(position);
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
     public void onClick(Merchant merchant) {
+        findViewById(R.id.custom_loading_login).setVisibility(View.VISIBLE);
+        iLoginPresenter.onGetPositionDetail(merchant.getMerchant_position());
         getPrefConfig().insertMerchantData(merchant);
-        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override

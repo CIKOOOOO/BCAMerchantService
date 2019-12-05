@@ -21,14 +21,15 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,10 +39,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -50,6 +51,7 @@ import com.andrew.bcamerchantservice.model.Report;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.search.SearchFragment;
+import com.andrew.bcamerchantservice.ui.mainforum.story.StoryFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
@@ -59,8 +61,6 @@ import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
-import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -71,29 +71,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import jp.shts.android.storiesprogressview.StoriesProgressView;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         , IForumView, StoryAdapter.onImageClickListener, View.OnClickListener
         , PullRefreshLayout.OnRefreshListener, MainActivity.onBackPressFragment
-        , StoriesProgressView.StoriesListener, CategoryAdapter.onCategoryClick {
+        , CategoryAdapter.onCategoryClick {
 
     public static boolean isStoryVisible, isCategoryBottomSheetVisible;
+    public static ViewPager story_pager;
 
     private static final String TAG = MainForum.class.getSimpleName();
 
     private static RecyclerView showcase_recycler_view;
-    private static StoriesProgressView storiesProgressView;
     private static StoryAdapter storyAdapter;
-    private static RelativeLayout relative_story;
 
     private static List<Forum> forumLists;
     private static List<MerchantStory> storyList;
-
-    private static int counter_story, counter_mid;
 
     private View v, codeView;
     private RecyclerView thread_recycler_view;
@@ -101,15 +96,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private TextView tvError_AddShowCase;
     private PullRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager threadLayoutManager;
-    private ImageView img_add_showcase, image_story;
-    private View reverse, skip;
+    private ImageView img_add_showcase;
     private AlertDialog codeAlert, dialog_report;
     private Context mContext;
     private Activity mActivity;
     private ScaleDrawable scaleDrawable;
     private PrefConfig prefConfig;
     private FrameLayout frame_loading;
-    private RoundedImageView story_picture;
     private CategoryAdapter categoryAdapter;
     private BottomSheetBehavior bottomSheetBehavior;
     private TextView text_category;
@@ -118,12 +111,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     private IForumPresenter presenter;
 
-    private List<MerchantStory> eachStoryList;
     private List<Forum.ForumCategory> categoryList;
     private List<Report> reportList;
     private Map<String, Merchant> merchantMap, merchantStoryMap;
 
-    private long pressTime;
     private boolean check;
 
     @Override
@@ -140,30 +131,15 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         return v;
     }
 
-    @Override
-    public void onPause() {
-        storiesProgressView.pause();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        storiesProgressView.resume();
-        super.onResume();
-    }
 
     @Override
     public void onDestroyView() {
-        storiesProgressView.destroy();
         thread_recycler_view.destroyDrawingCache();
         showcase_recycler_view.destroyDrawingCache();
         super.onDestroyView();
     }
 
     private void initVar() {
-        counter_mid = 0;
-        counter_story = 0;
-        pressTime = 0L;
         mContext = v.getContext();
         presenter = new ForumPresenter(this);
         check = false;
@@ -183,21 +159,15 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
         showcase_recycler_view = v.findViewById(R.id.recycler_story_main_forum);
         thread_recycler_view = v.findViewById(R.id.recycler_thread_main_forum);
-        relative_story = v.findViewById(R.id.custom_view_story);
-        storiesProgressView = v.findViewById(R.id.progress_story);
-        reverse = v.findViewById(R.id.reverse_story);
-        skip = v.findViewById(R.id.skip_story);
-        image_story = v.findViewById(R.id.image_story);
-        story_picture = v.findViewById(R.id.profile_picture_story);
         swipeRefreshLayout = v.findViewById(R.id.swipe);
         frame_loading = v.findViewById(R.id.frame_loading_main_forum);
         text_category = v.findViewById(R.id.text_category_main_forum);
         nestedScrollView = v.findViewById(R.id.nested_scroll_main_forum);
+        story_pager = v.findViewById(R.id.view_pager_main_forum);
         bottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
 
         storyList = new ArrayList<>();
         forumLists = new ArrayList<>();
-        eachStoryList = new ArrayList<>();
         categoryList = new ArrayList<>();
         reportList = new ArrayList<>();
 
@@ -225,16 +195,14 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         favorite.setOnClickListener(this);
         text_change.setOnClickListener(this);
 
-        reverse.setOnClickListener(this);
-        skip.setOnClickListener(this);
-        skip.setOnTouchListener(onTouchListener);
-        reverse.setOnTouchListener(onTouchListener);
         frame_loading.setOnClickListener(this);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
                 if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                MainActivity.floatingActionButton.show();
             }
         });
 
@@ -508,19 +476,6 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
-    public void onLoadStory(List<MerchantStory> list) {
-        eachStoryList.clear();
-        eachStoryList.addAll(list);
-        if (list.size() > 0) {
-            storiesProgressView = v.findViewById(R.id.progress_story);
-            storiesProgressView.setStoriesCount(list.size());
-            storiesProgressView.setStoriesListener(MainForum.this);
-            storiesProgressView.setStoryDuration(Constant.DURATION_STORY);
-            storiesProgressView.startStories(counter_story);
-        }
-    }
-
-    @Override
     public void onSuccessLoadCategory(List<Forum.ForumCategory> forumCategories) {
         categoryList.clear();
         categoryList.addAll(forumCategories);
@@ -544,67 +499,41 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
-    public void onImageClick(Context context, int pos) {
+    public void onImageClick(Context context, final int pos) {
         // For story list
         if (pos == 0) {
             addShowCase();
         } else {
-            relative_story.setVisibility(View.VISIBLE);
             MainActivity.bottomNavigationView.setVisibility(View.GONE);
             MainActivity.floatingActionButton.hide();
             isStoryVisible = true;
+            story_pager.setVisibility(View.VISIBLE);
 
-            presenter.onClickStory(storyList.get(pos - 1).getMid());
+            PagerAdapter pagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
+                @Override
+                public Fragment getItem(int i) {
+                    Fragment fragment = new StoryFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(StoryFragment.GET_MID, storyList.get(i).getMid());
+                    bundle.putInt(StoryFragment.GET_MAX_STORY, storyList.size());
+                    fragment.setArguments(bundle);
+                    return fragment;
+                }
 
-            counter_mid = pos - 1;
+                @Override
+                public int getCount() {
+                    return storyList.size();
+                }
+            };
 
-            Picasso.get()
-                    .load(merchantStoryMap.get(storyList.get(pos - 1).getMid()).getMerchant_profile_picture())
-                    .into(story_picture);
-
-            Picasso.get()
-                    .load(storyList.get(pos - 1).getStory_picture())
-                    .into(image_story);
-        }
-    }
-
-    @Override
-    public void onNext() {
-        Log.e("asd", "on next - " + counter_story);
-        Picasso.get()
-                .load(eachStoryList.get(++counter_story).getStory_picture())
-                .into(image_story);
-    }
-
-    @Override
-    public void onPrev() {
-        Log.e("asd", "on prev - " + counter_story);
-        if (counter_story > 0) {
-            Log.e("asd", "masuk");
-            Picasso.get()
-                    .load(eachStoryList.get(--counter_story).getStory_picture())
-                    .into(image_story);
-        }
-    }
-
-    @Override
-    public void onComplete() {
-        Log.e("asd", "complete ");
-        if (storyList.size() == counter_mid + 1) {
-            relative_story.setVisibility(View.GONE);
-            isStoryVisible = false;
-        } else {
-            storiesProgressView.destroy();
-            storiesProgressView = null;
-            counter_mid++;
-            counter_story = 0;
-            presenter.onClickStory(storyList.get(counter_mid).getMid());
-            Picasso.get()
-                    .load(merchantStoryMap.get(storyList.get(counter_mid).getMid()).getMerchant_profile_picture())
-                    .into(story_picture);
-            Picasso.get()
-                    .load(storyList.get(counter_mid).getStory_picture())
-                    .into(image_story);
+//            PagerAdapter adapter = new InfinitePagerAdapter(pagerAdapter);
+//            if (story_pager.getParent() != null) {
+//                story_pager = null;
+//            }
+            story_pager.setAdapter(pagerAdapter);
+            story_pager.setPageTransformer(false, new RotateUpTransformer());
+            story_pager.setCurrentItem(pos - 1, true);
+//            story_pager.setCurrentItem(pos - 1);
         }
     }
 
@@ -651,14 +580,6 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                     startActivityForResult(intent, Constant.ACTIVITY_CHOOSE_IMAGE);
                 }
                 break;
-            case R.id.reverse_story:
-                Log.e("asd", "reverse");
-                storiesProgressView.reverse();
-                break;
-            case R.id.skip_story:
-                Log.e("asd", "skip");
-                storiesProgressView.skip();
-                break;
             case R.id.image_button_favorite_main_forum:
                 changeFragment(new FavoriteFragment());
                 break;
@@ -687,32 +608,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     @Override
     public void onBackPress(boolean check, Context context) {
         if (isStoryVisible) {
-            storiesProgressView.destroy();
-            relative_story.setVisibility(View.GONE);
             isStoryVisible = false;
+//            StoryFragment.storiesProgressView.destroy();
+//            story_pager.setVisibility(View.GONE);
             MainActivity.floatingActionButton.show();
             MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         }
     }
-
-    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            long limit = 500L;
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    pressTime = System.currentTimeMillis();
-                    storiesProgressView.pause();
-                    return false;
-                case MotionEvent.ACTION_UP:
-//                    mActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                    long now = System.currentTimeMillis();
-                    storiesProgressView.resume();
-                    return limit < now - pressTime;
-            }
-            return false;
-        }
-    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

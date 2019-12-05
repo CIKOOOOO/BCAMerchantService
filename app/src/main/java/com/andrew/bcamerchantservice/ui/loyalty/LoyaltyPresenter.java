@@ -118,8 +118,8 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
     }
 
     @Override
-    public void loadMission(final List<Merchant.Mission> missionMerchantList) {
-        dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_MISSION)
+    public void loadMission(final List<Merchant.Mission> missionMerchantList, String position_id) {
+        dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_MISSION + "/" + position_id)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -165,10 +165,6 @@ public class LoyaltyPresenter implements ILoyaltyPresenter {
 
                         missionLoyaltyList.addAll(nonCollectedList);
                         missionLoyaltyList.addAll(collectedList);
-
-                        for (Loyalty.Mission mission : missionLoyaltyList) {
-//                            Log.e("asd", mission.getMission_id());
-                        }
 
                         view.onLoadMission(missionLoyaltyList);
                     }

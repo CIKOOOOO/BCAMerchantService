@@ -27,6 +27,4 @@ public interface IForumPresenter {
     void onUpdateViewCount(Map<String, Object> map, Forum forum, Merchant merchant);
 
     void onHide(String FID, String MID);
-
-    void onClickStory(String MID);
 }

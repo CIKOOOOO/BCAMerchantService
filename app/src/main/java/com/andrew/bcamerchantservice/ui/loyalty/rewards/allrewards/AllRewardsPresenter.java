@@ -40,6 +40,7 @@ public class AllRewardsPresenter implements IAllRewardsPresenter {
                             loyaltyList.add(snapshot.getValue(Loyalty.class));
                         }
 
+                        //
                         for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_REWARDS).getChildren()) {
                             List<Loyalty.Rewards> rewardsList = new ArrayList<>();
                             for (DataSnapshot rewardsSnapshot : snapshot.getChildren()) {

@@ -67,6 +67,9 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         // Required empty public constructor
     }
 
+    public String getCondition() {
+        return condition;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -224,8 +227,10 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                 RewardsFragment rewardsFragment = new RewardsFragment();
                 Bundle bundle = new Bundle();
                 FragmentManager fragmentManager = getFragmentManager();
-
-                bundle.putInt(RewardsFragment.GET_DATA, 1);
+                if (condition.equals(REDEEM_CONDITION))
+                    bundle.putInt(RewardsFragment.GET_DATA, 0);
+                else
+                    bundle.putInt(RewardsFragment.GET_DATA, 1);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

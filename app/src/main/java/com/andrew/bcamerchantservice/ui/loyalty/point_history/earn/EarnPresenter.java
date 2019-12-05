@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.loyalty.point_history.earn;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -22,11 +21,10 @@ public class EarnPresenter implements IEarnPresenter {
     private IEarnView view;
     private DatabaseReference dbRef;
 
-    public EarnPresenter(IEarnView view) {
+    EarnPresenter(IEarnView view) {
         this.view = view;
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
-
 
     @Override
     public void loadMerchantEarningListener(String MID) {
@@ -39,7 +37,6 @@ public class EarnPresenter implements IEarnPresenter {
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Loyalty.Earn earn = snapshot.getValue(Loyalty.Earn.class);
-
                             /*
                              * Search for the same date, if exist then add it
                              * If false, then add new parent with data in it
@@ -54,7 +51,7 @@ public class EarnPresenter implements IEarnPresenter {
                             }
 
                             if (!c) {
-                                earnList.add(earnList.size(), new Loyalty.Earn("parent", earn.getEarn_date(), "", 0));
+                                earnList.add(new Loyalty.Earn("parent", earn.getEarn_date(), "", 0));
                                 earnList.add(earn);
                             }
                         }

@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.loyalty;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,15 +65,21 @@ public class LoyaltyAdapter extends RecyclerView.Adapter<LoyaltyAdapter.Holder> 
         final int pos = holder.getAdapterPosition();
         final Loyalty loyalty = loyaltyList.get(pos);
 
-        if (pos <= myPosition)
-            holder.image_lock.setVisibility(View.GONE);
-        else
-            holder.image_lock.setVisibility(View.VISIBLE);
+        Drawable drawable_background;
+        Drawable drawable_chosen = lastPosition == pos ? mContext.getDrawable(R.drawable.rectangle_stroke_blue) : null;
 
-        if (lastPosition == pos)
-            holder.relative_chosen.setBackground(mContext.getDrawable(R.drawable.rectangle_stroke_blue));
-        else
-            holder.relative_chosen.setBackground(null);
+        if (pos <= myPosition) {
+            holder.image_lock.setVisibility(View.GONE);
+            holder.relative_background.setAlpha(1f);
+            drawable_background = mContext.getDrawable(R.drawable.rectangle_stroke_blue);
+        } else {
+            holder.image_lock.setVisibility(View.VISIBLE);
+            holder.relative_background.setAlpha(0.2f);
+            drawable_background = mContext.getDrawable(R.drawable.rectangle_stroke_blue_fill_iron);
+        }
+
+        holder.relative_background.setBackground(drawable_background);
+        holder.relative_chosen.setBackground(drawable_chosen);
 
         Picasso.get()
                 .load(loyalty.getLoyalty_logo())
@@ -97,13 +104,14 @@ public class LoyaltyAdapter extends RecyclerView.Adapter<LoyaltyAdapter.Holder> 
     class Holder extends RecyclerView.ViewHolder {
 
         ImageView image_rank, image_lock;
-        RelativeLayout relative_chosen;
+        RelativeLayout relative_chosen, relative_background;
 
         Holder(@NonNull View itemView) {
             super(itemView);
             image_rank = itemView.findViewById(R.id.recycler_rank_loyalty);
             image_lock = itemView.findViewById(R.id.recycler_rank_lock_loyalty);
             relative_chosen = itemView.findViewById(R.id.recycler_relative_chosen_loyalty);
+            relative_background = itemView.findViewById(R.id.recycler_relative_rank_type_loyalty);
         }
     }
 }

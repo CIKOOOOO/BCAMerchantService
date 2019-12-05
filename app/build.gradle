@@ -48,5 +48,7 @@ dependencies {
     implementation 'com.tomergoldst.android:tooltips:1.0.10'
     implementation 'com.github.shts:StoriesProgressView:3.0.0'
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
+    implementation 'com.github.antonyt:InfiniteViewPager:v1.0.0'
+    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:2.0.24'
 }
 apply plugin: 'com.google.gms.google-services'

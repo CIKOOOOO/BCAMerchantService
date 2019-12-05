@@ -201,7 +201,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
             progress_this_month += income.getIncome_amount();
         }
         text_progress.setText("Rp " + Utils.priceFormat(progress_this_month));
-        presenter.loadMission(missionList);
+        presenter.loadMission(missionList, prefConfig.getMerchantPosition().getPosition_id());
     }
 
     @Override

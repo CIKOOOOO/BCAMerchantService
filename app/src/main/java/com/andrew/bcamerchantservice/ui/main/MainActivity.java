@@ -16,8 +16,10 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.PointHistoryFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
+import com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards.DetailRewardsFragment;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.favorite.FavoriteFragment;
+import com.andrew.bcamerchantservice.ui.mainforum.story.StoryFragment;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.otherprofile.baseinformation.InformationProfile;
@@ -178,6 +180,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
+            fragmentTransaction.commit();
+        } else if (fragment instanceof StoryFragment) {
+
+        } else if (fragment instanceof DetailRewardsFragment) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.main_frame, new RewardsFragment());
             fragmentTransaction.commit();
         }
     }

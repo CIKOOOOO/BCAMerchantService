@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,7 @@ public class SettingFragment extends Fragment implements ProfileAdapter.onClick 
 
         text_email.setText(prefConfig.getEmail());
         text_mid.setText(": " + prefConfig.getMID());
-        text_position.setText(": " + prefConfig.getPosition());
+        text_position.setText(": " + prefConfig.getMerchantPosition().getPosition_name());
 
         recycler_setting.setLayoutManager(new LinearLayoutManager(mContext));
 

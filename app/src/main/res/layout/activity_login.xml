@@ -47,4 +47,8 @@
             android:textColor="@color/white_color"
             android:textSize="17sp" />
     </android.support.v7.widget.CardView>
+
+    <include
+        android:id="@+id/custom_loading_login"
+        layout="@layout/custom_loading_black" />
 </RelativeLayout>

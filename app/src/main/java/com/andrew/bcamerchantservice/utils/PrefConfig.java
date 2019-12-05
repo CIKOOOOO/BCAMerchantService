@@ -2,6 +2,7 @@ package com.andrew.bcamerchantservice.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -14,6 +15,13 @@ public class PrefConfig {
     public PrefConfig(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(context.getString(R.string.pref_file), Context.MODE_PRIVATE);
+    }
+
+    public void insertMerchantPosition(Merchant.Position position) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(context.getString(R.string.pref_position_name), position.getPosition_name());
+        editor.putString(context.getString(R.string.pref_position_id), position.getPosition_id());
+        editor.apply();
     }
 
     public void insertMerchantData(Merchant merchant) {
@@ -155,10 +163,16 @@ public class PrefConfig {
         return sharedPreferences.getString(context.getString(R.string.pref_description), "");
     }
 
+    public Merchant.Position getMerchantPosition() {
+        return new Merchant.Position(sharedPreferences.getString(context.getString(R.string.pref_position_id), "")
+                , sharedPreferences.getString(context.getString(R.string.pref_position_name), ""));
+    }
+
     public Merchant getMerchantData() {
         return new Merchant(getMID(), getName(), getLocation(), getProfilePicture(), getEmail()
                 , getBackgroundPicture(), getPosition(), getPhoneNumber(), getOwnerName()
                 , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp());
     }
+
 }
 
