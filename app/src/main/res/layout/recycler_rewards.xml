@@ -28,7 +28,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/sniglet_font"
-        android:text="Voucher Discount Rp 500.000 Tokopedia"
+        android:text="Voucher Discount Rp 500.000 xxxxxx"
         android:textColor="@color/blackPalette"
         android:textSize="15sp" />
 
@@ -54,7 +54,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/recycler_image_coin_bca_rewards"
             android:fontFamily="@font/sniglet_font"
-            android:text="700 Points"
+            android:text="x Points"
             android:textColor="@color/blackPalette" />
 
         <TextView

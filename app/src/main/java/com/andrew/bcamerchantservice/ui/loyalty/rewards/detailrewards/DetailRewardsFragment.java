@@ -40,7 +40,6 @@ import java.text.ParseException;
  * A simple {@link Fragment} subclass.
  */
 public class DetailRewardsFragment extends Fragment implements View.OnClickListener, IDetailView {
-
     public static final String GET_REWARDS_DATA = "get_rewards_data";
     public static final String GET_MERCHANT_REWARDS_DATA = "get_merchant_rewards_data";
     public static final String CONDITION = "condition";
@@ -215,6 +214,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         }
 
         text_conditional_status.setOnClickListener(this);
+        custom_loading.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
         img_btn_copy.setOnClickListener(this);
         img_btn_eye.setOnClickListener(this);
@@ -250,6 +250,8 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                                 Button btn_send = v.findViewById(R.id.btn_yes_custom_redeem_point);
 
                                 custom_relative_redeem_point.setVisibility(View.VISIBLE);
+//                                custom_frame_redeem_point.setVisibility(View.VISIBLE);
+                                linear_custom_redeem_point.setVisibility(View.VISIBLE);
 
                                 text.setText("Apakah Anda yakin untuk me-redeem voucher ini? Point Anda akan berkurang sebesar " + rewards.getRewards_point() + " points");
 
@@ -266,7 +268,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                 break;
             case R.id.btn_cancel_custom_redeem_point:
             case R.id.custom_frame_00_dummy:
-                custom_frame_redeem_point.setVisibility(View.GONE);
+                custom_relative_redeem_point.setVisibility(View.GONE);
                 linear_custom_redeem_point.setVisibility(View.GONE);
                 break;
             case R.id.btn_yes_custom_redeem_point:
@@ -302,6 +304,9 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
         custom_frame_redeem_point.setVisibility(View.GONE);
         linear_custom_redeem_point.setVisibility(View.GONE);
         custom_loading.setVisibility(View.GONE);
+
+        this.merchant_rewards = merchant_rewards;
+        this.rewards = loyalty_rewards;
 
         condition = USE_CONDITION;
         text_conditional_status.setText("Use now");

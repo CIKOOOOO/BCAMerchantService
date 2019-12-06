@@ -26,9 +26,8 @@ public class AllRewardsPresenter implements IAllRewardsPresenter {
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
-
     @Override
-    public void loadRewardsLoyalty() {
+    public void loadRewardsLoyalty(final String position_id) {
         dbRef.child(Constant.DB_REFERENCE_LOYALTY)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -40,16 +39,14 @@ public class AllRewardsPresenter implements IAllRewardsPresenter {
                             loyaltyList.add(snapshot.getValue(Loyalty.class));
                         }
 
-                        //
                         for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_REWARDS).getChildren()) {
                             List<Loyalty.Rewards> rewardsList = new ArrayList<>();
-                            for (DataSnapshot rewardsSnapshot : snapshot.getChildren()) {
+                            for (DataSnapshot rewardsSnapshot : snapshot.child(position_id).getChildren()) {
                                 rewardsList.add(rewardsSnapshot.getValue(Loyalty.Rewards.class));
                             }
                             if (snapshot.getKey() != null && !rewardsMap.containsKey(snapshot.getKey()))
                                 rewardsMap.put(snapshot.getKey(), rewardsList);
                         }
-
                         view.onLoadLoyalty(loyaltyList, rewardsMap);
                     }
 

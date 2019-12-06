@@ -84,7 +84,7 @@ public class AllRewardsFragment extends Fragment implements LoyaltyAdapter.onIte
 //
 //            }
 //        } else {
-            presenter.loadRewardsLoyalty();
+            presenter.loadRewardsLoyalty(prefConfig.getMerchantPosition().getPosition_id());
 //        }
     }
 

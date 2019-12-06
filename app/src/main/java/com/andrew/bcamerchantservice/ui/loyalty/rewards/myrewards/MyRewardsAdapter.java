@@ -50,21 +50,15 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.Hold
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v;
-        if (i == 1)
-            v = LayoutInflater.from(mContext).inflate(R.layout.custom_loading, viewGroup, false);
-        else
+//        if (i == 1)
+//            v = LayoutInflater.from(mContext).inflate(R.layout.custom_loading, viewGroup, false);
+//        else
             v = LayoutInflater.from(mContext).inflate(R.layout.recycler_rewards, viewGroup, false);
         return new Holder(v);
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return merchantRewardList.size() == 0 ? 1 : 0;
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        if (getItemViewType(i) == 0) {
             final int pos = holder.getAdapterPosition();
 
             if (merchantRewardList.size() > 0) {
@@ -89,11 +83,11 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.Hold
 
                 if (rewardsMap.size() > 0) {
                     final Loyalty.Rewards loyalty_rewards = rewardsMap.get(merchant_rewards.getRewards_id());
-                    if (loyalty_rewards.getRewards_thumbnail().isEmpty())
-                        Picasso.get()
-                                .load(R.color.iron_palette)
-                                .into(holder.rounded_image);
-                    else
+//                    if (loyalty_rewards.getRewards_thumbnail().isEmpty())
+//                        Picasso.get()
+//                                .load(R.color.iron_palette)
+//                                .into(holder.rounded_image);
+//                    else
                         Picasso.get()
                                 .load(loyalty_rewards.getRewards_thumbnail())
                                 .into(holder.rounded_image);
@@ -111,12 +105,11 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.Hold
                     }
                 });
             }
-        }
     }
 
     @Override
     public int getItemCount() {
-        return merchantRewardList.size() == 0 ? 1 : merchantRewardList.size();
+        return merchantRewardList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

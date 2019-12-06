@@ -122,6 +122,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
         progress_bar.setMax(100);
         image_check.setVisibility(View.VISIBLE);
         rl_wrap_progress_bar.setVisibility(View.GONE);
+        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 
         text_title.setText("Membership Info");
 
@@ -238,7 +239,7 @@ public class LoyaltyFragment extends Fragment implements ILoyaltyView, LoyaltyAd
     private void progressCondition() {
         int totalExp = presenter.totalExpLoyalty(loyaltyList, loyalty);
         int totalEarning = loyalty.getLoyalty_exp() - (prefConfig.getExp() - totalExp);
-        int textSizeInSp = (int) getResources().getDimension(R.dimen.text_12);
+        int textSizeInSp = (int) mContext.getResources().getDimension(R.dimen.text_12);
         text_rank_type_result.setText("Earn " + totalEarning + " points to unlock " + loyalty.getLoyalty_name());
         text_rank_type_result.setTextColor(mContext.getResources().getColor(R.color.silver_palette));
 

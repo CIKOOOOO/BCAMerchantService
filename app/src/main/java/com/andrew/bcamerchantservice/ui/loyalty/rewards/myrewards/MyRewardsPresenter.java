@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.loyalty.rewards.myrewards;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Loyalty;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -28,16 +27,16 @@ public class MyRewardsPresenter implements IMyRewardsPresenter {
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void loadRewardLoyalty(final String rewards_id) {
-        //
+    private void loadRewardLoyalty(final String rewards_id, final String pos_id) {
         dbRef.child(Constant.DB_REFERENCE_LOYALTY + "/" + Constant.DB_REFERENCE_REWARDS)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            if (snapshot.child(rewards_id).getValue() != null) {
-                                Loyalty.Rewards rewards = snapshot.child(rewards_id).getValue(Loyalty.Rewards.class);
-                                view.onLoadRewards(rewards);
+                            if (snapshot.child(pos_id + "/" + rewards_id).getValue() != null) {
+                                Loyalty.Rewards rewards = snapshot.child(pos_id + "/" + rewards_id).getValue(Loyalty.Rewards.class);
+                                if (rewards != null)
+                                    view.onLoadRewards(rewards);
                                 break;
                             }
                         }
@@ -51,7 +50,7 @@ public class MyRewardsPresenter implements IMyRewardsPresenter {
     }
 
     @Override
-    public void loadRewards(String MID) {
+    public void loadRewards(String MID, final String position_id) {
         dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/" + Constant.DB_REFERENCE_MERCHANT_REWARDS)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -59,19 +58,23 @@ public class MyRewardsPresenter implements IMyRewardsPresenter {
                         List<Merchant.Rewards> rewardsList = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Merchant.Rewards rewards = snapshot.getValue(Merchant.Rewards.class);
-                            try {
-                                Date date = new SimpleDateFormat("dd/MM/yyyy").parse(rewards.getMerchant_voucher_valid_date());
-
-                                if (new Date().before(date) || Utils.getTime("dd/MM/yyyy")
-                                        .equals(Utils.formatDateFromDateString("dd/MM/yyyy HH:mm"
-                                                , "dd/MM/yyyy", rewards.getMerchant_voucher_valid_date()))) {
-                                    loadRewardLoyalty(rewards.getRewards_id());
+                            if (rewards != null)
+                                if (rewards.getMerchant_voucher_valid_date().isEmpty()) {
+                                    loadRewardLoyalty(rewards.getRewards_id(), position_id);
                                     rewardsList.add(rewards);
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
+                                } else
+                                    try {
+                                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(rewards.getMerchant_voucher_valid_date());
 
+                                        if (new Date().before(date) || Utils.getTime("dd/MM/yyyy")
+                                                .equals(Utils.formatDateFromDateString("dd/MM/yyyy HH:mm"
+                                                        , "dd/MM/yyyy", rewards.getMerchant_voucher_valid_date()))) {
+                                            loadRewardLoyalty(rewards.getRewards_id(), position_id);
+                                            rewardsList.add(0, rewards);
+                                        }
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                         }
                         view.onLoadMerchantRewards(rewardsList);
                     }
