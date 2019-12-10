@@ -2,65 +2,47 @@ package com.andrew.bcamerchantservice.ui.profile;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
-import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
-import com.andrew.bcamerchantservice.model.ProfileModel;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
-import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
-import com.andrew.bcamerchantservice.ui.mainforum.StoryAdapter;
 import com.andrew.bcamerchantservice.ui.profile.myforum.MyForumFragment;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
 import com.andrew.bcamerchantservice.ui.profile.profilesetting.SettingFragment;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
-import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

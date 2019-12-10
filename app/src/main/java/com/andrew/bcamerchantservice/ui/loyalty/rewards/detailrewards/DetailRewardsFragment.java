@@ -29,7 +29,7 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards.about.AboutDetailRewardsFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.detailrewards.termcondition.TermConditionDetailRewards;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.squareup.picasso.Picasso;

@@ -29,8 +29,7 @@ import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInform
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.previewproquest.PreviewProquest;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequest;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -65,6 +64,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
         iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+
+        int bot_nav_menu = getPrefConfig().getMerchantPosition().getPosition_id().equals("position_1") ? R.menu.bot_nav_cashier : R.menu.bot_nav_owner;
+        bottomNavigationView.inflateMenu(bot_nav_menu);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         floatingActionButton.setOnClickListener(this);
@@ -117,17 +119,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 finish();
 //                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof TabPromoRequest) {
-            onBackPressFragment = new PromoRequest();
+            onBackPressFragment = new ActivePromo();
             // Page = 1 adalah kondisi dimana viewpager menunjukkan Fragment Status Promosi
 //            if (TabPromoRequest.PAGE == 1 && StatusPromo.isBottomSheetVisible) {
 //                StatusPromo.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 //                StatusPromo.isBottomSheetVisible = false;
 //            } else
             onBackPressFragment.onBackPress(false, fragment.getContext());
-        } else if (fragment instanceof PreviewProquest) {
-            onBackPressFragment = new PreviewProquest();
-            onBackPressFragment.onBackPress(false, fragment.getContext());
-        } else if (fragment instanceof OtherProfile) {
+        }  else if (fragment instanceof OtherProfile) {
             onBackPressFragment = new OtherProfile();
             if (InformationProfile.isDescriptionClick)
                 onBackPressFragment.onBackPress(false, fragment.getContext());
@@ -234,7 +233,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 iMainPresenter.changeFragment(new MainForum(), fragmentTransaction);
                 break;
             case R.id.bot_submission:
-                iMainPresenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
+                if (getPrefConfig().getMerchantPosition().getPosition_id().equals("position_2"))
+                    iMainPresenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
                 break;
             case R.id.bot_home:
                 break;

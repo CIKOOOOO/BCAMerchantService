@@ -70,7 +70,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
         }
 
         if (this.position == position)
-            holder.relative.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill));
+            holder.relative.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill_iron));
         else
             holder.relative.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue));
 

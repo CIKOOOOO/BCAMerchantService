@@ -27,13 +27,12 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation_main"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/blue_palette"
         app:itemIconSize="20dp"
         app:itemIconTint="@drawable/bottom_nav_color"
         app:itemTextColor="@drawable/bottom_nav_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation" />
+        app:labelVisibilityMode="labeled" />
     <!--app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"-->
 </android.support.design.widget.CoordinatorLayout>

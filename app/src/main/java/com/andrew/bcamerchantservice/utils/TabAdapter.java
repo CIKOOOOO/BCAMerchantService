@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.ui.tabpromorequest;
+package com.andrew.bcamerchantservice.utils;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

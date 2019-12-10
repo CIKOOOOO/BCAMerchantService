@@ -17,7 +17,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.allrewards.AllRewardsFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.myrewards.MyRewardsFragment;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
 /**

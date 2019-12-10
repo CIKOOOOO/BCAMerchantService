@@ -1,23 +1,30 @@
 package com.andrew.bcamerchantservice.ui.tabpromorequest;
 
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.andrew.bcamerchantservice.R;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequest;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promostatus.PromoStatus;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabPromoRequest extends Fragment {
+public class TabPromoRequest extends Fragment implements View.OnClickListener {
     public static int PAGE;
 
     private View v;
@@ -37,25 +44,14 @@ public class TabPromoRequest extends Fragment {
 
     private void initVar() {
         PAGE = 0;
-        PromoRequest promoRequest = new PromoRequest();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            if (bundle.getParcelable(PromoRequest.GETTING_DATA) != null) {
-                Bundle bundle1 = new Bundle();
-                bundle1.putParcelable(PromoRequest.GETTING_DATA, bundle.getParcelable(PromoRequest.GETTING_DATA));
-                if (bundle.getParcelableArrayList(PromoRequest.GETTING_DATA_LIST) != null) {
-                    bundle1.putParcelableArrayList(PromoRequest.GETTING_DATA_LIST, bundle.getParcelableArrayList(PromoRequest.GETTING_DATA_LIST));
-                }
-                promoRequest.setArguments(bundle1);
-            }
-        }
 
-        ViewPager viewPager = v.findViewById(R.id.viewPager_TabPromo);
-        TabLayout tabLayout = v.findViewById(R.id.tabLayout_PromoRequest);
+        ViewPager viewPager = v.findViewById(R.id.view_pager_promo_request);
+        TabLayout tabLayout = v.findViewById(R.id.tab_promo_request);
+        LinearLayout linear_new_promo = v.findViewById(R.id.linear_new_promo_request);
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
 
-        tabAdapter.addTab(promoRequest, "Tambah Promosi");
-//        tabAdapter.addTab(new StatusPromo(), "Status Promosi");
+        tabAdapter.addTab(new ActivePromo(), "Promo Berjalan");
+        tabAdapter.addTab(new PromoStatus(), "Status Pengajuan");
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -79,6 +75,25 @@ public class TabPromoRequest extends Fragment {
 
             }
         });
+
+        linear_new_promo.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.linear_new_promo_request:
+                changeFragment(v.getContext(), new PromoRequestFragment());
+                break;
+        }
+    }
+
+    private void changeFragment(Context context, Fragment fragment) {
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.commit();
+    }
 }

@@ -26,6 +26,7 @@ public class Constant {
     public static final String DB_REFERENCE_MERCHANT_INCOME = "merchant_income";
     public static final String DB_REFERENCE_MERCHANT_REWARDS = "merchant_rewards";
     public static final String DB_REFERENCE_MERCHANT_POSITION = "merchant_position";
+    public static final String DB_REFERENCE_MERCHANT_FACILITIES = "merchant_facilities";
     public static final String DB_REFERENCE_FORUM = "forum";
     public static final String DB_REFERENCE_FORUM_REPLY = "forum_reply";
     public static final String DB_REFERENCE_FORUM_IMAGE = "forum_image";
@@ -45,8 +46,12 @@ public class Constant {
     public static final String DB_REFERENCE_POINT_HISTORY_EARN = "earn";
     public static final String DB_REFERENCE_POINT_HISTORY_SPEND = "spend";
     public static final String DB_REFERENCE_REWARDS = "rewards";
+    public static final String DB_REFERENCE_PROMO_REQUEST = "promo_request";
+    public static final String DB_REFERENCE_PROMO_REQUEST_TYPE = "promo_type";
+    public static final String DB_REFERENCE_FACILITIES = "facilities";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
     public static final String FULL_DATE_FORMAT = "EEE MMM dd hh:mm:ss 'GMT'Z yyyy";
+    public static final String INFORMATION_PROMO_REQUEST = "Harus ada benefit yang diberikan oleh pihak merchant.##Benefit yang dimaksud bisa berupa penawaran spesial atau diskon.##Cost diskon di tanggung sepenuhnya oleh merchant.##Periode kerja sama minimal 6 bulan.##BCA akan memberikan kontraprestasi berupa media.##Proses pengajuan kerjasama kurang lebih 14 hari kerja setelah mendapat persetujuan dari management BCA.##Merchant sudah menggunakan EDC BCA.";
 
     public static final int MAX_ALPHA = 220;
 
@@ -65,20 +70,6 @@ public class Constant {
             , "Keluar akun"};
 
     //END PROFILE FRAGMENT
-
-    // START ADS IMAGE TEMPLATE
-
-    public static final int[] iconTemplateAds = {R.drawable.ic_promo_box1, R.drawable.ic_promo_box2, R.drawable.ic_promo_box3
-            , R.color.orchid_palette, R.color.vivid_violet_palette
-            , R.color.fruit_salad_palette, R.color.ripe_lemon_palette, R.color.selective_yellow_palette
-            , R.color.west_coast_palette, R.color.cerulean_palette, R.color.tamarillo_palette, R.drawable.ic_rainbow};
-
-    public static final int[] imgTemplateAds = {R.drawable.img_promo_box1, R.drawable.img_promo_box2, R.drawable.img_promo_box3
-            , R.color.orchid_palette, R.color.vivid_violet_palette
-            , R.color.fruit_salad_palette, R.color.ripe_lemon_palette, R.color.selective_yellow_palette
-            , R.color.west_coast_palette, R.color.cerulean_palette, R.color.tamarillo_palette, R.drawable.ic_rainbow};
-
-    // END ADS
 
 
     public static List<ProfileModel> getProfileModels() {

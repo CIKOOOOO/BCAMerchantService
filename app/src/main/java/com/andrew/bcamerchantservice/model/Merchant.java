@@ -370,4 +370,19 @@ public class Merchant implements Parcelable {
             return position_name;
         }
     }
+
+    public static class Facilities{
+        private String facilities_id,facilities_since;
+
+        public Facilities() {
+        }
+
+        public String getFacilities_id() {
+            return facilities_id;
+        }
+
+        public String getFacilities_since() {
+            return facilities_since;
+        }
+    }
 }

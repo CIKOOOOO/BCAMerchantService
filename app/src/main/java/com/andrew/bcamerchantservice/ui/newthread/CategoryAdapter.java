@@ -76,7 +76,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
                 });
             } else {
                 if (lastPosition == pos) {
-                    holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill));
+                    holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill_iron));
                 } else {
                     holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue));
                 }
@@ -116,7 +116,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
                 });
             } else {
                 if (lastPosition == pos) {
-                    holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill));
+                    holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue_fill_iron));
                 } else {
                     holder.relativeLayout.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_blue));
                 }

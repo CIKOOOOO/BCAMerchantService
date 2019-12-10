@@ -17,9 +17,8 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.earn.EarnFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.spend.SpendFragment;
-import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.TabAdapter;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
