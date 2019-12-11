@@ -9,8 +9,9 @@
         android:id="@+id/recycler_check"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:buttonTint="@color/blue_palette"
         android:textColor="@color/blackPalette"
-        android:buttonTint="@color/toolbar_base" />
+        android:fontFamily="@font/sniglet_font" />
 
     <TextView
         android:id="@+id/recycler_info_check"

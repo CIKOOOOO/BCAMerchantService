@@ -32,6 +32,14 @@ public class PromoTypeAdapter extends RecyclerView.Adapter<PromoTypeAdapter.Hold
         chosenPosition = -1;
     }
 
+    public void setChosenPosition(int chosenPosition) {
+        this.chosenPosition = chosenPosition;
+    }
+
+    public int getChosenPosition() {
+        return chosenPosition;
+    }
+
     public void setPromoTypeList(List<PromoRequest.PromoType> promoTypeList) {
         this.promoTypeList = promoTypeList;
     }

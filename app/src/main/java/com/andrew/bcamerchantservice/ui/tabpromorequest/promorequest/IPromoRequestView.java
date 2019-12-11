@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IPromoRequestView {
     void onLoadPromoType(List<PromoRequest.PromoType> promoTypes);
+
+    void onLoadPaymentType(PromoRequest.Facilities facilities);
 }

@@ -30,6 +30,7 @@ import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.Catal
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -147,14 +148,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             profile.setArguments(bundle);
             fragmentTransaction.commit();
         } else if (fragment instanceof CatalogFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, new Profile());
-
-            fragmentTransaction.commit();
+            iMainPresenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof LoyaltyFragment) {
             Profile profile = new Profile();
             Bundle bundle = new Bundle();
@@ -170,24 +164,17 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             profile.setArguments(bundle);
             fragmentTransaction.commit();
         } else if (fragment instanceof RewardsFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
-            fragmentTransaction.commit();
+            iMainPresenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
         }else if(fragment instanceof PointHistoryFragment){
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, new LoyaltyFragment());
-            fragmentTransaction.commit();
+            iMainPresenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof StoryFragment) {
 
         } else if (fragment instanceof DetailRewardsFragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.main_frame, new RewardsFragment());
-            fragmentTransaction.commit();
+            iMainPresenter.changeFragment(new RewardsFragment(), getSupportFragmentManager().beginTransaction());
+        } else if (fragment instanceof PromoRequestFragment) {
+            onBackPressFragment = new PromoRequestFragment();
+            onBackPressFragment.onBackPress(false, this);
+
         }
     }
 

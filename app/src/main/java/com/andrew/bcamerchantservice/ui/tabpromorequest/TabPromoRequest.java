@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promostatus.PromoStatus;
@@ -52,6 +53,8 @@ public class TabPromoRequest extends Fragment implements View.OnClickListener {
 
         tabAdapter.addTab(new ActivePromo(), "Promo Berjalan");
         tabAdapter.addTab(new PromoStatus(), "Status Pengajuan");
+
+        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);

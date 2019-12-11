@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    tools:context=".ui.tabpromorequest.promorequest.TNCFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_back" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="@color/silver_palette" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Syarat dan Ketentuan Promo"
+                android:textColor="@color/blackPalette"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/img_btn_info_tnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_information" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radio_group_tnc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_button_description_tnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/blue_palette"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Deskripsi S&amp;K Promo"
+                android:textColor="@color/blackPalette" />
+
+            <EditText
+                android:id="@+id/edit_text_description_tnc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rectangle_rounded_stroke_blue"
+                android:enabled="false"
+                android:gravity="start|top"
+                android:hint="cth:\n1. Berlaku setiap hari\n2. Min. Transaksi Rp. 500.000 (Sebelum Tax &amp; Service)\n3. Dine-in only\n4. Berlaku untuk makanan dan minuman"
+                android:maxLength="500"
+                android:minLines="3"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/blackPalette"
+                android:textColorHint="@color/silver_palette"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/text_max_character_description_tnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="0/500"
+                android:textColor="@color/blackPalette"
+                android:textSize="10sp" />
+
+            <RadioButton
+                android:id="@+id/radio_button_attachment_tnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:buttonTint="@color/blue_palette"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Tambah attachment"
+                android:textColor="@color/blackPalette" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_choose_file_tnc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/rectangle_rounded_fill_blue"
+                    android:enabled="false"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="4dp"
+                    android:text="Pilih file"
+                    android:textColor="@color/white_color" />
+
+                <TextView
+                    android:id="@+id/text_document_name_tnc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sniglet_font"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:textColor="@color/blackPalette" />
+
+                <ImageButton
+                    android:id="@+id/img_btn_clear_doc_tnc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/ic_rounded_close_blue"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/show_error_tnc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="5dp"
+            android:drawableStart="@drawable/ic_warning"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/dont_empty_this_edittext"
+            android:textColor="@color/blackPalette"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_next_tnc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:background="@drawable/background_reply"
+        android:fontFamily="@font/sniglet_font"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/white_color" />
+</android.support.design.widget.CoordinatorLayout>

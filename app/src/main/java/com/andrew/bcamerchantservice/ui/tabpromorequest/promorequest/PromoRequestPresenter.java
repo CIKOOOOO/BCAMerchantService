@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.PromoRequest;
@@ -52,7 +51,7 @@ public class PromoRequestPresenter implements IPromoRequestPresenter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue(PromoRequest.Facilities.class) != null)
-                            Log.e("asd", dataSnapshot.getValue(PromoRequest.Facilities.class).getFacilities_name());
+                            view.onLoadPaymentType(dataSnapshot.getValue(PromoRequest.Facilities.class));
                     }
 
                     @Override
