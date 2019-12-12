@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc.TNCFragment;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
@@ -69,11 +72,11 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_logo_request, container, false);
         init_bundle = getArguments();
-        if (init_bundle != null) {
-            if (init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA) != null) {
+//        if (init_bundle != null) {
+//            if (init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA) != null) {
                 initVar();
-            }
-        }
+//            }
+//        }
         return v;
     }
 
@@ -84,6 +87,7 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
 
         RecyclerView recycler_logo_request = v.findViewById(R.id.recycler_logo_request);
         ImageButton img_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        Button btn_next = v.findViewById(R.id.btn_next_logo_request);
 
         linear_add = v.findViewById(R.id.linear_add_logo_request);
 
@@ -97,6 +101,7 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
 
         linear_add.setOnClickListener(this);
         img_back.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
     }
 
     @Override
@@ -150,6 +155,10 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
 
     @Override
     public void onClick(View view) {
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.linear_add_logo_request:
                 if (ActivityCompat.checkSelfPermission(mActivity,
@@ -164,10 +173,6 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
                 }
                 break;
             case R.id.img_btn_back_toolbar_back:
-                AppCompatActivity activity = (AppCompatActivity) mContext;
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Bundle bundle = new Bundle();
                 TNCFragment tncFragment = new TNCFragment();
                 bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
                 if (init_bundle.getString(GET_ATTACHMENT) != null) {
@@ -182,6 +187,28 @@ public class LogoRequestFragment extends Fragment implements LogoRequestAdapter.
                 tncFragment.setArguments(bundle);
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, tncFragment);
+                fragmentTransaction.commit();
+                break;
+            case R.id.btn_next_logo_request:
+                ProductFragment productFragment = new ProductFragment();
+
+//                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
+//                if (init_bundle.getString(GET_ATTACHMENT) != null) {
+//                    bundle.putString(GET_ATTACHMENT, init_bundle.getString(GET_ATTACHMENT));
+//                }
+//                if (init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
+//                    bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT));
+//                }
+//                if (init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST) != null) {
+//                    bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST));
+//                }
+//
+//                bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, (ArrayList<? extends Parcelable>) imagePickerList);
+
+                productFragment.setArguments(bundle);
+
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.main_frame, productFragment);
                 fragmentTransaction.commit();
                 break;
         }

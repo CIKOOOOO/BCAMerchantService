@@ -325,72 +325,72 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
                 }
                 break;
             case R.id.btn_next_promo_request:
-                EditText edit_title = v.findViewById(R.id.edit_title_promo_request);
-                String title = edit_title.getText().toString();
-                ((TextView) v.findViewById(R.id.show_error_title_promo_request)).setVisibility(View.GONE);
-                ((TextView) v.findViewById(R.id.show_error_checkbox_promo_request)).setVisibility(View.GONE);
-                ((TextView) v.findViewById(R.id.show_error_location_promo_request)).setVisibility(View.GONE);
-
-                boolean facilitiesIsCheck = false;
-                boolean isRadioChecked = radio_group_location.getCheckedRadioButtonId() != -1;
-
-                for (PromoRequest.Facilities facilities : facilitiesList) {
-                    if (facilities.isCheck()) {
-                        facilitiesIsCheck = true;
-                        break;
-                    }
-                }
-
-                if (title.isEmpty() || title.length() < 10) {
-                    edit_title.setError("Format Judul tidak valid");
-                    edit_title.requestFocus(edit_title.getLayoutDirection());
-                } else if (promoTypeAdapter.getChosenPosition() == -1) {
-                    ((TextView) v.findViewById(R.id.show_error_title_promo_request)).setVisibility(View.VISIBLE);
-                } else if (!facilitiesIsCheck && !check_payment.isChecked()) {
-                    ((TextView) v.findViewById(R.id.show_error_checkbox_promo_request)).setVisibility(View.VISIBLE);
-                } else if (!isRadioChecked) {
-                    ((TextView) v.findViewById(R.id.show_error_location_promo_request)).setVisibility(View.VISIBLE);
-                } else {
-                    if (check_payment.isChecked()) {
-                        if (edit_text_payment.getText().toString().length() < 5) {
-                            edit_text_payment.setError("Format tidak valid");
-                            break;
-                        }
-                    }
-
-                    if (radio_group_location.getCheckedRadioButtonId() == R.id.radio_button_specific_promo_request) {
-                        if (edit_text_address.getText().toString().length() < 10) {
-                            edit_text_address.setError("Format tidak valid");
-                            break;
-                        }
-                    }
-
-                    String location = radio_group_location.getCheckedRadioButtonId() == R.id.radio_button_all_promo_request
-                            ? "Berlaku diseluruh outlet"
-                            : edit_text_address.getText().toString();
-
-                    List<PromoRequest.Facilities> tempFacilitiesList = new ArrayList<>();
-
-                    for (PromoRequest.Facilities facilities : facilitiesList) {
-                        if (facilities.isCheck())
-                            tempFacilitiesList.add(facilities);
-                    }
+//                EditText edit_title = v.findViewById(R.id.edit_title_promo_request);
+//                String title = edit_title.getText().toString();
+//                ((TextView) v.findViewById(R.id.show_error_title_promo_request)).setVisibility(View.GONE);
+//                ((TextView) v.findViewById(R.id.show_error_checkbox_promo_request)).setVisibility(View.GONE);
+//                ((TextView) v.findViewById(R.id.show_error_location_promo_request)).setVisibility(View.GONE);
+//
+//                boolean facilitiesIsCheck = false;
+//                boolean isRadioChecked = radio_group_location.getCheckedRadioButtonId() != -1;
+//
+//                for (PromoRequest.Facilities facilities : facilitiesList) {
+//                    if (facilities.isCheck()) {
+//                        facilitiesIsCheck = true;
+//                        break;
+//                    }
+//                }
+//
+//                if (title.isEmpty() || title.length() < 10) {
+//                    edit_title.setError("Format Judul tidak valid");
+//                    edit_title.requestFocus(edit_title.getLayoutDirection());
+//                } else if (promoTypeAdapter.getChosenPosition() == -1) {
+//                    ((TextView) v.findViewById(R.id.show_error_title_promo_request)).setVisibility(View.VISIBLE);
+//                } else if (!facilitiesIsCheck && !check_payment.isChecked()) {
+//                    ((TextView) v.findViewById(R.id.show_error_checkbox_promo_request)).setVisibility(View.VISIBLE);
+//                } else if (!isRadioChecked) {
+//                    ((TextView) v.findViewById(R.id.show_error_location_promo_request)).setVisibility(View.VISIBLE);
+//                } else {
+//                    if (check_payment.isChecked()) {
+//                        if (edit_text_payment.getText().toString().length() < 5) {
+//                            edit_text_payment.setError("Format tidak valid");
+//                            break;
+//                        }
+//                    }
+//
+//                    if (radio_group_location.getCheckedRadioButtonId() == R.id.radio_button_specific_promo_request) {
+//                        if (edit_text_address.getText().toString().length() < 10) {
+//                            edit_text_address.setError("Format tidak valid");
+//                            break;
+//                        }
+//                    }
+//
+//                    String location = radio_group_location.getCheckedRadioButtonId() == R.id.radio_button_all_promo_request
+//                            ? "Berlaku diseluruh outlet"
+//                            : edit_text_address.getText().toString();
+//
+//                    List<PromoRequest.Facilities> tempFacilitiesList = new ArrayList<>();
+//
+//                    for (PromoRequest.Facilities facilities : facilitiesList) {
+//                        if (facilities.isCheck())
+//                            tempFacilitiesList.add(facilities);
+//                    }
 
                     PromoRequest promoRequest = new PromoRequest();
-                    promoRequest.setPromo_title(edit_title.getText().toString());
-                    promoRequest.setPromo_start_date(start_date);
-                    promoRequest.setPromo_end_date(end_date);
-                    promoRequest.setPromo_type_id(promoType.getPromo_type_id());
-                    promoRequest.setPromo_location(location);
+//                    promoRequest.setPromo_title(edit_title.getText().toString());
+//                    promoRequest.setPromo_start_date(start_date);
+//                    promoRequest.setPromo_end_date(end_date);
+//                    promoRequest.setPromo_type_id(promoType.getPromo_type_id());
+//                    promoRequest.setPromo_location(location);
 
                     TNCFragment tncFragment = new TNCFragment();
                     Bundle bundle = new Bundle();
 
-                    bundle.putParcelable(TNCFragment.GET_PROMO_DATA, promoRequest);
-                    if (check_payment.isChecked())
-                        bundle.putString(TNCFragment.GET_SPECIFIC_PAYMENT, edit_text_payment.getText().toString());
-                    if (tempFacilitiesList.size() > 0)
-                        bundle.putParcelableArrayList(TNCFragment.GET_FACILITIES_LIST, (ArrayList<? extends Parcelable>) tempFacilitiesList);
+//                    bundle.putParcelable(TNCFragment.GET_PROMO_DATA, promoRequest);
+//                    if (check_payment.isChecked())
+//                        bundle.putString(TNCFragment.GET_SPECIFIC_PAYMENT, edit_text_payment.getText().toString());
+//                    if (tempFacilitiesList.size() > 0)
+//                        bundle.putParcelableArrayList(TNCFragment.GET_FACILITIES_LIST, (ArrayList<? extends Parcelable>) tempFacilitiesList);
 
                     tncFragment.setArguments(bundle);
 
@@ -400,7 +400,7 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
                     fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                     fragmentTransaction.replace(R.id.main_frame, tncFragment);
                     fragmentTransaction.commit();
-                }
+//                }
                 break;
         }
     }
