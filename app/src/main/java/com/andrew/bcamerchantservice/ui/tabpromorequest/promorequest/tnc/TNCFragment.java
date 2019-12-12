@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest;
+package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc;
 
 
 import android.Manifest;
@@ -25,20 +25,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.model.PromoRequest;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TNCFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher {
+public class TNCFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher, MainActivity.onBackPressFragment {
     public static final String GET_PROMO_DATA = "get_promo_data";
     public static final String GET_SPECIFIC_PAYMENT = "get_specific_payment";
     public static final String GET_FACILITIES_LIST = "get_facilities_list";
+
+    private static Bundle init_bundle;
 
     private View v;
     private Context mContext;
@@ -47,7 +55,6 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
     private TextView text_choose_file, text_doc_name;
     private Activity mActivity;
     private ImageButton img_btn_clear_doc;
-    private Bundle init_bundle;
 
     private Uri uri_selected_data;
 
@@ -88,6 +95,20 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
         img_btn_clear_doc = v.findViewById(R.id.img_btn_clear_doc_tnc);
 
         ((TextView) v.findViewById(R.id.text_title_toolbar_back)).setText("Pengajuan Promo");
+        if (init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
+            ((RadioButton) v.findViewById(R.id.radio_button_attachment_tnc)).setChecked(true);
+            Uri uri = Uri.parse(init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
+            text_doc_name.setText(Utils.getFileName(uri, mContext));
+            img_btn_clear_doc.setVisibility(View.VISIBLE);
+        } else {
+            PromoRequest promoRequest = init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA);
+            if (promoRequest != null && promoRequest.getPromo_tnc() != null) {
+                ((TextView) v.findViewById(R.id.text_max_character_description_tnc)).setText(promoRequest.getPromo_tnc().length() + "/500");
+                edit_text_description.setEnabled(true);
+                edit_text_description.setText(promoRequest.getPromo_tnc());
+                ((RadioButton) v.findViewById(R.id.radio_button_description_tnc)).setChecked(true);
+            }
+        }
 
         edit_text_description.addTextChangedListener(this);
 
@@ -100,10 +121,13 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
 
     @Override
     public void onClick(View view) {
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.img_btn_back_toolbar_back:
                 PromoRequestFragment promoRequestFragment = new PromoRequestFragment();
-                Bundle bundle = new Bundle();
                 bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(GET_PROMO_DATA));
                 if (init_bundle.getString(GET_SPECIFIC_PAYMENT) != null) {
                     bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(GET_SPECIFIC_PAYMENT));
@@ -112,9 +136,6 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
                     bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(GET_FACILITIES_LIST));
                 }
                 promoRequestFragment.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) mContext;
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, promoRequestFragment);
                 fragmentTransaction.commit();
@@ -142,6 +163,14 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
                     ((TextView) v.findViewById(R.id.show_error_tnc)).setVisibility(View.VISIBLE);
                 } else {
+                    LogoRequestFragment logoRequestFragment = new LogoRequestFragment();
+                    PromoRequest promoRequest = init_bundle.getParcelable(GET_PROMO_DATA);
+                    if (init_bundle.getString(GET_SPECIFIC_PAYMENT) != null) {
+                        bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(GET_SPECIFIC_PAYMENT));
+                    }
+                    if (init_bundle.getParcelableArrayList(GET_FACILITIES_LIST) != null) {
+                        bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(GET_FACILITIES_LIST));
+                    }
                     switch (radioGroup.getCheckedRadioButtonId()) {
                         case R.id.radio_button_description_tnc:
                             if (edit_text_description.getText().toString().isEmpty()) {
@@ -151,15 +180,30 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
                                 edit_text_description.setError("Format deskripsi salah");
                                 edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
                             } else {
-
+                                if (promoRequest != null) {
+                                    promoRequest.setPromo_tnc(edit_text_description.getText().toString());
+                                }
+                                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
+                                logoRequestFragment.setArguments(bundle);
+                                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                                fragmentTransaction.replace(R.id.main_frame, logoRequestFragment);
+                                fragmentTransaction.commit();
                             }
                             break;
                         case R.id.radio_button_attachment_tnc:
                             /*
                              * Handle tnc attachment
                              * */
+                            promoRequest.setPromo_tnc("");
+                            bundle.putString(LogoRequestFragment.GET_ATTACHMENT, uri_selected_data.toString());
+                            bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
+                            logoRequestFragment.setArguments(bundle);
+                            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                            fragmentTransaction.replace(R.id.main_frame, logoRequestFragment);
+                            fragmentTransaction.commit();
                             break;
                     }
+
                 }
                 break;
         }
@@ -239,5 +283,25 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
         String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
         cursor.close();
         return fileName;
+    }
+
+    @Override
+    public void onBackPress(boolean check, Context context) {
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        PromoRequestFragment promoRequestFragment = new PromoRequestFragment();
+        bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(GET_PROMO_DATA));
+        if (init_bundle.getString(GET_SPECIFIC_PAYMENT) != null) {
+            bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(GET_SPECIFIC_PAYMENT));
+        }
+        if (init_bundle.getParcelableArrayList(GET_FACILITIES_LIST) != null) {
+            bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(GET_FACILITIES_LIST));
+        }
+        promoRequestFragment.setArguments(bundle);
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, promoRequestFragment);
+        fragmentTransaction.commit();
     }
 }

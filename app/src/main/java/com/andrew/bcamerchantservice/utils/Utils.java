@@ -2,8 +2,11 @@ package com.andrew.bcamerchantservice.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
@@ -92,5 +95,18 @@ public class Utils {
 
     public static float convertSpToPixels(float sp, Context context) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+    public static String getFileName(Uri uri, Context mContext) throws IllegalArgumentException {
+        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+        assert cursor != null;
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            throw new IllegalArgumentException("Can't obtain file name, cursor is empty");
+        }
+        cursor.moveToFirst();
+        String fileName = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
+        cursor.close();
+        return fileName;
     }
 }

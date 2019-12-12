@@ -31,6 +31,8 @@ import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc.TNCFragment;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -173,6 +175,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             iMainPresenter.changeFragment(new RewardsFragment(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof PromoRequestFragment) {
             onBackPressFragment = new PromoRequestFragment();
+            onBackPressFragment.onBackPress(false, this);
+        } else if (fragment instanceof TNCFragment) {
+            onBackPressFragment = new TNCFragment();
+            onBackPressFragment.onBackPress(false, this);
+        } else if(fragment instanceof LogoRequestFragment){
+            onBackPressFragment = new LogoRequestFragment();
             onBackPressFragment.onBackPress(false, this);
 
         }

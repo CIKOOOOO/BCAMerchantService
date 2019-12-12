@@ -1,12 +1,10 @@
 package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +29,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc.TNCFragment;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
 import java.text.ParseException;
