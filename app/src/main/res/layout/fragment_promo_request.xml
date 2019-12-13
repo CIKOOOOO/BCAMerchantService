@@ -369,7 +369,7 @@
                 android:text="lazy button"
                 android:textAllCaps="false"
                 android:textColor="@color/white_color"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

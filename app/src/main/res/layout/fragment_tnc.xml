@@ -168,7 +168,7 @@
             android:fontFamily="@font/sniglet_font"
             android:text="lazy button"
             android:textAllCaps="false"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/white_color" />
     </LinearLayout>
 
@@ -183,6 +183,4 @@
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white_color" />
-
-
 </android.support.design.widget.CoordinatorLayout>

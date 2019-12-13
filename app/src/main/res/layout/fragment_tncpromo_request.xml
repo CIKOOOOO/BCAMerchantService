@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_color"
     tools:context=".ui.tabpromorequest.promorequest.tncpromorequest.TNCPromoRequestFragment">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="Syarat &amp; Ketentuan Pengajuan Promo"
             android:textAlignment="center"
             android:textColor="@color/blackPalette"
@@ -25,11 +26,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:text="A. DEFINISI"
+            android:textStyle="bold"
             android:textColor="@color/blackPalette" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_term_condition_promo_request"
             android:layout_width="match_parent"
+            android:layout_margin="20dp"
             android:layout_height="wrap_content" />
 
         <View
@@ -42,19 +45,33 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_agreement_tnc_promo_request"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp" />
 
         <Button
-            android:id="@+id/btn_send_promo_request"
+            android:id="@+id/btn_send_tnc_promo_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/background_reply"
             android:fontFamily="@font/sniglet_font"
-            android:text="@string/next"
+            android:text="@string/send"
             android:textAllCaps="false"
             android:textColor="@color/white_color" />
+
+        <Button
+            android:id="@+id/btn_cancel_tnc_promo_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rectangle_rounded_stroke_blue"
+            android:fontFamily="@font/sniglet_font"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/blue_palette" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

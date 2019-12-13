@@ -33,6 +33,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmatio
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
+import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
 import java.text.ParseException;
@@ -114,6 +115,8 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
         edit_text_end_date = v.findViewById(R.id.edit_text_end_date_promo_request);
 
         InformationTextAdapter informationTextAdapter = new InformationTextAdapter(mContext);
+
+        informationTextAdapter.setInformation_list(Constant.INFORMATION_PROMO_REQUEST.split("##"));
 
         presenter = new PromoRequestPresenter(this);
         promoTypeAdapter = new PromoTypeAdapter(mContext, this);

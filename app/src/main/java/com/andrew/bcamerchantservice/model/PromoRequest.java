@@ -190,4 +190,29 @@ public class PromoRequest implements Parcelable {
             parcel.writeByte((byte) (isCheck ? 1 : 0));
         }
     }
+
+    public static class Agreement {
+        private String agreement;
+        private boolean isCheck;
+
+        public Agreement(String agreement, boolean isCheck) {
+            this.agreement = agreement;
+            this.isCheck = isCheck;
+        }
+
+        public Agreement() {
+        }
+
+        public String getAgreement() {
+            return agreement;
+        }
+
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
+        }
+    }
 }

@@ -18,7 +18,11 @@ public class InformationTextAdapter extends RecyclerView.Adapter<InformationText
 
     public InformationTextAdapter(Context mContext) {
         this.mContext = mContext;
-        information_list = Constant.INFORMATION_PROMO_REQUEST.split("##");
+        information_list = new String[0];
+    }
+
+    public void setInformation_list(String[] information_list) {
+        this.information_list = information_list;
     }
 
     @NonNull

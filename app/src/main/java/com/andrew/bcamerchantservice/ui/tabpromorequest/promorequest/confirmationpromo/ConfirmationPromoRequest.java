@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncpromorequest.TNCPromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.ImageAdapter;
 import com.andrew.bcamerchantservice.utils.Utils;
@@ -118,6 +120,7 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
         RecyclerView recycler_logo = v.findViewById(R.id.recycler_logo_confirmation_proquest);
         RecyclerView recycler_product = v.findViewById(R.id.reycler_product_confirmation_proquest);
         ImageButton img_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        Button btn_next = v.findViewById(R.id.btn_next_confirmation_proquest);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         List<PromoRequest.Facilities> facilitiesList = new ArrayList<>();
@@ -197,6 +200,7 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
         presenter.getPromoData(promoRequest.getPromo_type_id());
 
         img_back.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
 
         text_edit_product.setOnClickListener(this);
         text_edit_logo.setOnClickListener(this);
@@ -274,6 +278,26 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
 
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, promoRequestFragment);
+                fragmentTransaction.commit();
+                break;
+            case R.id.btn_next_confirmation_proquest:
+                TNCPromoRequestFragment tncPromoRequestFragment = new TNCPromoRequestFragment();
+                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
+                if (init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
+                    bundle.putString(LogoRequestFragment.GET_ATTACHMENT, init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
+                }
+                if (init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
+                    bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT));
+                }
+                if (init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST) != null) {
+                    bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST));
+                }
+
+                bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, init_bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST));
+                bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, init_bundle.getParcelableArrayList(PRODUCT_REQUEST));
+                tncPromoRequestFragment.setArguments(bundle);
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                fragmentTransaction.replace(R.id.main_frame, tncPromoRequestFragment);
                 fragmentTransaction.commit();
                 break;
         }
