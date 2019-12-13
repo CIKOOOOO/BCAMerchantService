@@ -358,6 +358,18 @@
                 android:background="@drawable/background_reply"
                 android:fontFamily="@font/sniglet_font"
                 android:text="@string/next" />
+
+            <Button
+                android:id="@+id/btn_tester_promo_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/background_reply"
+                android:fontFamily="@font/sniglet_font"
+                android:text="lazy button"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:visibility="gone" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_color"
-    tools:context=".ui.tabpromorequest.promorequest.tnc.TNCFragment">
+    tools:context=".ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -157,6 +157,19 @@
             android:text="@string/dont_empty_this_edittext"
             android:textColor="@color/blackPalette"
             android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_tester_tnc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_reply"
+            android:fontFamily="@font/sniglet_font"
+            android:text="lazy button"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:textColor="@color/white_color" />
     </LinearLayout>
 
     <Button
@@ -170,4 +183,6 @@
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white_color" />
+
+
 </android.support.design.widget.CoordinatorLayout>

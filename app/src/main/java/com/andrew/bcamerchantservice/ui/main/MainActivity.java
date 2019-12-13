@@ -32,7 +32,8 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc.TNCFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
@@ -176,13 +177,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         } else if (fragment instanceof PromoRequestFragment) {
             onBackPressFragment = new PromoRequestFragment();
             onBackPressFragment.onBackPress(false, this);
-        } else if (fragment instanceof TNCFragment) {
-            onBackPressFragment = new TNCFragment();
+        } else if (fragment instanceof TNCRequestFragment) {
+            onBackPressFragment = new TNCRequestFragment();
             onBackPressFragment.onBackPress(false, this);
         } else if(fragment instanceof LogoRequestFragment){
             onBackPressFragment = new LogoRequestFragment();
             onBackPressFragment.onBackPress(false, this);
-
+        } else if(fragment instanceof ProductFragment){
+            onBackPressFragment = new ProductFragment();
+            onBackPressFragment.onBackPress(false, this);
         }
     }
 

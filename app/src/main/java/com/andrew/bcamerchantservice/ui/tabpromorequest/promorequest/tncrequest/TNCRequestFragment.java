@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tnc;
+package com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest;
 
 
 import android.Manifest;
@@ -34,14 +34,16 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmationpromo.ConfirmationPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TNCFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher, MainActivity.onBackPressFragment {
+public class TNCRequestFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, TextWatcher, MainActivity.onBackPressFragment {
     public static final String GET_PROMO_DATA = "get_promo_data";
     public static final String GET_SPECIFIC_PAYMENT = "get_specific_payment";
     public static final String GET_FACILITIES_LIST = "get_facilities_list";
@@ -54,11 +56,12 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
     private EditText edit_text_description;
     private TextView text_choose_file, text_doc_name;
     private Activity mActivity;
-    private ImageButton img_btn_clear_doc;
+    private ImageButton img_btn_clear_doc, img_btn_back;
 
     private Uri uri_selected_data;
+    private String flow_status;
 
-    public TNCFragment() {
+    public TNCRequestFragment() {
         // Required empty public constructor
     }
 
@@ -73,20 +76,29 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_tnc, container, false);
         init_bundle = getArguments();
-//        if (init_bundle != null) {
-//            if (init_bundle.getParcelable(GET_PROMO_DATA) != null) {
+        if (init_bundle != null) {
+            if (init_bundle.getParcelable(GET_PROMO_DATA) != null) {
                 initVar();
-//            }
-//        }
+                if (init_bundle.getString(ConfirmationPromoRequest.STATUS_FLOW) != null) {
+                    flow_status = init_bundle.getString(ConfirmationPromoRequest.STATUS_FLOW);
+                    if (flow_status != null) {
+                        int img_visible = flow_status.equals(ConfirmationPromoRequest.NORMAL_EDIT_FLOW) ? View.GONE : View.VISIBLE;
+                        img_btn_back.setVisibility(img_visible);
+                    }
+                }
+            }
+        }
         return v;
     }
 
     private void initVar() {
         uri_selected_data = null;
+        flow_status = "";
         mContext = v.getContext();
 
         Button btn_next = v.findViewById(R.id.btn_next_tnc);
-        ImageButton img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        Button lzy_btn = v.findViewById(R.id.btn_tester_tnc);
 
         radioGroup = v.findViewById(R.id.radio_group_tnc);
         edit_text_description = v.findViewById(R.id.edit_text_description_tnc);
@@ -115,6 +127,7 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
         radioGroup.setOnCheckedChangeListener(this);
         text_choose_file.setOnClickListener(this);
         img_btn_clear_doc.setOnClickListener(this);
+        lzy_btn.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
         btn_next.setOnClickListener(this);
     }
@@ -126,6 +139,10 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         switch (view.getId()) {
+            case R.id.btn_tester_tnc:
+                ((RadioButton) v.findViewById(R.id.radio_button_description_tnc)).setChecked(true);
+                edit_text_description.setText("1. Berlaku setiap hari\n2. Min. Transaksi Rp. 500.000 (Sebelum Tax & Service)\n3. Dine-in only\n4. Berlaku untuk makanan dan minuman");
+                break;
             case R.id.img_btn_back_toolbar_back:
                 PromoRequestFragment promoRequestFragment = new PromoRequestFragment();
                 bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(GET_PROMO_DATA));
@@ -159,51 +176,98 @@ public class TNCFragment extends Fragment implements View.OnClickListener, Radio
                     uri_selected_data = null;
                 break;
             case R.id.btn_next_tnc:
-//                ((TextView) v.findViewById(R.id.show_error_tnc)).setVisibility(View.GONE);
-//                if (radioGroup.getCheckedRadioButtonId() == -1) {
-//                    ((TextView) v.findViewById(R.id.show_error_tnc)).setVisibility(View.VISIBLE);
-//                } else {
+                ((TextView) v.findViewById(R.id.show_error_tnc)).setVisibility(View.GONE);
+                if (radioGroup.getCheckedRadioButtonId() == -1) {
+                    ((TextView) v.findViewById(R.id.show_error_tnc)).setVisibility(View.VISIBLE);
+                } else {
                     LogoRequestFragment logoRequestFragment = new LogoRequestFragment();
-//                    PromoRequest promoRequest = init_bundle.getParcelable(GET_PROMO_DATA);
-//                    if (init_bundle.getString(GET_SPECIFIC_PAYMENT) != null) {
-//                        bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(GET_SPECIFIC_PAYMENT));
-//                    }
-//                    if (init_bundle.getParcelableArrayList(GET_FACILITIES_LIST) != null) {
-//                        bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(GET_FACILITIES_LIST));
-//                    }
-//                    switch (radioGroup.getCheckedRadioButtonId()) {
-//                        case R.id.radio_button_description_tnc:
-//                            if (edit_text_description.getText().toString().isEmpty()) {
-//                                edit_text_description.setError("Deskripsi tidak boleh kosong");
-//                                edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
-//                            } else if (edit_text_description.getText().toString().length() > 500) {
-//                                edit_text_description.setError("Format deskripsi salah");
-//                                edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
-//                            } else {
-//                                if (promoRequest != null) {
-//                                    promoRequest.setPromo_tnc(edit_text_description.getText().toString());
-//                                }
-//                                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
-//                                logoRequestFragment.setArguments(bundle);
+                    PromoRequest promoRequest = init_bundle.getParcelable(GET_PROMO_DATA);
+                    if (init_bundle.getString(GET_SPECIFIC_PAYMENT) != null) {
+                        bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(GET_SPECIFIC_PAYMENT));
+                    }
+                    if (init_bundle.getParcelableArrayList(GET_FACILITIES_LIST) != null) {
+                        bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(GET_FACILITIES_LIST));
+                    }
+                    switch (radioGroup.getCheckedRadioButtonId()) {
+                        case R.id.radio_button_description_tnc:
+                            if (edit_text_description.getText().toString().isEmpty()) {
+                                edit_text_description.setError("Deskripsi tidak boleh kosong");
+                                edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
+                            } else if (edit_text_description.getText().toString().trim().length() < 20) {
+                                edit_text_description.setError("Format deskripsi salah");
+                                edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
+                            } else if (edit_text_description.getText().toString().length() > 500) {
+                                edit_text_description.setError("Format deskripsi salah");
+                                edit_text_description.requestFocus(edit_text_description.getLayoutDirection());
+                            } else {
+                                if (promoRequest != null) {
+                                    promoRequest.setPromo_tnc(edit_text_description.getText().toString());
+                                }
+                                if (flow_status.isEmpty()) {
+                                    bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
+                                    logoRequestFragment.setArguments(bundle);
+                                    fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                                    fragmentTransaction.replace(R.id.main_frame, logoRequestFragment);
+                                    fragmentTransaction.commit();
+                                } else {
+                                    ConfirmationPromoRequest confirmationPromoRequest = new ConfirmationPromoRequest();
+
+                                    bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
+                                    if (init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
+                                        bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT));
+                                    }
+                                    if (init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST) != null) {
+                                        bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST));
+                                    }
+
+                                    bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, init_bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST));
+                                    bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST));
+
+                                    confirmationPromoRequest.setArguments(bundle);
+
+                                    fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                                    fragmentTransaction.replace(R.id.main_frame, confirmationPromoRequest);
+                                    fragmentTransaction.commit();
+                                }
+
+
+                            }
+                            break;
+                        case R.id.radio_button_attachment_tnc:
+                            /*
+                             * Handle tnc attachment
+                             * */
+                            bundle.putString(LogoRequestFragment.GET_ATTACHMENT, uri_selected_data.toString());
+                            promoRequest.setPromo_tnc("");
+                            if (flow_status.isEmpty()) {
+                                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
+                                logoRequestFragment.setArguments(bundle);
                                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                                 fragmentTransaction.replace(R.id.main_frame, logoRequestFragment);
                                 fragmentTransaction.commit();
-//                            }
-//                            break;
-//                        case R.id.radio_button_attachment_tnc:
-//                            /*
-//                             * Handle tnc attachment
-//                             * */
-//                            promoRequest.setPromo_tnc("");
-//                            bundle.putString(LogoRequestFragment.GET_ATTACHMENT, uri_selected_data.toString());
-//                            bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
-//                            logoRequestFragment.setArguments(bundle);
-//                            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-//                            fragmentTransaction.replace(R.id.main_frame, logoRequestFragment);
-//                            fragmentTransaction.commit();
-//                            break;
-//                    }
-//                }
+                            } else {
+                                ConfirmationPromoRequest confirmationPromoRequest = new ConfirmationPromoRequest();
+
+                                bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
+                                if (init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
+                                    bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT));
+                                }
+                                if (init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST) != null) {
+                                    bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST));
+                                }
+
+                                bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, init_bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST));
+                                bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST));
+
+                                confirmationPromoRequest.setArguments(bundle);
+
+                                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                                fragmentTransaction.replace(R.id.main_frame, confirmationPromoRequest);
+                                fragmentTransaction.commit();
+                            }
+                            break;
+                    }
+                }
                 break;
         }
     }

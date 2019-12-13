@@ -120,6 +120,10 @@ public class PromoRequest implements Parcelable {
         public PromoType() {
         }
 
+        public void setPromo_type_id(String promo_type_id) {
+            this.promo_type_id = promo_type_id;
+        }
+
         public String getPromo_type_id() {
             return promo_type_id;
         }
