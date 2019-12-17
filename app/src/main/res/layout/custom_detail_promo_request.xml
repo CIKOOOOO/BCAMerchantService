@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Judul Promo"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_title_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/edit_text_title_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/blackPalette"
+            android:enabled="false"
+            android:fontFamily="@font/sniglet_font"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp"
+            android:text="Free Buy 1 Get 1 With BCA JCB Card"
+            android:textColor="@color/blackPalette"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Periode Waktu Promo"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_date_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:columnCount="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Tanggal Mulai"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_start_date_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text=": Monday, x December 2019"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Tanggal Berakhir"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_end_date_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text=": Monday, x December 2019"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+        </GridLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Jenis Promo"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_promo_type_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/edit_text_promo_type_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/blackPalette"
+            android:enabled="false"
+            android:fontFamily="@font/sniglet_font"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp"
+            android:text="xxxxxxxx"
+            android:textColor="@color/blackPalette"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Jenis Pembayaran"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_payment_type_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_payment_type_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp" />
+
+        <LinearLayout
+            android:id="@+id/linear_other_payment_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="\u2022 Lainnya"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edit_text_payment_others_confirmation_proquest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/blackPalette"
+                android:enabled="false"
+                android:fontFamily="@font/sniglet_font"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:text="Kartu Kredit bisa, tapi hanya XXXX"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Lokasi Promo"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_location_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_promo_location_confirmation_proequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/sniglet_font"
+            android:text="\u2022 Hanya berlaku pada:"
+            android:textColor="@color/blackPalette" />
+
+        <TextView
+            android:id="@+id/text_specific_location_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rectangle_rounded_stroke_blue"
+            android:fontFamily="@font/sniglet_font"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="1. Jalan Senopati Raya No. 60, Kebayoran Baru, Jakarta Selatan\n2. Jalan Taman Aries Raya No.3A, Puri Kembangan, Meruya, Jakarta Barat 11620 "
+            android:textColor="@color/blackPalette" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Syarat dan Ketentuan"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_term_condition_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_specific_term_confition_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rectangle_rounded_stroke_blue"
+            android:fontFamily="@font/sniglet_font"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:text="1. Berlaku setiap hari\n2. Min. Transaksi Rp. 500.000 (Sebelum Tax) "
+            android:textColor="@color/blackPalette" />
+
+        <LinearLayout
+            android:id="@+id/linear_attachment_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Attachment"
+                android:textColor="@color/blackPalette"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/text_document_name_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/selection_rounded_blue"
+                android:ellipsize="end"
+                android:fontFamily="@font/sniglet_font"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/blackPalette" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Logo Perusahaan"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_logo_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_logo_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Produk Perusahaan"
+                android:textColor="@color/blackPalette"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/text_edit_product_confirmation_proquest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sniglet_font"
+                android:text="Edit"
+                android:textColor="@color/blue_palette"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_product_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btn_next_confirmation_proquest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/background_reply"
+            android:fontFamily="@font/sniglet_font"
+            android:text="@string/next"
+            android:textAllCaps="false"
+            android:textColor="@color/white_color" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    android:orientation="vertical"
+    tools:context=".ui.tabpromorequest.detailpromorequest.DetailPromoRequestFragment">
+
+    <include layout="@layout/toolbar_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@color/silver_palette" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Status pengajuan:"
+                    android:textColor="@color/blackPalette"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/text_status_detail_promo_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Sedang diproses"
+                    android:textColor="@color/blue_palette" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_correction_detail_promo_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rectangle_rounded_stroke_blue"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sniglet_font"
+                    android:text="Status pengajuan promo Anda ditolak karena:"
+                    android:textColor="@color/blackPalette" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_correction_detail_promo_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+
+            <include layout="@layout/custom_detail_promo_request" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

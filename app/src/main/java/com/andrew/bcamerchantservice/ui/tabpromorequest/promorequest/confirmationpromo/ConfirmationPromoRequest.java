@@ -27,7 +27,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRe
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncpromorequest.TNCPromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
-import com.andrew.bcamerchantservice.utils.ImageAdapter;
+import com.andrew.bcamerchantservice.utils.ImageBitmapAdapter;
 import com.andrew.bcamerchantservice.utils.Utils;
 
 import java.text.ParseException;
@@ -54,7 +54,7 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
     private PromoRequest promoRequest;
     private PromoRequest.PromoType promoType;
     private PaymentTypeAdapter paymentTypeAdapter;
-    private ImageAdapter logoAdapter, productAdapter;
+    private ImageBitmapAdapter logoAdapter, productAdapter;
 
     private IConfirmationPromoRequestPresenter presenter;
 
@@ -118,7 +118,7 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
 
         RecyclerView recycler_payment_type = v.findViewById(R.id.recycler_payment_type_confirmation_proquest);
         RecyclerView recycler_logo = v.findViewById(R.id.recycler_logo_confirmation_proquest);
-        RecyclerView recycler_product = v.findViewById(R.id.reycler_product_confirmation_proquest);
+        RecyclerView recycler_product = v.findViewById(R.id.recycler_product_confirmation_proquest);
         ImageButton img_back = v.findViewById(R.id.img_btn_back_toolbar_back);
         Button btn_next = v.findViewById(R.id.btn_next_confirmation_proquest);
 
@@ -132,8 +132,8 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
             facilitiesList = init_bundle.getParcelableArrayList(TNCRequestFragment.GET_FACILITIES_LIST);
 
         paymentTypeAdapter = new PaymentTypeAdapter(mContext, facilitiesList);
-        logoAdapter = new ImageAdapter(mContext);
-        productAdapter = new ImageAdapter(mContext);
+        logoAdapter = new ImageBitmapAdapter(mContext);
+        productAdapter = new ImageBitmapAdapter(mContext);
 
         recycler_payment_type.setLayoutManager(linearLayoutManager);
         recycler_logo.setLayoutManager(new LinearLayoutManager(mContext));

@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.utils;
+package com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,21 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.andrew.bcamerchantservice.R;
-import com.andrew.bcamerchantservice.model.ImagePicker;
-import com.bumptech.glide.Glide;
+import com.andrew.bcamerchantservice.model.PromoRequest;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Holder> {
-
+public class LogoAdapter  extends RecyclerView.Adapter<LogoAdapter.Holder> {
     private Context mContext;
-    private List<ImagePicker> imagePickerList;
+    private List<PromoRequest.Logo> imagePickerList;
 
-    public ImageAdapter(Context mContext) {
+    public LogoAdapter(Context mContext, List<PromoRequest.Logo> imagePickerList) {
         this.mContext = mContext;
-    }
-
-    public void setImagePickerList(List<ImagePicker> imagePickerList) {
         this.imagePickerList = imagePickerList;
     }
 
@@ -36,9 +32,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        ImagePicker imagePicker = imagePickerList.get(i);
-        Glide.with(mContext)
-                .load(imagePicker.getImage_bitmap())
+        PromoRequest.Logo imagePicker = imagePickerList.get(i);
+        Picasso.get()
+                .load(imagePicker.getMerchant_logo_url())
                 .into(holder.imageView);
     }
 
@@ -56,4 +52,3 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Holder> {
         }
     }
 }
-

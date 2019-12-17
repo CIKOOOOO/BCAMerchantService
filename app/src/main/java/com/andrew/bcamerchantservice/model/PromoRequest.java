@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class PromoRequest implements Parcelable {
 
-    private String promo_request_id, promo_title, promo_start_date, promo_end_date, promo_request_date, promo_type_id, promo_location, promo_tnc;
+    private String promo_request_id, promo_title, promo_start_date, promo_end_date, promo_request_date, promo_type_id, promo_location, promo_tnc, promo_status;
 
     public PromoRequest() {
     }
@@ -19,6 +19,7 @@ public class PromoRequest implements Parcelable {
         promo_type_id = in.readString();
         promo_location = in.readString();
         promo_tnc = in.readString();
+        promo_status = in.readString();
     }
 
     public static final Creator<PromoRequest> CREATOR = new Creator<PromoRequest>() {
@@ -32,6 +33,14 @@ public class PromoRequest implements Parcelable {
             return new PromoRequest[size];
         }
     };
+
+    public void setPromo_status(String promo_status) {
+        this.promo_status = promo_status;
+    }
+
+    public String getPromo_status() {
+        return promo_status;
+    }
 
     public String getPromo_request_id() {
         return promo_request_id;
@@ -112,6 +121,7 @@ public class PromoRequest implements Parcelable {
         parcel.writeString(promo_type_id);
         parcel.writeString(promo_location);
         parcel.writeString(promo_tnc);
+        parcel.writeString(promo_status);
     }
 
     public static class PromoType {
@@ -139,12 +149,12 @@ public class PromoRequest implements Parcelable {
 
     public static class Facilities implements Parcelable {
         private String facilities_id, facilities_name;
-        private boolean isCheck;
+        private boolean check;
 
         protected Facilities(Parcel in) {
             facilities_id = in.readString();
             facilities_name = in.readString();
-            isCheck = in.readByte() != 0;
+            check = in.readByte() != 0;
         }
 
         public static final Creator<Facilities> CREATOR = new Creator<Facilities>() {
@@ -160,14 +170,22 @@ public class PromoRequest implements Parcelable {
         };
 
         public boolean isCheck() {
-            return isCheck;
+            return check;
         }
 
         public void setCheck(boolean check) {
-            isCheck = check;
+            check = check;
         }
 
         public Facilities() {
+        }
+
+        public void setFacilities_id(String facilities_id) {
+            this.facilities_id = facilities_id;
+        }
+
+        public void setFacilities_name(String facilities_name) {
+            this.facilities_name = facilities_name;
         }
 
         public String getFacilities_id() {
@@ -187,7 +205,7 @@ public class PromoRequest implements Parcelable {
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(facilities_id);
             parcel.writeString(facilities_name);
-            parcel.writeByte((byte) (isCheck ? 1 : 0));
+            parcel.writeByte((byte) (check ? 1 : 0));
         }
     }
 
@@ -213,6 +231,61 @@ public class PromoRequest implements Parcelable {
 
         public void setCheck(boolean check) {
             isCheck = check;
+        }
+    }
+
+    public static class Logo {
+        private String merchant_logo_id, merchant_logo_url;
+
+        public Logo() {
+        }
+
+        public Logo(String merchant_logo_id, String merchant_logo_url) {
+            this.merchant_logo_id = merchant_logo_id;
+            this.merchant_logo_url = merchant_logo_url;
+        }
+
+        public String getMerchant_logo_id() {
+            return merchant_logo_id;
+        }
+
+        public String getMerchant_logo_url() {
+            return merchant_logo_url;
+        }
+    }
+
+    public static class Product {
+        private String merchant_product_id, merchant_product_url;
+
+        public Product(String merchant_product_id, String merchant_product_url) {
+            this.merchant_product_id = merchant_product_id;
+            this.merchant_product_url = merchant_product_url;
+        }
+
+        public Product() {
+        }
+
+        public String getMerchant_product_id() {
+            return merchant_product_id;
+        }
+
+        public String getMerchant_product_url() {
+            return merchant_product_url;
+        }
+    }
+
+    public static class PromoStatus {
+        private String promo_status_id, promo_status_name;
+
+        public PromoStatus() {
+        }
+
+        public String getPromo_status_id() {
+            return promo_status_id;
+        }
+
+        public String getPromo_status_name() {
+            return promo_status_name;
         }
     }
 }

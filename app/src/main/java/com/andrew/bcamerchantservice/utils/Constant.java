@@ -27,6 +27,7 @@ public class Constant {
     public static final String DB_REFERENCE_MERCHANT_REWARDS = "merchant_rewards";
     public static final String DB_REFERENCE_MERCHANT_POSITION = "merchant_position";
     public static final String DB_REFERENCE_MERCHANT_FACILITIES = "merchant_facilities";
+    public static final String DB_REFERENCE_MERCHANT_PROMO_REQUEST = "merchant_promo_request";
     public static final String DB_REFERENCE_FORUM = "forum";
     public static final String DB_REFERENCE_FORUM_REPLY = "forum_reply";
     public static final String DB_REFERENCE_FORUM_IMAGE = "forum_image";
@@ -48,6 +49,9 @@ public class Constant {
     public static final String DB_REFERENCE_REWARDS = "rewards";
     public static final String DB_REFERENCE_PROMO_REQUEST = "promo_request";
     public static final String DB_REFERENCE_PROMO_REQUEST_TYPE = "promo_type";
+    public static final String DB_REFERENCE_PROMO_REQUEST_LOGO = "merchant_logo";
+    public static final String DB_REFERENCE_PROMO_REQUEST_PRODUCT = "merchant_product";
+    public static final String DB_REFERENCE_PROMO_STATUS = "promo_status";
     public static final String DB_REFERENCE_FACILITIES = "facilities";
     public static final String SOLID_COLOR = "https://firebasestorage.googleapis.com/v0/b/bca-merchant-service-apps.appspot.com/o/forum_thumbnail%2Fwhite_palette.png?alt=media&token=4584f0df-4ff6-466e-9386-6850c051dc21";
     public static final String FULL_DATE_FORMAT = "EEE MMM dd hh:mm:ss 'GMT'Z yyyy";

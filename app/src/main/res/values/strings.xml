@@ -151,4 +151,6 @@
     <string name="point_history"><u>Point History ></u></string>
     <string name="info_logo">Informasi:\n1. Gambar logo harus HD (min: 512x512px).\n2. Maksimal gambar adalah 3.</string>
     <string name="info_product">Informasi:\n1. Gambar produk harus HD (min: 512x512px).\n2. Maksimal gambar adalah 3.</string>
+    <string name="promo_request_success1">Pengajuan promo berhasil dikirim!</string>
+    <string name="promo_request_success2">Pengajuan promo berhasil dikirim, tim kami akan segera memroses pengajuan Anda.</string>
 </resources>

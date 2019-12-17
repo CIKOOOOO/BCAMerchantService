@@ -309,7 +309,7 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.ACTIVITY_CHOOSE_FILE) {
             if (data != null && data.getData() != null) {
-                if (getFileName(data.getData()).contains(".docx")) {
+                if (getFileName(data.getData()).contains(".docx") || getFileName(data.getData()).contains(".doc")) {
                     uri_selected_data = data.getData();
                     text_doc_name.setText(getFileName(uri_selected_data));
                     img_btn_clear_doc.setVisibility(View.VISIBLE);

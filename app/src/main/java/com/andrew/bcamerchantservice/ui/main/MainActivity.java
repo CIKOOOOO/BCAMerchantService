@@ -30,6 +30,7 @@ import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.Catal
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest.DetailPromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
@@ -185,6 +186,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             onBackPressFragment.onBackPress(false, this);
         } else if(fragment instanceof ProductFragment){
             onBackPressFragment = new ProductFragment();
+            onBackPressFragment.onBackPress(false, this);
+        } else if(fragment instanceof DetailPromoRequestFragment){
+            onBackPressFragment = new DetailPromoRequestFragment();
             onBackPressFragment.onBackPress(false, this);
         }
     }

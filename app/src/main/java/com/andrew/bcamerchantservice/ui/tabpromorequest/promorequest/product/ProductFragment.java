@@ -135,8 +135,9 @@ public class ProductFragment extends Fragment implements LogoRequestAdapter.onCl
             imagePickerList.remove(pos);
             logoRequestAdapter.setImagePickerList(imagePickerList);
             logoRequestAdapter.notifyDataSetChanged();
-            if (imagePickerList.size() == 0)
-                linear_add.setVisibility(View.GONE);
+
+            int visible_linear = imagePickerList.size() == 0 ? View.GONE : View.VISIBLE;
+            linear_add.setVisibility(visible_linear);
         }
     }
 

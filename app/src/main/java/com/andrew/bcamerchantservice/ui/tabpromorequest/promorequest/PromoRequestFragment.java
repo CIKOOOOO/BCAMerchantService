@@ -362,7 +362,7 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
                 break;
             case R.id.btn_tester_promo_request:
                 edit_title.setText("Free Buy 1 Get 1 with BCA JCB Card");
-                start_date = "15/01/2019";
+                start_date = "15/01/2020";
                 end_date = "17/07/2020";
                 edit_text_start_date.setText("15/01/2019");
                 edit_text_end_date.setText("17/07/2020");

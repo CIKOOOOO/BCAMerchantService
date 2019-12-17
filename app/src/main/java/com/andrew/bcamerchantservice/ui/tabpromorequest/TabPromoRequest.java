@@ -18,7 +18,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.activepromo.ActivePromo;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
-import com.andrew.bcamerchantservice.ui.tabpromorequest.promostatus.PromoStatus;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promostatus.PromoStatusFragment;
 import com.andrew.bcamerchantservice.utils.TabAdapter;
 
 
@@ -26,7 +26,7 @@ import com.andrew.bcamerchantservice.utils.TabAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class TabPromoRequest extends Fragment implements View.OnClickListener {
-    public static int PAGE;
+    public static final String TAB_PAGE = "tab_page";
 
     private View v;
 
@@ -44,41 +44,24 @@ public class TabPromoRequest extends Fragment implements View.OnClickListener {
     }
 
     private void initVar() {
-        PAGE = 0;
-
         ViewPager viewPager = v.findViewById(R.id.view_pager_promo_request);
         TabLayout tabLayout = v.findViewById(R.id.tab_promo_request);
         LinearLayout linear_new_promo = v.findViewById(R.id.linear_new_promo_request);
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
 
         tabAdapter.addTab(new ActivePromo(), "Promo Berjalan");
-        tabAdapter.addTab(new PromoStatus(), "Status Pengajuan");
+        tabAdapter.addTab(new PromoStatusFragment(), "Status Pengajuan");
 
         MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-//        viewPager.setCurrentItem(1);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float vs, int i1) {
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                PAGE = i;
-//                if (i == 0)
-//                    StatusPromo.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            int page = bundle.getInt(TAB_PAGE, 0);
+            viewPager.setCurrentItem(page);
+        }
         linear_new_promo.setOnClickListener(this);
     }
 
