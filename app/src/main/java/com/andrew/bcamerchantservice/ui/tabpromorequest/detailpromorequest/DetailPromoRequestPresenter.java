@@ -1,6 +1,7 @@
 package com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -65,13 +66,7 @@ public class DetailPromoRequestPresenter implements IDetailPromoRequestPresenter
 
                             for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_MERCHANT_FACILITIES
                                     + "/" + Constant.DB_REFERENCE_FACILITIES).getChildren()) {
-                                for (DataSnapshot facilities_snapshot : snapshot.getChildren()) {
-                                    PromoRequest.Facilities facilities = new PromoRequest.Facilities();
-                                    facilities.setFacilities_id(facilities_snapshot.child("facilities_id").getValue(String.class));
-                                    facilities.setFacilities_name(facilities_snapshot.child("facilities_name").getValue(String.class));
-                                    facilities.setCheck(true);
-                                    facilitiesList.add(facilities);
-                                }
+                                facilitiesList.add(snapshot.getValue(PromoRequest.Facilities.class));
                             }
 
                             if (dataSnapshot.child(Constant.DB_REFERENCE_MERCHANT_FACILITIES + "/specific_facilities").getValue() != null) {

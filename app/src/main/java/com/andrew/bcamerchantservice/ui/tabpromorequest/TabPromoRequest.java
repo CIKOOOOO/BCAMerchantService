@@ -28,6 +28,8 @@ import com.andrew.bcamerchantservice.utils.TabAdapter;
 public class TabPromoRequest extends Fragment implements View.OnClickListener {
     public static final String TAB_PAGE = "tab_page";
 
+    public static LinearLayout linear_new_promo;
+
     private View v;
 
     public TabPromoRequest() {
@@ -46,8 +48,9 @@ public class TabPromoRequest extends Fragment implements View.OnClickListener {
     private void initVar() {
         ViewPager viewPager = v.findViewById(R.id.view_pager_promo_request);
         TabLayout tabLayout = v.findViewById(R.id.tab_promo_request);
-        LinearLayout linear_new_promo = v.findViewById(R.id.linear_new_promo_request);
         TabAdapter tabAdapter = new TabAdapter(getFragmentManager());
+
+        linear_new_promo = v.findViewById(R.id.linear_new_promo_request);
 
         tabAdapter.addTab(new ActivePromo(), "Promo Berjalan");
         tabAdapter.addTab(new PromoStatusFragment(), "Status Pengajuan");

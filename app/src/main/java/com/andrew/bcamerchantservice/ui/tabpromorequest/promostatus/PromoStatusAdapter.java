@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PromoStatusAdapter extends RecyclerView.Adapter<PromoStatusAdapter.Holder> {
-
     private Context mContext;
     private List<PromoRequest> promoRequestList;
     private Map<String, PromoRequest.PromoType> promoTypeMap;

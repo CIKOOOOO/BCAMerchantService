@@ -48,7 +48,7 @@
             android:fontFamily="@font/sniglet_font"
             android:paddingStart="10dp"
             android:paddingEnd="5dp"
-            android:text="Free Buy 1 Get 1 With BCA JCB Card"
+            android:text="Free Buy 1 Get 1 With xxxxxxxxxxxxxxxx"
             android:textColor="@color/blackPalette"
             android:textSize="14sp" />
 
@@ -274,7 +274,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/sniglet_font"
-            android:text="\u2022 Hanya berlaku pada:"
+            android:text="\u2022 Hanya berlaku pada xxxxx:"
             android:textColor="@color/blackPalette" />
 
         <TextView
@@ -290,7 +290,7 @@
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:text="1. Jalan Senopati Raya No. 60, Kebayoran Baru, Jakarta Selatan\n2. Jalan Taman Aries Raya No.3A, Puri Kembangan, Meruya, Jakarta Barat 11620 "
+            android:text="1. Jalan xxxxxxxxxxxxxxxxxxxxxx, Kebayoran Baru, Jakarta Selatan\n2. Jalan xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx "
             android:textColor="@color/blackPalette" />
 
         <RelativeLayout
@@ -335,7 +335,7 @@
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:text="1. Berlaku setiap hari\n2. Min. Transaksi Rp. 500.000 (Sebelum Tax) "
+            android:text="1. Berlaku setiap xxxxxxx\n2. Min. Transaksi Rp. xxxxxxx (Sebelum Tax) "
             android:textColor="@color/blackPalette" />
 
         <LinearLayout

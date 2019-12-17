@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     private Activity mActivity;
     private PrefConfig prefConfig;
     private PromoRequest.PromoType promoType;
-    private TextView text_edit_title, text_edit_date, text_edit_promo, text_edit_payment, text_edit_location, text_edit_term_condition, text_edit_logo, text_edit_product;
+    private TextView text_edit_title, text_edit_date, text_edit_promo, text_edit_payment, text_edit_location, text_edit_term_condition, text_edit_logo, text_edit_product, text_other_payment;
     private LinearLayout linear_other_payment;
 
     private IDetailPromoRequestPresenter presenter;
@@ -107,6 +108,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         text_edit_term_condition = v.findViewById(R.id.text_edit_term_condition_confirmation_proquest);
         text_edit_logo = v.findViewById(R.id.text_edit_logo_confirmation_proquest);
         text_edit_product = v.findViewById(R.id.text_edit_product_confirmation_proquest);
+        text_other_payment = v.findViewById(R.id.edit_text_payment_others_confirmation_proquest);
 
         presenter = new DetailPromoRequestPresenter(this);
 
@@ -217,6 +219,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             , List<PromoRequest.Logo> logoList, List<PromoRequest.Product> productList) {
 
         if (facilitiesList.size() > 0) {
+            Log.e("asd", facilitiesList.size() + "");
             PaymentTypeAdapter paymentTypeAdapter = new PaymentTypeAdapter(mContext, facilitiesList);
             RecyclerView recycler_facilities = v.findViewById(R.id.recycler_payment_type_confirmation_proquest);
             recycler_facilities.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -238,7 +241,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         }
 
         if (special_facilities != null && !special_facilities.isEmpty()) {
-            text_edit_payment.setText(special_facilities);
+            text_other_payment.setText(special_facilities);
             linear_other_payment.setVisibility(View.VISIBLE);
         } else {
             linear_other_payment.setVisibility(View.GONE);

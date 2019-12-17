@@ -3,6 +3,7 @@ package com.andrew.bcamerchantservice.ui.tabpromorequest.promostatus;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.PromoRequest;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest.DetailPromoRequestFragment;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 
@@ -50,7 +53,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
 
-        RecyclerView recycler_promo_status = v.findViewById(R.id.recycler_promo_status);
+        final RecyclerView recycler_promo_status = v.findViewById(R.id.recycler_promo_status);
 
         promoStatusAdapter = new PromoStatusAdapter(mContext, this);
 
@@ -64,6 +67,15 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
         presenter.onLoadData(prefConfig.getMID());
 
         recycler_promo_status.setAdapter(promoStatusAdapter);
+
+        recycler_promo_status.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                final int visible = newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE ? View.VISIBLE : View.GONE;
+                TabPromoRequest.linear_new_promo.setVisibility(visible);
+            }
+        });
     }
 
     @Override

@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/sniglet_font"
-                    android:text="Sedang diproses"
+                    android:text="xxxxxxx"
                     android:textColor="@color/blue_palette" />
             </LinearLayout>
 

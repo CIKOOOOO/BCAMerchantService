@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class PromoRequest implements Parcelable {
 
-    private String promo_request_id, promo_title, promo_start_date, promo_end_date, promo_request_date, promo_type_id, promo_location, promo_tnc, promo_status;
+    private String promo_request_id, promo_title, promo_start_date, promo_end_date, promo_request_date, promo_type_id, promo_location, promo_tnc, promo_status, promo_correction_menu, promo_correction_reason;
 
     public PromoRequest() {
     }
@@ -20,6 +20,8 @@ public class PromoRequest implements Parcelable {
         promo_location = in.readString();
         promo_tnc = in.readString();
         promo_status = in.readString();
+        promo_correction_menu = in.readString();
+        promo_correction_reason = in.readString();
     }
 
     public static final Creator<PromoRequest> CREATOR = new Creator<PromoRequest>() {
@@ -33,6 +35,14 @@ public class PromoRequest implements Parcelable {
             return new PromoRequest[size];
         }
     };
+
+    public String getPromo_correction_menu() {
+        return promo_correction_menu;
+    }
+
+    public String getPromo_correction_reason() {
+        return promo_correction_reason;
+    }
 
     public void setPromo_status(String promo_status) {
         this.promo_status = promo_status;
@@ -122,6 +132,8 @@ public class PromoRequest implements Parcelable {
         parcel.writeString(promo_location);
         parcel.writeString(promo_tnc);
         parcel.writeString(promo_status);
+        parcel.writeString(promo_correction_menu);
+        parcel.writeString(promo_correction_reason);
     }
 
     public static class PromoType {
