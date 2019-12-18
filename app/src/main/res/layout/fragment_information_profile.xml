@@ -15,6 +15,7 @@
             android:orientation="vertical">
 
             <GridLayout
+                android:id="@+id/grid_information_other_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -87,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/sniglet_font"
                 android:text="Deskripsi Singkat"
                 android:textColor="@color/blackPalette" />
@@ -107,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/sniglet_font"
                 android:text="Katalog Toko"
                 android:textColor="@color/blackPalette"

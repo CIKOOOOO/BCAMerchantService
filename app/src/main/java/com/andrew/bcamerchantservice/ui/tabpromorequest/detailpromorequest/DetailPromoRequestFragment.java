@@ -22,7 +22,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.InformationTextAdapter;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmationpromo.PaymentTypeAdapter;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
@@ -62,8 +62,9 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
 
     private IDetailPromoRequestPresenter presenter;
 
-    private String attacment_url, attachment_name;
+    private String attachment_url, attachment_name;
     private long downloadID;
+    private int tab_page;
 
     public DetailPromoRequestFragment() {
         // Required empty public constructor
@@ -90,6 +91,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     }
 
     private void initVar() {
+        tab_page = -1;
         downloadID = -1;
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
@@ -123,6 +125,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
                     presenter.loadPromoRequest(prefConfig.getMID(), promo_request_id);
                 }
             }
+            tab_page = bundle.getInt(TabPromoRequest.TAB_PAGE, 0);
         }
 
         img_back.setOnClickListener(this);
@@ -142,6 +145,19 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         RecyclerView recycler_correction = v.findViewById(R.id.recycler_correction_detail_promo_request);
         Button btn_next_confirmation = v.findViewById(R.id.btn_next_confirmation_proquest);
 
+
+        text_edit_title.setVisibility(View.GONE);
+        text_edit_date.setVisibility(View.GONE);
+        text_edit_promo.setVisibility(View.GONE);
+        text_edit_payment.setVisibility(View.GONE);
+        text_edit_location.setVisibility(View.GONE);
+        text_edit_term_condition.setVisibility(View.GONE);
+        text_edit_logo.setVisibility(View.GONE);
+        text_edit_product.setVisibility(View.GONE);
+
+        linear_correction.setVisibility(View.GONE);
+        btn_next_confirmation.setVisibility(View.GONE);
+
         if (promoRequest.getPromo_status().equals("promo_status_2")) {
             linear_correction.setVisibility(View.VISIBLE);
             recycler_correction.setLayoutManager(new LinearLayoutManager(mContext));
@@ -150,21 +166,42 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
              * */
             btn_next_confirmation.setVisibility(View.VISIBLE);
 
+            String[] correction_menu = promoRequest.getPromo_correction_menu().split("##");
+            String[] correction_reason = promoRequest.getPromo_correction_reason().split("##");
 
-        } else {
-            linear_correction.setVisibility(View.GONE);
-            btn_next_confirmation.setVisibility(View.GONE);
+            InformationTextAdapter informationTextAdapter = new InformationTextAdapter(mContext);
+            informationTextAdapter.setInformation_list(correction_reason);
+            recycler_correction.setAdapter(informationTextAdapter);
 
-            text_edit_title.setVisibility(View.GONE);
-            text_edit_date.setVisibility(View.GONE);
-            text_edit_promo.setVisibility(View.GONE);
-            text_edit_payment.setVisibility(View.GONE);
-            text_edit_location.setVisibility(View.GONE);
-            text_edit_term_condition.setVisibility(View.GONE);
-            text_edit_logo.setVisibility(View.GONE);
-            text_edit_product.setVisibility(View.GONE);
+            for (String s : correction_menu) {
+                switch (s) {
+                    case "Judul Promo":
+                        text_edit_title.setVisibility(View.VISIBLE);
+                        text_edit_title.setOnClickListener(this);
+                        break;
+                    case "Jenis Payment":
+                        text_edit_payment.setVisibility(View.VISIBLE);
+                        text_edit_payment.setOnClickListener(this);
+                        break;
+                    case "Jenis Promo":
+                        text_edit_promo.setVisibility(View.VISIBLE);
+                        text_edit_promo.setOnClickListener(this);
+                        break;
+                    case "Syarat & Ketentuan":
+                        text_edit_term_condition.setVisibility(View.VISIBLE);
+                        text_edit_term_condition.setOnClickListener(this);
+                        break;
+                    case "Logo Perusahaan":
+                        text_edit_logo.setVisibility(View.VISIBLE);
+                        text_edit_logo.setOnClickListener(this);
+                        break;
+                    case "Produk Perusahaan":
+                        text_edit_product.setVisibility(View.VISIBLE);
+                        text_edit_product.setOnClickListener(this);
+                        break;
+                }
+            }
         }
-
 
         text_title.setText(promoRequest.getPromo_title());
 
@@ -190,7 +227,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             String final_name = split_name_2[0].substring(1, split_name_2[0].length() - 1).replace("%20", " ");
 
             this.attachment_name = final_name;
-            this.attacment_url = promoRequest.getPromo_tnc();
+            this.attachment_url = promoRequest.getPromo_tnc();
 
             text_attachment.setText(final_name);
             linear_attachment.setVisibility(View.VISIBLE);
@@ -219,7 +256,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             , List<PromoRequest.Logo> logoList, List<PromoRequest.Product> productList) {
 
         if (facilitiesList.size() > 0) {
-            Log.e("asd", facilitiesList.size() + "");
             PaymentTypeAdapter paymentTypeAdapter = new PaymentTypeAdapter(mContext, facilitiesList);
             RecyclerView recycler_facilities = v.findViewById(R.id.recycler_payment_type_confirmation_proquest);
             recycler_facilities.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -253,7 +289,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         AppCompatActivity activity = (AppCompatActivity) mContext;
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        TabPromoRequest tabPromoRequest = new TabPromoRequest();
         Bundle bundle = new Bundle();
 
         switch (view.getId()) {
@@ -261,7 +296,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
 
                 break;
             case R.id.text_document_name_confirmation_proquest:
-                if (attacment_url != null && !attacment_url.isEmpty()) {
+                if (attachment_url != null && !attachment_url.isEmpty()) {
                     if (ActivityCompat.checkSelfPermission(mActivity,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -272,11 +307,26 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
                 }
                 break;
             case R.id.img_btn_back_toolbar_back:
-                bundle.putInt(TabPromoRequest.TAB_PAGE, 1);
+                TabPromoRequest tabPromoRequest = new TabPromoRequest();
+                bundle.putInt(TabPromoRequest.TAB_PAGE, tab_page);
                 tabPromoRequest.setArguments(bundle);
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, tabPromoRequest);
                 fragmentTransaction.commit();
+                break;
+            case R.id.text_edit_title_confirmation_proquest:
+                break;
+            case R.id.text_edit_promo_type_confirmation_proquest:
+                break;
+            case R.id.text_edit_payment_type_confirmation_proquest:
+                break;
+            case R.id.text_edit_location_confirmation_proquest:
+                break;
+            case R.id.text_edit_term_condition_confirmation_proquest:
+                break;
+            case R.id.text_edit_logo_confirmation_proquest:
+                break;
+            case R.id.text_edit_product_confirmation_proquest:
                 break;
         }
     }
@@ -294,7 +344,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     }
 
     private void beginDownload() {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(attacment_url));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(attachment_url));
         request.setTitle(attachment_name);
         request.setDescription("Downloading..");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

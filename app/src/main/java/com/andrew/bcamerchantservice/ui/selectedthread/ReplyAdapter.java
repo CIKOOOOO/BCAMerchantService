@@ -103,6 +103,8 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
         void onDelete(int pos);
 
         void onReport(String FRID);
+
+        void seeOtherProfile(Merchant merchant);
     }
 
     public ReplyAdapter(List<Forum.ForumReply> list, Map<String, Merchant> merchantMap, Map<String
@@ -131,12 +133,21 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.Holder> impl
         if (merchant != null) {
             holder.merchant_name.setText(merchant.getMerchant_name());
             holder.loc.setText(merchant.getMerchant_location());
-            Picasso.get().load(merchant.getMerchant_profile_picture()).into(holder.roundedImageView);
+            Picasso.get()
+                    .load(merchant.getMerchant_profile_picture())
+                    .into(holder.roundedImageView);
         }
 
         holder.time.setText(forumThread.getForum_reply_date() + " WIB");
         holder.like.setText(forumThread.getForum_like_amount() + "");
         holder.content.setText(forumThread.getForum_content());
+
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onReplyClick.seeOtherProfile(merchant);
+            }
+        });
 
         ImageSyncAdapter imageSyncAdapter;
 

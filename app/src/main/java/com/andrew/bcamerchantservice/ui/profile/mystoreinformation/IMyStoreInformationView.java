@@ -10,4 +10,6 @@ public interface IMyStoreInformationView {
     void onLoadCatalog(List<Merchant.MerchantCatalog> catalogList);
 
     void onSuccessDeleteCatalog(int pos);
+
+    void onUpdateInformationProfile(boolean isHide);
 }

@@ -13,7 +13,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyStoreInformationPresenter implements IMyStoreInformationPresenter {
     private static final String TAG = MyStoreInformationPresenter.class.getSimpleName();
@@ -69,6 +71,20 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
                     @Override
                     public void onSuccess(Void aVoid) {
                         view.onSuccessDeleteCatalog(pos);
+                    }
+                });
+    }
+
+    @Override
+    public void onUpdateInformationProfile(String MID, final boolean isHide) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("information_hide", isHide);
+        dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID)
+                .updateChildren(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        view.onUpdateInformationProfile(isHide);
                     }
                 });
     }

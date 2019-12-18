@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
@@ -58,7 +59,6 @@ public class InformationProfile extends Fragment implements IInformationProfileV
 
         presenter = new InformationProfilePresenter(this);
 
-
         Bundle bundle = getArguments();
         if (bundle.getParcelable(GETTING_DATA) != null) {
             Merchant merchant = bundle.getParcelable(GETTING_DATA);
@@ -68,6 +68,9 @@ public class InformationProfile extends Fragment implements IInformationProfileV
             text_email.setText(" : " + merchant.getMerchant_email());
             text_address.setText(" : " + merchant.getMerchant_address());
             text_description.setText(merchant.getMerchant_description());
+
+            int visible = merchant.isInformation_hide() ? View.GONE : View.VISIBLE;
+            ((GridLayout) v.findViewById(R.id.grid_information_other_profile)).setVisibility(visible);
 
             presenter.onLoadCatalog(merchant.getMid());
 

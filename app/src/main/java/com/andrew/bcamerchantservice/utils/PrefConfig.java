@@ -2,7 +2,6 @@ package com.andrew.bcamerchantservice.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.Merchant;
@@ -40,6 +39,7 @@ public class PrefConfig {
         editor.putString(context.getString(R.string.pref_description), merchant.getMerchant_description());
         editor.putString(context.getString(R.string.pref_owner), merchant.getMerchant_owner_name());
         editor.putString(context.getString(R.string.pref_loyalty_id), merchant.getMerchant_loyalty_rank_id());
+        editor.putBoolean(context.getString(R.string.pref_is_information_hide), merchant.isInformation_hide());
         editor.apply();
     }
 
@@ -163,6 +163,10 @@ public class PrefConfig {
         return sharedPreferences.getString(context.getString(R.string.pref_description), "");
     }
 
+    public Boolean isInformationHide() {
+        return sharedPreferences.getBoolean(context.getString(R.string.pref_is_information_hide), false);
+    }
+
     public Merchant.Position getMerchantPosition() {
         return new Merchant.Position(sharedPreferences.getString(context.getString(R.string.pref_position_id), "")
                 , sharedPreferences.getString(context.getString(R.string.pref_position_name), ""));
@@ -171,7 +175,7 @@ public class PrefConfig {
     public Merchant getMerchantData() {
         return new Merchant(getMID(), getName(), getLocation(), getProfilePicture(), getEmail()
                 , getBackgroundPicture(), getPosition(), getPhoneNumber(), getOwnerName()
-                , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp());
+                , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp(), isInformationHide());
     }
 
 }

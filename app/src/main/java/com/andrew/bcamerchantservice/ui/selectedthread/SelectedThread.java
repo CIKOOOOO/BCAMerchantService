@@ -53,6 +53,8 @@ import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.mainforum.MainForum;
 import com.andrew.bcamerchantservice.ui.mainforum.ReportAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
+import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
+import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
@@ -173,6 +175,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         TextView first_page2 = v.findViewById(R.id.btn_first_page_reply2);
         TextView last_page = v.findViewById(R.id.btn_end_reply);
         TextView last_page2 = v.findViewById(R.id.btn_end_reply2);
+        LinearLayout linear_profile = v.findViewById(R.id.linear_profile_selected_thread);
 
         img_like = v.findViewById(R.id.img_smile_thread);
         scrollView = v.findViewById(R.id.scrollView_SelectedThread);
@@ -227,6 +230,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
         scrollView.setSmoothScrollingEnabled(true);
         scrollView.setNestedScrollingEnabled(false);
+
+        linear_profile.setOnClickListener(this);
 
         after.setOnClickListener(this);
         before.setOnClickListener(this);
@@ -357,6 +362,9 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
     @Override
     public void onClick(View view) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         switch (view.getId()) {
             case R.id.img_smile_thread:
                 Map<String, Object> map = new HashMap<>();
@@ -487,13 +495,23 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     presenter.onRemoveFavoriteThread(prefConfig.getMID(), forum.getFid());
                 break;
             case R.id.img_btn_back_selected_thread:
-                FragmentManager fragmentManager = getFragmentManager();
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 fragmentTransaction.replace(R.id.main_frame, new MainForum());
 
+                fragmentTransaction.commit();
+                break;
+            case R.id.linear_profile_selected_thread:
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                Bundle bundle = new Bundle();
+                if (!merchant.getMid().equals(prefConfig.getMID())) {
+                    OtherProfile otherProfile = new OtherProfile();
+                    otherProfile.setArguments(bundle);
+                    bundle.putParcelable(OtherProfile.GET_DATA_PROFILE, merchant);
+                    fragmentTransaction.replace(R.id.main_frame, otherProfile);
+                } else {
+                    fragmentTransaction.replace(R.id.main_frame, new Profile());
+                }
                 fragmentTransaction.commit();
                 break;
         }
@@ -621,6 +639,22 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         });
 
         reply_code_alert.show();
+    }
+
+    @Override
+    public void seeOtherProfile(Merchant merchant) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        Bundle bundle = new Bundle();
+        if (!merchant.getMid().equals(prefConfig.getMID())) {
+            OtherProfile otherProfile = new OtherProfile();
+            otherProfile.setArguments(bundle);
+            bundle.putParcelable(OtherProfile.GET_DATA_PROFILE, merchant);
+            fragmentTransaction.replace(R.id.main_frame, otherProfile);
+        } else {
+            fragmentTransaction.replace(R.id.main_frame, new Profile());
+        }
+        fragmentTransaction.commit();
     }
 
     @Override

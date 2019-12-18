@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andrew.bcamerchantservice.R;
@@ -25,9 +24,7 @@ import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +43,7 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     private Activity mActivity;
     private PrefConfig prefConfig;
     private CatalogAdapter adapter;
+    private TextView text_hide_information;
 
     private IMyStoreInformationPresenter presenter;
 
@@ -79,6 +77,7 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         FloatingActionButton fab = v.findViewById(R.id.fab_add_store_information);
 //        CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
 
+        text_hide_information = v.findViewById(R.id.text_hide_information_profile);
         edit_text_owner = v.findViewById(R.id.edit_text_owner_store_information);
         edit_text_phone_number = v.findViewById(R.id.edit_text_phone_number_store_information);
         edit_text_email = v.findViewById(R.id.edit_text_email_store_information);
@@ -103,6 +102,12 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
         presenter.onLoadCatalog(prefConfig.getMID());
 
+        if (prefConfig.isInformationHide()) {
+            text_hide_information.setText("Tampilkan Profile");
+        } else {
+            text_hide_information.setText("Sembunyikan Profile");
+        }
+
         fab.setOnClickListener(this);
 
         recycler_catalog.setAdapter(adapter);
@@ -112,6 +117,8 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         edit_text_email.setText(prefConfig.getEmail());
         edit_text_address.setText(prefConfig.getStoreAddress());
         edit_text_description.setText(prefConfig.getDescription());
+
+        text_hide_information.setOnClickListener(this);
 
         img_btn_owner.setOnClickListener(this);
         img_btn_phone_number.setOnClickListener(this);
@@ -129,6 +136,9 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.text_hide_information_profile:
+                presenter.onUpdateInformationProfile(prefConfig.getMID(), !prefConfig.isInformationHide());
+                break;
             case R.id.image_button_owner_store_information:
                 editCondition(true, edit_text_owner, image_btn_check_owner, img_btn_owner);
                 break;
@@ -241,6 +251,16 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     public void onSuccessDeleteCatalog(int pos) {
         adapter.setLastPosition(-1);
         adapter.notifyItemChanged(pos);
+    }
+
+    @Override
+    public void onUpdateInformationProfile(boolean isHide) {
+        Merchant merchant = prefConfig.getMerchantData();
+        merchant.setInformation_hide(isHide);
+        prefConfig.insertMerchantData(merchant);
+        if (isHide) {
+            text_hide_information.setText("Tampilkan Profile");
+        } else text_hide_information.setText("Sembunyikan Profile   ");
     }
 
     @Override

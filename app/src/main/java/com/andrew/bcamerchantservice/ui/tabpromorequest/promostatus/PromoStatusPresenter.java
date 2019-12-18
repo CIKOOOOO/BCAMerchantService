@@ -70,7 +70,7 @@ public class PromoStatusPresenter implements IPromoStatusPresenter {
                                                     }
                                                 });
                                         promoRequestList.add(0, promoRequest);
-                                    } else if (promoRequest.getPromo_status().equals("Koreksi") || promoRequest.getPromo_status().equals("Sedang diproses")) {
+                                    } else if (promoRequest.getPromo_status().equals("promo_status_2") || promoRequest.getPromo_status().equals("promo_status_1")) {
                                         Map<String, Object> map = new HashMap<>();
                                         map.put("promo_status", "Ditolak");
 

@@ -7,4 +7,6 @@ public interface IMyStoreInformationPresenter {
     void onLoadCatalog(String MID);
 
     void onDeleteCatalog(String MID, String CID, int pos);
+
+    void onUpdateInformationProfile(String MID, boolean isHide);
 }

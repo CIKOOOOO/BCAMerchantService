@@ -105,6 +105,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
         Bundle bundle = new Bundle();
         bundle.putString(DetailPromoRequestFragment.PROMO_REQUEST_ID, promo_request_id);
         detailPromoRequestFragment.setArguments(bundle);
+        bundle.putInt(TabPromoRequest.TAB_PAGE, 1);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.main_frame, detailPromoRequestFragment);
