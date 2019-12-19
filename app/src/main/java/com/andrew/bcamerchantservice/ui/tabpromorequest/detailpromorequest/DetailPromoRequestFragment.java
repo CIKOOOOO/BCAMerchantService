@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -33,16 +34,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.TabPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.InformationTextAdapter;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmationpromo.ConfirmationPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmationpromo.PaymentTypeAdapter;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.Constant;
+import com.andrew.bcamerchantservice.utils.ImageBitmapAdapter;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,20 +60,27 @@ import java.util.List;
 public class DetailPromoRequestFragment extends Fragment implements IDetailPromoRequestView, View.OnClickListener, MainActivity.onBackPressFragment {
 
     public static final String PROMO_REQUEST_ID = "promo_request_id";
+    public static final String CORRECTION_FLOW = "correction_flow"; // flow edit untuk pengajuan koreksi
+
 
     private View v;
     private Context mContext;
     private Activity mActivity;
     private PrefConfig prefConfig;
-    private PromoRequest.PromoType promoType;
     private TextView text_edit_title, text_edit_date, text_edit_promo, text_edit_payment, text_edit_location, text_edit_term_condition, text_edit_logo, text_edit_product, text_other_payment;
     private LinearLayout linear_other_payment;
+    private PromoRequest promoRequest;
 
     private IDetailPromoRequestPresenter presenter;
 
-    private String attachment_url, attachment_name;
+    private List<ImagePicker> logoPickerList, productPickerList;
+    private List<PromoRequest.Product> productList;
+    private List<PromoRequest.Logo> logoList;
+    private List<PromoRequest.Facilities> facilitiesList;
+    private String attachment_url, attachment_name, special_facilities, flow_status;
     private long downloadID;
     private int tab_page;
+    private Uri attachment_URI;
 
     public DetailPromoRequestFragment() {
         // Required empty public constructor
@@ -93,9 +109,10 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     private void initVar() {
         tab_page = -1;
         downloadID = -1;
+        special_facilities = "";
+        flow_status = "";
         mContext = v.getContext();
         prefConfig = new PrefConfig(mContext);
-        promoType = null;
 
         ((TextView) v.findViewById(R.id.text_title_toolbar_back)).setText("Detail Pengajuan Promo");
 
@@ -114,12 +131,130 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
 
         presenter = new DetailPromoRequestPresenter(this);
 
+        logoPickerList = new ArrayList<>();
+        productPickerList = new ArrayList<>();
+        productList = new ArrayList<>();
+        logoList = new ArrayList<>();
+        facilitiesList = new ArrayList<>();
+
         mContext.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         MainActivity.bottomNavigationView.setVisibility(View.GONE);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.getString(PROMO_REQUEST_ID) != null) {
+            if (bundle.getString(ConfirmationPromoRequest.STATUS_FLOW) != null) {
+                flow_status = bundle.getString(ConfirmationPromoRequest.STATUS_FLOW);
+                if (flow_status != null) {
+                    if (flow_status.isEmpty()) {
+                        if (bundle.getString(PROMO_REQUEST_ID) != null) {
+                            /*
+                             * For normal Flow
+                             * */
+                            String promo_request_id = bundle.getString(PROMO_REQUEST_ID);
+                            if (promo_request_id != null) {
+                                presenter.loadPromoRequest(prefConfig.getMID(), promo_request_id);
+                            }
+                        }
+                    } else if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
+                        /*
+                         *For Correction Flow
+                         * */
+                        if (bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA) != null) {
+                            promoRequest = bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA);
+                            if (promoRequest != null) {
+                                presenter.loadStatusPromoTypeRequest(promoRequest.getPromo_status(), promoRequest.getPromo_type_id());
+                                onLoadPromoData(promoRequest);
+                            }
+                        }
+
+                        if (bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
+                            attachment_URI = Uri.parse(bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
+                            if (attachment_URI != null) {
+                                LinearLayout linear_attachment = v.findViewById(R.id.linear_attachment_confirmation_proquest);
+                                TextView text_attachment = v.findViewById(R.id.text_document_name_confirmation_proquest);
+                                TextView text_tnc = v.findViewById(R.id.text_specific_term_confition_confirmation_proquest);
+                                text_tnc.setVisibility(View.GONE);
+                                linear_attachment.setVisibility(View.VISIBLE);
+                                text_attachment.setText(Utils.getFileName(attachment_URI, mContext));
+                            }
+                        }
+
+                        if (bundle.getParcelableArrayList(TNCRequestFragment.GET_FACILITIES_LIST) != null) {
+                            this.facilitiesList = bundle.getParcelableArrayList(TNCRequestFragment.GET_FACILITIES_LIST);
+                            PaymentTypeAdapter paymentTypeAdapter = new PaymentTypeAdapter(mContext, facilitiesList);
+                            RecyclerView recycler_facilities = v.findViewById(R.id.recycler_payment_type_confirmation_proquest);
+                            recycler_facilities.setLayoutManager(new GridLayoutManager(mContext, 2));
+                            recycler_facilities.setAdapter(paymentTypeAdapter);
+                        }
+                        if (bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST) != null) {
+                            this.logoPickerList = bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST);
+                            if (logoPickerList != null) {
+                                if (logoPickerList.size() > 0) {
+                                    RecyclerView recycler_logo = v.findViewById(R.id.recycler_logo_confirmation_proquest);
+                                    recycler_logo.setLayoutManager(new LinearLayoutManager(mContext));
+                                    String check_adapter = "";
+                                    try {
+                                        ImagePicker imagePicker = logoPickerList.get(0);
+                                        check_adapter = "image_picker";
+
+                                    } catch (ClassCastException e) {
+                                        check_adapter = "logo_list";
+                                    }
+                                    if (check_adapter.equals("image_picker")) {
+                                        ImageBitmapAdapter imageBitmapAdapter = new ImageBitmapAdapter(mContext);
+                                        imageBitmapAdapter.setImagePickerList(logoPickerList);
+                                        recycler_logo.setAdapter(imageBitmapAdapter);
+                                    } else {
+                                        logoList = bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST);
+                                        LogoAdapter logoAdapter = new LogoAdapter(mContext, logoList);
+                                        recycler_logo.setAdapter(logoAdapter);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST) != null) {
+                            this.productPickerList = bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST);
+                            if (productPickerList != null) {
+                                if (productPickerList.size() > 0) {
+                                    RecyclerView recycler_product = v.findViewById(R.id.recycler_product_confirmation_proquest);
+                                    recycler_product.setLayoutManager(new LinearLayoutManager(mContext));
+                                    String check_adapter = "";
+                                    try {
+                                        ImagePicker imagePicker = productPickerList.get(0);
+                                        check_adapter = "image_picker";
+
+                                    } catch (ClassCastException e) {
+                                        check_adapter = "logo_list";
+                                    }
+
+                                    if (check_adapter.equals("image_picker")) {
+                                        ImageBitmapAdapter productAdapter = new ImageBitmapAdapter(mContext);
+                                        productAdapter.setImagePickerList(this.productPickerList);
+                                        recycler_product.setAdapter(productAdapter);
+                                    } else {
+                                        productList = bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST);
+                                        ProductAdapter productAdapter = new ProductAdapter(mContext, productList);
+                                        recycler_product.setAdapter(productAdapter);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (bundle.getString(TNCRequestFragment.GET_SPECIFIC_FACILITIES) != null) {
+                            special_facilities = bundle.getString(TNCRequestFragment.GET_SPECIFIC_FACILITIES);
+                            if (special_facilities == null || special_facilities.isEmpty()) {
+                                linear_other_payment.setVisibility(View.GONE);
+                            } else {
+                                text_other_payment.setText(special_facilities);
+                                linear_other_payment.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            linear_other_payment.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            } else if (bundle.getString(PROMO_REQUEST_ID) != null) {
                 String promo_request_id = bundle.getString(PROMO_REQUEST_ID);
                 if (promo_request_id != null) {
                     presenter.loadPromoRequest(prefConfig.getMID(), promo_request_id);
@@ -133,6 +268,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
 
     @Override
     public void onLoadPromoData(PromoRequest promoRequest) {
+        this.promoRequest = promoRequest;
         EditText text_title = v.findViewById(R.id.edit_text_title_confirmation_proquest);
         TextView text_start_date = v.findViewById(R.id.text_start_date_confirmation_proquest);
         TextView text_end_date = v.findViewById(R.id.text_end_date_confirmation_proquest);
@@ -144,7 +280,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         LinearLayout linear_correction = v.findViewById(R.id.linear_correction_detail_promo_request);
         RecyclerView recycler_correction = v.findViewById(R.id.recycler_correction_detail_promo_request);
         Button btn_next_confirmation = v.findViewById(R.id.btn_next_confirmation_proquest);
-
 
         text_edit_title.setVisibility(View.GONE);
         text_edit_date.setVisibility(View.GONE);
@@ -161,9 +296,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         if (promoRequest.getPromo_status().equals("promo_status_2")) {
             linear_correction.setVisibility(View.VISIBLE);
             recycler_correction.setLayoutManager(new LinearLayoutManager(mContext));
-            /*
-             * aaaaaa
-             * */
             btn_next_confirmation.setVisibility(View.VISIBLE);
 
             String[] correction_menu = promoRequest.getPromo_correction_menu().split("##");
@@ -233,7 +365,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             linear_attachment.setVisibility(View.VISIBLE);
             text_tnc.setVisibility(View.GONE);
             text_attachment.setOnClickListener(this);
-        } else {
+        } else if (!promoRequest.getPromo_tnc().isEmpty()) {
             text_tnc.setText(promoRequest.getPromo_tnc());
             text_tnc.setVisibility(View.VISIBLE);
             linear_attachment.setVisibility(View.GONE);
@@ -246,7 +378,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     public void onLoadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus) {
         EditText text_promo_type = v.findViewById(R.id.edit_text_promo_type_confirmation_proquest);
         TextView text_status = v.findViewById(R.id.text_status_detail_promo_request);
-        this.promoType = promoType;
         text_promo_type.setText(promoType.getPromo_name());
         text_status.setText(promoStatus.getPromo_status_name());
     }
@@ -256,6 +387,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             , List<PromoRequest.Logo> logoList, List<PromoRequest.Product> productList) {
 
         if (facilitiesList.size() > 0) {
+            this.facilitiesList = facilitiesList;
             PaymentTypeAdapter paymentTypeAdapter = new PaymentTypeAdapter(mContext, facilitiesList);
             RecyclerView recycler_facilities = v.findViewById(R.id.recycler_payment_type_confirmation_proquest);
             recycler_facilities.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -263,6 +395,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         }
 
         if (logoList.size() > 0) {
+            this.logoList = logoList;
             RecyclerView recycler_logo = v.findViewById(R.id.recycler_logo_confirmation_proquest);
             LogoAdapter logo_adapter = new LogoAdapter(mContext, logoList);
             recycler_logo.setLayoutManager(new LinearLayoutManager(mContext));
@@ -270,6 +403,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
         }
 
         if (productList.size() > 0) {
+            this.productList = productList;
             RecyclerView recycler_product = v.findViewById(R.id.recycler_product_confirmation_proquest);
             ProductAdapter productAdapter = new ProductAdapter(mContext, productList);
             recycler_product.setLayoutManager(new LinearLayoutManager(mContext));
@@ -323,6 +457,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             case R.id.text_edit_location_confirmation_proquest:
                 break;
             case R.id.text_edit_term_condition_confirmation_proquest:
+                changeCorrectionFragment(new TNCRequestFragment());
                 break;
             case R.id.text_edit_logo_confirmation_proquest:
                 break;
@@ -364,6 +499,40 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             }
         }
     };
+
+    private void changeCorrectionFragment(Fragment fragment) {
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, promoRequest);
+        bundle.putString(ConfirmationPromoRequest.STATUS_FLOW, DetailPromoRequestFragment.CORRECTION_FLOW);
+        if (productPickerList.size() > 0)
+            bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, (ArrayList<? extends Parcelable>) productPickerList);
+        else
+            bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, (ArrayList<? extends Parcelable>) productList);
+        if (linear_other_payment.getVisibility() == View.VISIBLE) {
+            bundle.putString(TNCRequestFragment.GET_SPECIFIC_FACILITIES, text_other_payment.getText().toString());
+        }
+        if (logoPickerList.size() > 0) {
+            bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, (ArrayList<? extends Parcelable>) logoPickerList);
+        } else {
+            bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, (ArrayList<? extends Parcelable>) logoList);
+        }
+        if (facilitiesList.size() > 0) {
+            bundle.putParcelableArrayList(TNCRequestFragment.GET_FACILITIES_LIST, (ArrayList<? extends Parcelable>) facilitiesList);
+        }
+
+        if (attachment_URI != null) {
+            bundle.putString(LogoRequestFragment.GET_ATTACHMENT, attachment_URI.toString());
+        }
+
+        fragment.setArguments(bundle);
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.commit();
+    }
 
     @Override
     public void onBackPress(boolean check, Context context) {

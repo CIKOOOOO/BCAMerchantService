@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
+import com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest.DetailPromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.confirmationpromo.ConfirmationPromoRequest;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestAdapter;
@@ -59,6 +60,7 @@ public class ProductFragment extends Fragment implements LogoRequestAdapter.onCl
     private LinearLayout linear_add;
 
     private List<ImagePicker> imagePickerList;
+    private String flow_status;
 
     public ProductFragment() {
         // Required empty public constructor
@@ -102,12 +104,21 @@ public class ProductFragment extends Fragment implements LogoRequestAdapter.onCl
 
         recycler_product.setAdapter(logoRequestAdapter);
 
-        if (init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST) != null) {
-            imagePickerList = init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST);
-            logoRequestAdapter.setImagePickerList(imagePickerList);
-            logoRequestAdapter.notifyDataSetChanged();
-            if (imagePickerList.size() != 0 && imagePickerList.size() != 3)
-                linear_add.setVisibility(View.VISIBLE);
+        if (init_bundle.getString(ConfirmationPromoRequest.STATUS_FLOW) != null) {
+            flow_status = init_bundle.getString(ConfirmationPromoRequest.STATUS_FLOW);
+            if (flow_status != null) {
+                if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
+
+                } else if (flow_status.equals(ConfirmationPromoRequest.NORMAL_EDIT_FLOW)) {
+                    if (init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST) != null) {
+                        imagePickerList = init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST);
+                        logoRequestAdapter.setImagePickerList(imagePickerList);
+                        logoRequestAdapter.notifyDataSetChanged();
+                        if (imagePickerList.size() != 0 && imagePickerList.size() != 3)
+                            linear_add.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
 
         linear_add.setOnClickListener(this);

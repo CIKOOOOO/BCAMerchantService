@@ -246,7 +246,7 @@ public class PromoRequest implements Parcelable {
         }
     }
 
-    public static class Logo {
+    public static class Logo implements Parcelable{
         private String merchant_logo_id, merchant_logo_url;
 
         public Logo() {
@@ -257,6 +257,23 @@ public class PromoRequest implements Parcelable {
             this.merchant_logo_url = merchant_logo_url;
         }
 
+        protected Logo(Parcel in) {
+            merchant_logo_id = in.readString();
+            merchant_logo_url = in.readString();
+        }
+
+        public static final Creator<Logo> CREATOR = new Creator<Logo>() {
+            @Override
+            public Logo createFromParcel(Parcel in) {
+                return new Logo(in);
+            }
+
+            @Override
+            public Logo[] newArray(int size) {
+                return new Logo[size];
+            }
+        };
+
         public String getMerchant_logo_id() {
             return merchant_logo_id;
         }
@@ -264,9 +281,20 @@ public class PromoRequest implements Parcelable {
         public String getMerchant_logo_url() {
             return merchant_logo_url;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(merchant_logo_id);
+            parcel.writeString(merchant_logo_url);
+        }
     }
 
-    public static class Product {
+    public static class Product implements Parcelable{
         private String merchant_product_id, merchant_product_url;
 
         public Product(String merchant_product_id, String merchant_product_url) {
@@ -277,6 +305,23 @@ public class PromoRequest implements Parcelable {
         public Product() {
         }
 
+        protected Product(Parcel in) {
+            merchant_product_id = in.readString();
+            merchant_product_url = in.readString();
+        }
+
+        public static final Creator<Product> CREATOR = new Creator<Product>() {
+            @Override
+            public Product createFromParcel(Parcel in) {
+                return new Product(in);
+            }
+
+            @Override
+            public Product[] newArray(int size) {
+                return new Product[size];
+            }
+        };
+
         public String getMerchant_product_id() {
             return merchant_product_id;
         }
@@ -284,13 +329,41 @@ public class PromoRequest implements Parcelable {
         public String getMerchant_product_url() {
             return merchant_product_url;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(merchant_product_id);
+            parcel.writeString(merchant_product_url);
+        }
     }
 
-    public static class PromoStatus {
+    public static class PromoStatus implements Parcelable {
         private String promo_status_id, promo_status_name;
 
         public PromoStatus() {
         }
+
+        protected PromoStatus(Parcel in) {
+            promo_status_id = in.readString();
+            promo_status_name = in.readString();
+        }
+
+        public static final Creator<PromoStatus> CREATOR = new Creator<PromoStatus>() {
+            @Override
+            public PromoStatus createFromParcel(Parcel in) {
+                return new PromoStatus(in);
+            }
+
+            @Override
+            public PromoStatus[] newArray(int size) {
+                return new PromoStatus[size];
+            }
+        };
 
         public String getPromo_status_id() {
             return promo_status_id;
@@ -298,6 +371,17 @@ public class PromoRequest implements Parcelable {
 
         public String getPromo_status_name() {
             return promo_status_name;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(promo_status_id);
+            parcel.writeString(promo_status_name);
         }
     }
 }

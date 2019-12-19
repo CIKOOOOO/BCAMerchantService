@@ -1,7 +1,6 @@
 package com.andrew.bcamerchantservice.ui.tabpromorequest.detailpromorequest;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.andrew.bcamerchantservice.model.PromoRequest;
 import com.andrew.bcamerchantservice.utils.Constant;
@@ -84,6 +83,29 @@ public class DetailPromoRequestPresenter implements IDetailPromoRequestPresenter
                             view.onLoadRestData(special_facilities, facilitiesList, logoList, productList);
 
                         }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void loadStatusPromoTypeRequest(final String promo_status_id, final String promo_type_id) {
+        dbRef.child(Constant.DB_REFERENCE_PROMO_REQUEST)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        PromoRequest.PromoType promoType = dataSnapshot.child(Constant.DB_REFERENCE_PROMO_REQUEST_TYPE
+                                + "/" + promo_type_id).getValue(PromoRequest.PromoType.class);
+
+                        PromoRequest.PromoStatus promoStatus = dataSnapshot.child(Constant.DB_REFERENCE_PROMO_STATUS
+                                + "/" + promo_status_id).getValue(PromoRequest.PromoStatus.class);
+
+                        if (promoType != null && promoStatus != null)
+                            view.onLoadPromoType(promoType, promoStatus);
                     }
 
                     @Override

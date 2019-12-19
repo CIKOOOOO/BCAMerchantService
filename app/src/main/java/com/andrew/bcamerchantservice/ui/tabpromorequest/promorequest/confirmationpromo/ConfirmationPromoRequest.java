@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.PromoRequest;
+import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.PromoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRequestFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
@@ -37,20 +38,20 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ConfirmationPromoRequest extends Fragment implements IConfirmationPromoRequestView, View.OnClickListener {
+public class ConfirmationPromoRequest extends Fragment implements IConfirmationPromoRequestView, View.OnClickListener, MainActivity.onBackPressFragment {
 
     public static final String PRODUCT_REQUEST = "product_request";
     public static final String NORMAL_FLOW = "normal_flow"; // flow biasa
     public static final String NORMAL_EDIT_FLOW = "normal_edit_flow"; // flow edit untuk pengajuan baru
-    public static final String CORRECTION_FLOW = "correction_flow"; // flow edit untuk pengajuan koreksi
     public static final String STATUS_FLOW = "status";
+
+    private static Bundle init_bundle;
 
     private View v;
     private Context mContext;
     private EditText edit_text_title, edit_text_promo, edit_text_payment_other;
     private TextView text_start_date, text_end_date, text_promo_location, text_specific_location, text_specific_term_condition, text_doc_name, text_edit_title, text_edit_date, text_edit_promo, text_edit_payment, text_edit_location, text_edit_term_condition, text_edit_logo, text_edit_product;
     private LinearLayout linear_other_payment, linear_attachment;
-    private Bundle init_bundle;
     private PromoRequest promoRequest;
     private PromoRequest.PromoType promoType;
     private PaymentTypeAdapter paymentTypeAdapter;
@@ -152,8 +153,8 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
             e.printStackTrace();
         }
 
-        if (init_bundle.getString(TNCRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
-            String specific_payment = init_bundle.getString(TNCRequestFragment.GET_SPECIFIC_PAYMENT);
+        if (init_bundle.getString(TNCRequestFragment.GET_SPECIFIC_FACILITIES) != null) {
+            String specific_payment = init_bundle.getString(TNCRequestFragment.GET_SPECIFIC_FACILITIES);
             linear_other_payment.setVisibility(View.GONE);
             if (specific_payment != null) {
                 if (!specific_payment.isEmpty()) {
@@ -320,5 +321,33 @@ public class ConfirmationPromoRequest extends Fragment implements IConfirmationP
         bundle.putString(STATUS_FLOW, NORMAL_EDIT_FLOW);
 
         fragment.setArguments(bundle);
+    }
+
+    @Override
+    public void onBackPress(boolean check, Context context) {
+        AppCompatActivity activity = (AppCompatActivity) context;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ProductFragment productFragment = new ProductFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PromoRequestFragment.GET_PROMO_DATA, init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA));
+        if (init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
+            bundle.putString(LogoRequestFragment.GET_ATTACHMENT, init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
+        }
+        if (init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT) != null) {
+            bundle.putString(PromoRequestFragment.GET_SPECIFIC_PAYMENT, init_bundle.getString(PromoRequestFragment.GET_SPECIFIC_PAYMENT));
+        }
+        if (init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST) != null) {
+            bundle.putParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST, init_bundle.getParcelableArrayList(PromoRequestFragment.GET_FACILITIES_LIST));
+        }
+
+        bundle.putParcelableArrayList(ProductFragment.GET_LOGO_REQUEST, init_bundle.getParcelableArrayList(ProductFragment.GET_LOGO_REQUEST));
+        bundle.putParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST, init_bundle.getParcelableArrayList(PRODUCT_REQUEST));
+
+        productFragment.setArguments(bundle);
+
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.main_frame, productFragment);
+        fragmentTransaction.commit();
     }
 }
