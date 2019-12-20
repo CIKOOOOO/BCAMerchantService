@@ -29,8 +29,8 @@ public class PromoStatusPresenter implements IPromoStatusPresenter {
     }
 
     @Override
-    public void onLoadData(String MID) {
-        final String path = Constant.DB_REFERENCE_PROMO_REQUEST + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST + "/" + MID;
+    public void onLoadData(String MID, int MCC) {
+        final String path = Constant.DB_REFERENCE_PROMO_REQUEST + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST + "/" + MCC + "/" + MID;
         dbRef.child(path)
                 .addValueEventListener(new ValueEventListener() {
                     @Override

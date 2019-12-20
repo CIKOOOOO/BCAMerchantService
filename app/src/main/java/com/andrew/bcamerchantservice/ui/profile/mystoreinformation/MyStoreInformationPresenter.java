@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +22,13 @@ import java.util.Map;
 public class MyStoreInformationPresenter implements IMyStoreInformationPresenter {
     private static final String TAG = MyStoreInformationPresenter.class.getSimpleName();
     private DatabaseReference dbRef;
+    private StorageReference storageReference;
     private IMyStoreInformationView view;
 
     public MyStoreInformationPresenter(IMyStoreInformationView view) {
         this.view = view;
         dbRef = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -64,7 +68,10 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
     }
 
     @Override
-    public void onDeleteCatalog(String MID, String CID, final int pos) {
+    public void onDeleteCatalog(final String MID, String CID, final int pos, final String catalog_image) {
+        final String path = Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID + "/" + catalog_image;
+        storageReference.child(path)
+                .delete();
         dbRef.child(Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID + "/" + CID)
                 .removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

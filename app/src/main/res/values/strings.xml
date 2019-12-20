@@ -95,6 +95,7 @@
     <string name="pref_position_name">position_name</string>
     <string name="pref_position_id">position_id</string>
     <string name="pref_is_information_hide">false</string>
+    <string name="pref_mcc">0</string>
 
     <string name="menu_help">EDC Help and Support</string>
     <string name="menu_qr">QR Code</string>
@@ -153,5 +154,5 @@
     <string name="info_logo">Informasi:\n1. Gambar logo harus HD (min: 512x512px).\n2. Maksimal gambar adalah 3.</string>
     <string name="info_product">Informasi:\n1. Gambar produk harus HD (min: 512x512px).\n2. Maksimal gambar adalah 3.</string>
     <string name="promo_request_success1">Pengajuan promo berhasil dikirim!</string>
-    <string name="promo_request_success2">Pengajuan promo berhasil dikirim, tim kami akan segera memroses pengajuan Anda.</string>
+    <string name="promo_request_success2">Tim kami akan segera memroses pengajuan Anda.</string>
 </resources>

@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
-import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.bumptech.glide.Glide;
@@ -186,6 +185,8 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
                     break;
 
                 Uri targetUri = data.getData();
+                if (targetUri == null)
+                    break;
                 try {
                     catalog_bitmap = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(targetUri));
                     Glide.with(mContext)

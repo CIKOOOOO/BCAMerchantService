@@ -152,7 +152,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
                              * */
                             String promo_request_id = bundle.getString(PROMO_REQUEST_ID);
                             if (promo_request_id != null) {
-                                presenter.loadPromoRequest(prefConfig.getMID(), promo_request_id);
+                                presenter.loadPromoRequest(prefConfig.getMID(), prefConfig.getMCC(), promo_request_id);
                             }
                         }
                     } else if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
@@ -257,7 +257,7 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
             } else if (bundle.getString(PROMO_REQUEST_ID) != null) {
                 String promo_request_id = bundle.getString(PROMO_REQUEST_ID);
                 if (promo_request_id != null) {
-                    presenter.loadPromoRequest(prefConfig.getMID(), promo_request_id);
+                    presenter.loadPromoRequest(prefConfig.getMID(), prefConfig.getMCC(), promo_request_id);
                 }
             }
             tab_page = bundle.getInt(TabPromoRequest.TAB_PAGE, 0);
@@ -333,6 +333,15 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
                         break;
                 }
             }
+        } else if (promoRequest.getPromo_status().equals("promo_status_3")) {
+            linear_correction.setVisibility(View.VISIBLE);
+            recycler_correction.setLayoutManager(new LinearLayoutManager(mContext));
+
+            String[] correction_reason = promoRequest.getPromo_correction_reason().split("##");
+
+            InformationTextAdapter informationTextAdapter = new InformationTextAdapter(mContext);
+            informationTextAdapter.setInformation_list(correction_reason);
+            recycler_correction.setAdapter(informationTextAdapter);
         }
 
         text_title.setText(promoRequest.getPromo_title());

@@ -186,7 +186,7 @@ public class PromoRequest implements Parcelable {
         }
 
         public void setCheck(boolean check) {
-            check = check;
+            this.check = check;
         }
 
         public Facilities() {

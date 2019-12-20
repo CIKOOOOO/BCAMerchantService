@@ -31,13 +31,13 @@ public class ActivePromoPresenter implements IActivePromoPresenter {
 
 
     @Override
-    public void loadActivePromo(final String MID) {
+    public void loadActivePromo(final String MID, final int MCC) {
         dbRef.child(Constant.DB_REFERENCE_PROMO_REQUEST)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<PromoRequest> promoRequestList = new ArrayList<>();
-                        String promo_request_path = Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST + "/" + MID;
+                            String promo_request_path = Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST + "/" + MCC + "/" + MID;
                         for (DataSnapshot snapshot : dataSnapshot.child(promo_request_path).getChildren()) {
                             PromoRequest promoRequest = snapshot.getValue(PromoRequest.class);
                             if (promoRequest != null) {
@@ -53,7 +53,7 @@ public class ActivePromoPresenter implements IActivePromoPresenter {
 
                                             final String path = Constant.DB_REFERENCE_PROMO_REQUEST
                                                     + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST
-                                                    + "/" + MID + "/" + promoRequest.getPromo_request_id();
+                                                    + "/" + MCC + "/" + MID + "/" + promoRequest.getPromo_request_id();
 
                                             dbRef.child(path)
                                                     .updateChildren(map);
@@ -76,7 +76,7 @@ public class ActivePromoPresenter implements IActivePromoPresenter {
 
                                             final String path = Constant.DB_REFERENCE_PROMO_REQUEST
                                                     + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST
-                                                    + "/" + MID + "/" + promoRequest.getPromo_request_id();
+                                                    + "/" + MCC + "/" + MID + "/" + promoRequest.getPromo_request_id();
 
                                             dbRef.child(path)
                                                     .updateChildren(map);

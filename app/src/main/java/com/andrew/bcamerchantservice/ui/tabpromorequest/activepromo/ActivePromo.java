@@ -70,7 +70,7 @@ public class ActivePromo extends Fragment implements MainActivity.onBackPressFra
         recycler_active_promo.setLayoutManager(new LinearLayoutManager(mContext));
         recycler_active_promo.setAdapter(promoStatusAdapter);
 
-        presenter.loadActivePromo(prefConfig.getMID());
+        presenter.loadActivePromo(prefConfig.getMID(), prefConfig.getMCC());
 
         recycler_active_promo.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

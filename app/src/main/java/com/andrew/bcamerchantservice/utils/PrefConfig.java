@@ -40,6 +40,7 @@ public class PrefConfig {
         editor.putString(context.getString(R.string.pref_owner), merchant.getMerchant_owner_name());
         editor.putString(context.getString(R.string.pref_loyalty_id), merchant.getMerchant_loyalty_rank_id());
         editor.putBoolean(context.getString(R.string.pref_is_information_hide), merchant.isInformation_hide());
+        editor.putInt(context.getString(R.string.pref_mcc), merchant.getMcc_id());
         editor.apply();
     }
 
@@ -131,6 +132,11 @@ public class PrefConfig {
         return sharedPreferences.getInt(context.getString(R.string.pref_point), 0);
     }
 
+    public int getMCC() {
+        return sharedPreferences.getInt(context.getString(R.string.pref_mcc), 0);
+    }
+
+
     public String getPosition() {
         return sharedPreferences.getString(context.getString(R.string.pref_position), "");
     }
@@ -175,7 +181,7 @@ public class PrefConfig {
     public Merchant getMerchantData() {
         return new Merchant(getMID(), getName(), getLocation(), getProfilePicture(), getEmail()
                 , getBackgroundPicture(), getPosition(), getPhoneNumber(), getOwnerName()
-                , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp(), isInformationHide());
+                , getStoreAddress(), getDescription(), getLoyaltyId(), getPoint(), getExp(), getMCC(), isInformationHide());
     }
 
 }

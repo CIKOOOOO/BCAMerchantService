@@ -34,12 +34,12 @@ public class TNCPromoRequestPresenter implements ITNCPromoRequestPresenter {
     }
 
     @Override
-    public void sendPromoRequest(final String MID, PromoRequest promoRequest, final List<PromoRequest.Facilities> facilitiesList,
+    public void sendPromoRequest(final String MID, int MCC, PromoRequest promoRequest, final List<PromoRequest.Facilities> facilitiesList,
                                  final String specific_payment, final Uri attachment, final Context mContext,
                                  final List<ImagePicker> logoList, final List<ImagePicker> productList) {
         final String key = dbRef.push().getKey();
         final String path = Constant.DB_REFERENCE_PROMO_REQUEST + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST
-                + "/" + MID + "/" + key;
+                + "/" + MCC + "/" + MID + "/" + key;
 
         promoRequest.setPromo_request_id(key);
         promoRequest.setPromo_status("promo_status_1");

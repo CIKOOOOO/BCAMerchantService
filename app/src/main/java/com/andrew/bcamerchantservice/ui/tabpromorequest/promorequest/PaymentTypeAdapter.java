@@ -33,7 +33,7 @@ public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.
     }
 
     public interface onClick {
-        void checkboxIsChecked(int pos, boolean check);
+        void checkboxIsChecked(int pos, boolean a);
     }
 
     @NonNull
@@ -53,10 +53,8 @@ public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClick.checkboxIsChecked(pos, holder.checkBox.isChecked());
                 facilities.setCheck(holder.checkBox.isChecked());
-                facilitiesList.set(pos, facilities);
-                notifyDataSetChanged();
+                onClick.checkboxIsChecked(pos, holder.checkBox.isChecked());
             }
         });
     }

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,20 +222,23 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
 
     @Override
     public void onLoadPaymentType(PromoRequest.Facilities facilities) {
+        boolean isCheck = false;
         if (init_bundle != null) {
             if (init_bundle.getParcelableArrayList(GET_FACILITIES_LIST) != null) {
-                List<PromoRequest.Facilities> facilitiesList = new ArrayList<>(init_bundle.<PromoRequest.Facilities>getParcelableArrayList(GET_FACILITIES_LIST));
-                if (facilitiesList.size() > 0) {
-                    for (PromoRequest.Facilities facilities_loop : facilitiesList) {
-                        if (facilities_loop.getFacilities_id().equals(facilities.getFacilities_id())) {
-                            facilities.setCheck(true);
-                            break;
+                List<PromoRequest.Facilities> facilitiesList = init_bundle.getParcelableArrayList(GET_FACILITIES_LIST);
+                if (facilitiesList != null) {
+                    if (facilitiesList.size() > 0) {
+                        for (PromoRequest.Facilities facilities_loop : facilitiesList) {
+                            if (facilities_loop.getFacilities_id().equals(facilities.getFacilities_id())) {
+                                isCheck = true;
+                                break;
+                            }
                         }
                     }
-                } else
-                    facilities.setCheck(false);
+                }
             }
         }
+        facilities.setCheck(isCheck);
         paymentTypeAdapter.addFacilities(facilities);
         facilitiesList.add(facilities);
     }
@@ -473,17 +477,15 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
                     } else if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
 
                     }
-
-
                 }
                 break;
         }
     }
 
     @Override
-    public void checkboxIsChecked(int pos, boolean check) {
+    public void checkboxIsChecked(int pos, boolean a) {
         PromoRequest.Facilities facilities = facilitiesList.get(pos);
-        facilities.setCheck(check);
+        facilities.setCheck(a);
         facilitiesList.set(pos, facilities);
     }
 

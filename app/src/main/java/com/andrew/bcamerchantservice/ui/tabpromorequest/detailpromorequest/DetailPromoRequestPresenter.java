@@ -25,9 +25,9 @@ public class DetailPromoRequestPresenter implements IDetailPromoRequestPresenter
 
 
     @Override
-    public void loadPromoRequest(String MID, final String promo_request) {
+    public void loadPromoRequest(String MID, int mcc, final String promo_request) {
         final String path = Constant.DB_REFERENCE_PROMO_REQUEST + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST
-                + "/" + MID + "/" + promo_request;
+                + "/" + mcc + "/" + MID + "/" + promo_request;
         dbRef.child(path)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

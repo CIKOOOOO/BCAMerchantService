@@ -166,7 +166,7 @@ public class TNCPromoRequestFragment extends Fragment implements AgreementAdapte
                             productList = init_bundle.getParcelableArrayList(ConfirmationPromoRequest.PRODUCT_REQUEST);
                         }
 
-                        presenter.sendPromoRequest(prefConfig.getMID(), promoRequest, facilitiesList
+                        presenter.sendPromoRequest(prefConfig.getMID(), prefConfig.getMCC(), promoRequest, facilitiesList
                                 , specific_payment, attachment_uri, mContext, logoList, productList);
                     }
                 } else {

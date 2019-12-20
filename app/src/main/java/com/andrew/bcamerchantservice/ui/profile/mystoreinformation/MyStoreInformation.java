@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -271,6 +272,10 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     @Override
     public void onDelete(Merchant.MerchantCatalog merchantCatalog, int pos) {
-        presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), pos);
+        String[] split = merchantCatalog.getCatalog_image().split("alt");
+        String[] split2 = split[0].split("merchant_catalog");
+        String final_name = "merchant_catalog" + split2[2].substring(0, split2[2].length() - 1);
+
+        presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), pos, final_name);
     }
 }

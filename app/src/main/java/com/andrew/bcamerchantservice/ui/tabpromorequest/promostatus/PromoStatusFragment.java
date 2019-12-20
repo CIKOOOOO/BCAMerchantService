@@ -64,7 +64,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
 
         recycler_promo_status.setLayoutManager(new LinearLayoutManager(mContext));
 
-        presenter.onLoadData(prefConfig.getMID());
+        presenter.onLoadData(prefConfig.getMID(), prefConfig.getMCC());
 
         recycler_promo_status.setAdapter(promoStatusAdapter);
 

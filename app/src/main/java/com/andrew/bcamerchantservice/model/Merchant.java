@@ -6,10 +6,10 @@ import android.os.Parcelable;
 public class Merchant implements Parcelable {
 
     private String mid, merchant_name, merchant_location, merchant_profile_picture, merchant_email, merchant_background_picture, merchant_position, merchant_phone_number, merchant_owner_name, merchant_address, merchant_description, merchant_loyalty_rank_id;
-    private int merchant_point, merchant_exp;
+    private int merchant_point, merchant_exp, mcc_id;
     private boolean information_hide;
 
-    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture, String merchant_email, String merchant_background_picture, String merchant_position, String merchant_phone_number, String merchant_owner_name, String merchant_address, String merchant_description, String merchant_loyalty_rank_id, int merchant_point, int merchant_exp, boolean information_hide) {
+    public Merchant(String mid, String merchant_name, String merchant_location, String merchant_profile_picture, String merchant_email, String merchant_background_picture, String merchant_position, String merchant_phone_number, String merchant_owner_name, String merchant_address, String merchant_description, String merchant_loyalty_rank_id, int merchant_point, int merchant_exp, int mcc_id, boolean information_hide) {
         this.mid = mid;
         this.merchant_name = merchant_name;
         this.merchant_location = merchant_location;
@@ -24,11 +24,13 @@ public class Merchant implements Parcelable {
         this.merchant_loyalty_rank_id = merchant_loyalty_rank_id;
         this.merchant_point = merchant_point;
         this.merchant_exp = merchant_exp;
+        this.mcc_id = mcc_id;
         this.information_hide = information_hide;
     }
 
     public Merchant() {
     }
+
 
     protected Merchant(Parcel in) {
         mid = in.readString();
@@ -45,6 +47,7 @@ public class Merchant implements Parcelable {
         merchant_loyalty_rank_id = in.readString();
         merchant_point = in.readInt();
         merchant_exp = in.readInt();
+        mcc_id = in.readInt();
         information_hide = in.readByte() != 0;
     }
 
@@ -59,6 +62,10 @@ public class Merchant implements Parcelable {
             return new Merchant[size];
         }
     };
+
+    public int getMcc_id() {
+        return mcc_id;
+    }
 
     public boolean isInformation_hide() {
         return information_hide;
@@ -145,6 +152,7 @@ public class Merchant implements Parcelable {
         parcel.writeString(merchant_loyalty_rank_id);
         parcel.writeInt(merchant_point);
         parcel.writeInt(merchant_exp);
+        parcel.writeInt(mcc_id);
         parcel.writeByte((byte) (information_hide ? 1 : 0));
     }
 
