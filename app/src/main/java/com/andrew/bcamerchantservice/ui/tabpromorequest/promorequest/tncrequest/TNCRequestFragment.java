@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
     private TextView text_choose_file, text_doc_name;
     private Activity mActivity;
     private ImageButton img_btn_clear_doc, img_btn_back;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     private Uri uri_selected_data;
 
@@ -98,16 +101,22 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         mContext = v.getContext();
 
         Button btn_next = v.findViewById(R.id.btn_next_tnc);
-        img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        ImageButton img_btn_open_sheet = v.findViewById(R.id.img_btn_info_tnc);
         Button lzy_btn = v.findViewById(R.id.btn_tester_tnc);
+        LinearLayout coordinatorLayout = v.findViewById(R.id.linear_info_tnc);
+        ImageButton img_btn_close = v.findViewById(R.id.img_btn_close_info_sheet);
+        Button close_sheet = v.findViewById(R.id.btn_back_info_sheet);
 
         radioGroup = v.findViewById(R.id.radio_group_tnc);
         edit_text_description = v.findViewById(R.id.edit_text_description_tnc);
         text_choose_file = v.findViewById(R.id.text_choose_file_tnc);
         text_doc_name = v.findViewById(R.id.text_document_name_tnc);
         img_btn_clear_doc = v.findViewById(R.id.img_btn_clear_doc_tnc);
+        img_btn_back = v.findViewById(R.id.img_btn_back_toolbar_back);
+        bottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
 
         ((TextView) v.findViewById(R.id.text_title_toolbar_back)).setText("Pengajuan Promo");
+        ((TextView) v.findViewById(R.id.text_current_info_sheet)).setText(mContext.getResources().getString(R.string.info_tnc));
 
         if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
             PromoRequest promoRequest = init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA);
@@ -139,8 +148,10 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         } else {
             if (init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
                 ((RadioButton) v.findViewById(R.id.radio_button_attachment_tnc)).setChecked(true);
-                Uri uri = Uri.parse(init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
-                text_doc_name.setText(Utils.getFileName(uri, mContext));
+                text_choose_file.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_fill_blue));
+                text_choose_file.setTextColor(mContext.getResources().getColor(R.color.white_color));
+                uri_selected_data = Uri.parse(init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
+                text_doc_name.setText(Utils.getFileName(uri_selected_data, mContext));
                 img_btn_clear_doc.setVisibility(View.VISIBLE);
             } else {
                 PromoRequest promoRequest = init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA);
@@ -160,7 +171,11 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         img_btn_clear_doc.setOnClickListener(this);
         lzy_btn.setOnClickListener(this);
         img_btn_back.setOnClickListener(this);
+        close_sheet.setOnClickListener(this);
+        img_btn_close.setOnClickListener(this);
+        img_btn_open_sheet.setOnClickListener(this);
         btn_next.setOnClickListener(this);
+        coordinatorLayout.setOnClickListener(this);
     }
 
     @Override
@@ -173,6 +188,13 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
             case R.id.btn_tester_tnc:
                 ((RadioButton) v.findViewById(R.id.radio_button_description_tnc)).setChecked(true);
                 edit_text_description.setText("1. Berlaku setiap hari\n2. Min. Transaksi Rp. 500.000 (Sebelum Tax & Service)\n3. Dine-in only\n4. Berlaku untuk makanan dan minuman");
+                break;
+            case R.id.btn_back_info_sheet:
+            case R.id.img_btn_close_info_sheet:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                break;
+            case R.id.img_btn_info_tnc:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.id.img_btn_back_toolbar_back:
                 PromoRequestFragment promoRequestFragment = new PromoRequestFragment();
@@ -264,8 +286,6 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
                                 }
                                 break;
                         }
-
-
                     } else {
                         LogoRequestFragment logoRequestFragment = new LogoRequestFragment();
                         PromoRequest promoRequest = init_bundle.getParcelable(GET_PROMO_DATA);
@@ -365,9 +385,13 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radio_button_description_tnc:
                 edit_text_description.setEnabled(true);
+                text_choose_file.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_stroke_iron));
+                text_choose_file.setTextColor(mContext.getResources().getColor(R.color.silver_palette));
                 text_choose_file.setEnabled(false);
                 break;
             case R.id.radio_button_attachment_tnc:
+                text_choose_file.setBackground(mContext.getDrawable(R.drawable.rectangle_rounded_fill_blue));
+                text_choose_file.setTextColor(mContext.getResources().getColor(R.color.white_color));
                 edit_text_description.setEnabled(false);
                 text_choose_file.setEnabled(true);
                 break;

@@ -6,6 +6,9 @@
     android:background="@color/white_color"
     tools:context=".ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -110,14 +113,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
-                    android:background="@drawable/rectangle_rounded_fill_blue"
+                    android:background="@drawable/rectangle_rounded_stroke_iron"
                     android:enabled="false"
                     android:paddingStart="20dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="20dp"
                     android:paddingBottom="4dp"
                     android:text="Pilih file"
-                    android:textColor="@color/white_color" />
+                    android:textColor="@color/silver_palette" />
 
                 <TextView
                     android:id="@+id/text_document_name_tnc"
@@ -176,11 +179,16 @@
         android:id="@+id/btn_next_tnc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:background="@drawable/background_reply"
         android:fontFamily="@font/sniglet_font"
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white_color" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/linear_info_tnc"
+        layout="@layout/bottom_sheet_info" />
 </android.support.design.widget.CoordinatorLayout>

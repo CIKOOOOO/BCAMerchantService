@@ -85,7 +85,7 @@ public class ActivePromoPresenter implements IActivePromoPresenter {
                                         e.printStackTrace();
                                     }
 
-                                    promoRequestList.add(promoRequest);
+                                    promoRequestList.add(0, promoRequest);
 
                                     String promo_status_path = Constant.DB_REFERENCE_PROMO_STATUS + "/" + promoRequest.getPromo_status();
                                     PromoRequest.PromoStatus promoStatus = dataSnapshot.child(promo_status_path)

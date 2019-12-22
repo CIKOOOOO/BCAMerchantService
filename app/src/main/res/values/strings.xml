@@ -155,4 +155,5 @@
     <string name="info_product">Informasi:\n1. Gambar produk harus HD (min: 512x512px).\n2. Maksimal gambar adalah 3.</string>
     <string name="promo_request_success1">Pengajuan promo berhasil dikirim!</string>
     <string name="promo_request_success2">Tim kami akan segera memroses pengajuan Anda.</string>
+    <string name="info_tnc">Terdapat dua pilihan dalam mengirimkan syarat dan ketentuan promo\nApabila Anda memilih Deskripsi S&amp;K Promo, Anda harus mendeskripsikan promo secara detail.\nApabila Anda memilih Tambah Attachment, Anda harus mengirimkan dokumen yang berisikan Syarat dan Ketentuan secara lengkap dan tipe file yang dikirim .doc atau .docx.</string>
 </resources>

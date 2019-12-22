@@ -280,6 +280,7 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:background="@drawable/ic_information" />
             </LinearLayout>
 
@@ -372,4 +373,9 @@
                 android:visibility="visible" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/bottom_sheet_promo_request"
+        layout="@layout/bottom_sheet_category" />
+
 </android.support.design.widget.CoordinatorLayout>
