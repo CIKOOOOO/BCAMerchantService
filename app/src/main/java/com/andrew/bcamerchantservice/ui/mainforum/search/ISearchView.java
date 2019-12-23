@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface ISearchView {
 
-    void onLoadSearchResult(List<Forum> forumList);
+    void onLoadSearchResult(List<Forum> forumList, List<Merchant> merchantList);
 
     void onMerchantProfile(Merchant merchant);
-
 }

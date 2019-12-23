@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@color/gallery_palette">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/recycler_image_profile_search"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:scaleType="centerCrop"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="30dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true" />
+
+    <TextView
+        android:id="@+id/recycler_text_name_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/recycler_image_profile_search"
+        android:fontFamily="@font/sniglet_font"
+        android:text="WcDonald"
+        android:textColor="@color/blackPalette"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/recycler_text_description_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_text_name_search"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/recycler_image_profile_search"
+        android:ellipsize="end"
+        android:fontFamily="@font/sniglet_font"
+        android:maxLines="3"
+        android:text="WcDonald merupakan perusahaan
+yang bergerak di bidang makanan cepat saji."
+        android:textColor="@color/blackPalette" />
+</RelativeLayout>

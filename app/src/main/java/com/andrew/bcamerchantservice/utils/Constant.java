@@ -17,6 +17,7 @@ public class Constant {
     public static final int ACTIVITY_CHOOSE_IMAGE = 104;
     public static final int ACTIVITY_CHOOSE_FILE = 105;
     public static final int ACTIVITY_TAKE_IMAGE = 106;
+    public static final int MAX_ALPHA = 220;
 
     public static final String DB_REFERENCE_TRANSACTION_REQUEST_PROMO = "transaction_request_promo";
     public static final String DB_REFERENCE_MERCHANT_PROFILE = "merchant_profile";
@@ -58,8 +59,7 @@ public class Constant {
     public static final String INFORMATION_PROMO_REQUEST = "Harus ada benefit yang diberikan oleh pihak merchant.##Benefit yang dimaksud bisa berupa penawaran spesial atau diskon.##Cost diskon di tanggung sepenuhnya oleh merchant.##Periode kerja sama minimal 6 bulan.##BCA akan memberikan kontraprestasi berupa media.##Proses pengajuan kerjasama kurang lebih 14 hari kerja setelah mendapat persetujuan dari management BCA.##Merchant sudah menggunakan EDC BCA.";
     public static final String TERM_CONDITION_PROMO_REQUEST = "Harus ada benefit yang diberikan oleh pihak merchant. Benefit yang dimaksud bisa berupa penawaran spesial atau diskon. Cost diskon di tanggung sepenuhnya oleh merchant. Periode kerja sama minimal 6 bulan. BCA akan memberikan kontraprestasi berupa media. Proses pengajuan kerjasama kurang lebih 14 hari kerja setelah mendapat persetujuan dari management BCA.##Merchant sudah menggunakan EDC BCA. It is a long established fact that a reader will be  distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less  normal distribution of letters, as opposed to using 'Content here,  content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions  have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like) Merchant sudah menggunakan EDC BCA.## It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,";
 
-
-    public static final int MAX_ALPHA = 220;
+    public static final String[] CATEGORY_SEARCH = {"All", "Forum", "Merchant"};
 
     // START PROFILE FRAGMENT
 

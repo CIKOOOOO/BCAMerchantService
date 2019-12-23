@@ -283,8 +283,8 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         Bundle bundle = new Bundle();
         if (!merchant.getMid().equals(prefConfig.getMID())) {
             OtherProfile otherProfile = new OtherProfile();
-            otherProfile.setArguments(bundle);
             bundle.putParcelable(OtherProfile.GET_DATA_PROFILE, merchant);
+            otherProfile.setArguments(bundle);
             fragmentTransaction.replace(R.id.main_frame, otherProfile);
         } else {
             fragmentTransaction.replace(R.id.main_frame, new Profile());

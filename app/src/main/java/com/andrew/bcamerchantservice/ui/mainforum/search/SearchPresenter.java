@@ -26,27 +26,28 @@ public class SearchPresenter implements ISearchPresenter {
 
     @Override
     public void onSearch(final String search, final String MID) {
+        final List<Forum> forumList = new ArrayList<>();
+        final List<Merchant> merchantList = new ArrayList<>();
         if (search.isEmpty()) {
-            view.onLoadSearchResult(new ArrayList<Forum>());
+            view.onLoadSearchResult(forumList, merchantList);
             return;
         }
-        dbRef.child(Constant.DB_REFERENCE_FORUM)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Forum> forumList = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM).getChildren()) {
                             Forum forum = snapshot.getValue(Forum.class);
                             if (snapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildrenCount() > 0) {
                                 boolean isHidden = false;
                                 for (DataSnapshot hiddenSnapshot : snapshot.child(Constant.DB_REFERENCE_FORUM_HIDDEN).getChildren()) {
                                     final String hiddenMID = hiddenSnapshot.getKey();
-                                    if (hiddenMID.equals(MID)) {
+                                    if (hiddenMID != null && hiddenMID.equals(MID)) {
                                         isHidden = true;
                                         break;
                                     }
                                 }
-                                if (!isHidden && forum.getForum_title().toLowerCase().trim().contains(search.toLowerCase().trim())) {
+                                if (!isHidden && forum != null
+                                        && forum.getForum_title().toLowerCase().trim().contains(search.toLowerCase().trim())) {
                                     dbRef.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
                                             .child(forum.getMid())
                                             .addValueEventListener(new ValueEventListener() {
@@ -83,7 +84,15 @@ public class SearchPresenter implements ISearchPresenter {
                                 }
                             }
                         }
-                        view.onLoadSearchResult(forumList);
+
+                        for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_MERCHANT_PROFILE).getChildren()) {
+                            Merchant merchant = snapshot.getValue(Merchant.class);
+                            if (merchant != null && !merchant.getMid().equals(MID)
+                                    && merchant.getMerchant_name().toLowerCase().trim().contains(search.toLowerCase().trim()))
+                                merchantList.add(merchant);
+                        }
+
+                        view.onLoadSearchResult(forumList, merchantList);
                     }
 
                     @Override
