@@ -274,15 +274,17 @@ public class Merchant implements Parcelable {
     }
 
     public static class Rewards implements Parcelable {
-        private String merchant_rewards_id, rewards_id, merchant_rewards_code, merchant_rewards_date_collect, merchant_collect_mission_date, merchant_voucher_valid_date;
+        private String merchant_rewards_id, rewards_id, merchant_rewards_code
+                , merchant_rewards_date_collect, merchant_redeem_rewards_date
+                , merchant_voucher_valid_date;
         private boolean rewards_is_used;
 
-        public Rewards(String merchant_rewards_id, String rewards_id, String merchant_rewards_code, String merchant_rewards_date_collect, String merchant_collect_mission_date, String merchant_voucher_valid_date, boolean rewards_is_used) {
+        public Rewards(String merchant_rewards_id, String rewards_id, String merchant_rewards_code, String merchant_rewards_date_collect, String merchant_redeem_rewards_date, String merchant_voucher_valid_date, boolean rewards_is_used) {
             this.merchant_rewards_id = merchant_rewards_id;
             this.rewards_id = rewards_id;
             this.merchant_rewards_code = merchant_rewards_code;
             this.merchant_rewards_date_collect = merchant_rewards_date_collect;
-            this.merchant_collect_mission_date = merchant_collect_mission_date;
+            this.merchant_redeem_rewards_date = merchant_redeem_rewards_date;
             this.merchant_voucher_valid_date = merchant_voucher_valid_date;
             this.rewards_is_used = rewards_is_used;
         }
@@ -296,7 +298,7 @@ public class Merchant implements Parcelable {
             rewards_id = in.readString();
             merchant_rewards_code = in.readString();
             merchant_rewards_date_collect = in.readString();
-            merchant_collect_mission_date = in.readString();
+            merchant_redeem_rewards_date = in.readString();
             merchant_voucher_valid_date = in.readString();
             rewards_is_used = in.readByte() != 0;
         }
@@ -345,8 +347,8 @@ public class Merchant implements Parcelable {
             return merchant_rewards_date_collect;
         }
 
-        public String getMerchant_collect_mission_date() {
-            return merchant_collect_mission_date;
+        public String getMerchant_redeem_rewards_date() {
+            return merchant_redeem_rewards_date;
         }
 
         public boolean isRewards_is_used() {
@@ -365,7 +367,7 @@ public class Merchant implements Parcelable {
             parcel.writeString(rewards_id);
             parcel.writeString(merchant_rewards_code);
             parcel.writeString(merchant_rewards_date_collect);
-            parcel.writeString(merchant_collect_mission_date);
+            parcel.writeString(merchant_redeem_rewards_date);
             parcel.writeString(merchant_voucher_valid_date);
             parcel.writeByte((byte) (rewards_is_used ? 1 : 0));
         }

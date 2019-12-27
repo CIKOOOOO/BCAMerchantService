@@ -121,13 +121,13 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
                     TextView text_title = v.findViewById(R.id.text_title_detail_rewards);
                     TextView text_amount_point = v.findViewById(R.id.text_amount_point_detail_rewards);
 
-                    if (rewards.getRewards_thumbnail().isEmpty())
+                    if (rewards.getRewards_image().isEmpty())
                         Picasso.get()
                                 .load(R.color.iron_palette)
                                 .into(img_detail_rewards);
                     else
                         Picasso.get()
-                                .load(rewards.getRewards_thumbnail())
+                                .load(rewards.getRewards_image())
                                 .into(img_detail_rewards);
 
                     String status_redeem = "";
