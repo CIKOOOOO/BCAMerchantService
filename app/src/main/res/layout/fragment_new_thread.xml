@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="13dp"
                 android:layout_marginTop="5dp"
+                android:backgroundTint="@color/blackPalette"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/sniglet_reguler"
                 android:hint="Cek yang satu ini mas/mbak"

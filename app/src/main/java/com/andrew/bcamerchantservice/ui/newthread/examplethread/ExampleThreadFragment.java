@@ -136,12 +136,10 @@ public class ExampleThreadFragment extends Fragment implements ImagePickerAdapte
                     thumbnail_bitmap = bundle.getParcelable(GET_BITMAP_THUMBNAIL);
                     Glide.with(mContext)
                             .load(thumbnail_bitmap)
-                            .centerCrop()
                             .into(image_thumbnail_thread);
                 } else {
                     Picasso.get()
                             .load(Constant.SOLID_COLOR)
-                            .centerCrop()
                             .into(image_thumbnail_thread);
                 }
 

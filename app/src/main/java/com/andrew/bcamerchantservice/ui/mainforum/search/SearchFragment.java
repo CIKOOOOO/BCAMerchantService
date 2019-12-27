@@ -34,7 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchFragment extends Fragment implements TextWatcher, View.OnClickListener, ISearchView, SearchAdapter.onClickListener, SearchProfileAdapter.onClick, SearchCategoryAdapter.onClick {
+public class SearchFragment extends Fragment implements TextWatcher, View.OnClickListener, ISearchView
+        , SearchAdapter.onClickListener, SearchProfileAdapter.onClick, SearchCategoryAdapter.onClick {
 
     private View v;
     private Context mContext;

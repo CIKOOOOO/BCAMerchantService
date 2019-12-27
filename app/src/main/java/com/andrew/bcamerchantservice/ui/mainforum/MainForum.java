@@ -25,10 +25,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,8 @@ import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -90,8 +93,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private static List<Forum> forumLists;
     private static List<MerchantStory> storyList;
 
+    private int ITEM_LOAD_COUNT;
+
     private View v, codeView;
-    private RecyclerView thread_recycler_view;
+    private RecyclerView recycler_forum;
     private ThreadAdapter threadAdapter;
     private TextView tvError_AddShowCase;
     private PullRefreshLayout swipeRefreshLayout;
@@ -106,7 +111,6 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private CategoryAdapter categoryAdapter;
     private BottomSheetBehavior bottomSheetBehavior;
     private TextView text_category;
-    private NestedScrollView nestedScrollView;
     private ReportAdapter reportAdapter;
 
     private IForumPresenter presenter;
@@ -115,7 +119,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     private List<Report> reportList;
     private Map<String, Merchant> merchantMap, merchantStoryMap;
 
-    private boolean check;
+    private int total_item, last_visible_item;
+    private boolean isLoading, isMaxData, check;
+    private String last_node, last_key, FCID;
+    private long MAX_DATA;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -134,12 +141,21 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void onDestroyView() {
-        thread_recycler_view.destroyDrawingCache();
+        recycler_forum.destroyDrawingCache();
         showcase_recycler_view.destroyDrawingCache();
         super.onDestroyView();
     }
 
     private void initVar() {
+        total_item = 0;
+        last_visible_item = 0;
+        isLoading = false;
+        isMaxData = false;
+        last_node = "";
+        last_key = "";
+        FCID = "0";
+        MAX_DATA = 0;
+        ITEM_LOAD_COUNT = 4;
         mContext = v.getContext();
         presenter = new ForumPresenter(this);
         check = false;
@@ -158,11 +174,10 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         CoordinatorLayout coordinatorLayout = v.findViewById(R.id.bottom_sheet_main);
 
         showcase_recycler_view = v.findViewById(R.id.recycler_story_main_forum);
-        thread_recycler_view = v.findViewById(R.id.recycler_thread_main_forum);
+        recycler_forum = v.findViewById(R.id.recycler_thread_main_forum);
         swipeRefreshLayout = v.findViewById(R.id.swipe);
         frame_loading = v.findViewById(R.id.frame_loading_main_forum);
         text_category = v.findViewById(R.id.text_category_main_forum);
-        nestedScrollView = v.findViewById(R.id.nested_scroll_main_forum);
         story_pager = v.findViewById(R.id.view_pager_main_forum);
         bottomSheetBehavior = BottomSheetBehavior.from(coordinatorLayout);
 
@@ -186,8 +201,11 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
         text_category.setText("Category: All Category");
 
-        presenter.loadForum(prefConfig.getMID(), "0");
-        presenter.loadShowCase();
+        presenter.getLastKey();
+
+        getData();
+
+//        presenter.loadShowCase();
 
         linearLayout.setOnClickListener(this);
         new_thread.setOnClickListener(this);
@@ -196,17 +214,51 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         text_change.setOnClickListener(this);
 
         frame_loading.setOnClickListener(this);
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+        recycler_forum.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChange(NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
                 if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED)
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
                 MainActivity.floatingActionButton.show();
+
+                total_item = threadLayoutManager.getItemCount();
+                last_visible_item = threadLayoutManager.findLastVisibleItemPosition();
+                if (!isLoading && total_item <= (last_visible_item + 4)) {
+                    getData();
+                    isLoading = true;
+                }
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void getData() {
+        if (!isMaxData) {
+            Query query;
+            if (last_node.isEmpty())
+                query = FirebaseDatabase.getInstance().getReference()
+                        .child(Constant.DB_REFERENCE_FORUM)
+                        .limitToLast(ITEM_LOAD_COUNT);
+            else
+                query = FirebaseDatabase.getInstance().getReference()
+                        .child(Constant.DB_REFERENCE_FORUM)
+                        .limitToLast(ITEM_LOAD_COUNT += 4);
+
+            /*
+             * Firebase doesn't support getting data with descending operation
+             * So we have to manipulate it.
+             * When recycler view is already goes down
+             * We query it with + 4, not base on the last node
+             * Well yes, it's barbarian, but it's work :)
+             * */
+
+            presenter.loadForum(prefConfig.getMID(), FCID, query);
+        }
     }
 
     private void setAdapter() {
@@ -215,17 +267,19 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         showcase_recycler_view.setAdapter(storyAdapter);
 
         threadAdapter = new ThreadAdapter(mContext, forumLists, merchantMap, this);
-        thread_recycler_view.setLayoutManager(threadLayoutManager);
-        thread_recycler_view.setAdapter(threadAdapter);
+        recycler_forum.setLayoutManager(threadLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler_forum.getContext(), threadLayoutManager.getOrientation());
+        recycler_forum.addItemDecoration(dividerItemDecoration);
+        recycler_forum.setAdapter(threadAdapter);
     }
 
     private void addShowCase() {
         AlertDialog.Builder codeBuilder = new AlertDialog.Builder(mContext);
         View codeView = getLayoutInflater().inflate(R.layout.custom_add_show_case, null);
-        img_add_showcase = codeView.findViewById(R.id.imgView_AddShowCase);
-        tvError_AddShowCase = codeView.findViewById(R.id.show_error_content_add_show_case);
         Button submit = codeView.findViewById(R.id.btnSubmit_AddShowCase);
         Button cancel = codeView.findViewById(R.id.btnCancel_AddShowCase);
+        img_add_showcase = codeView.findViewById(R.id.imgView_AddShowCase);
+        tvError_AddShowCase = codeView.findViewById(R.id.show_error_content_add_show_case);
         img_add_showcase.setOnClickListener(this);
         submit.setOnClickListener(this);
         cancel.setOnClickListener(this);
@@ -293,13 +347,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
-    public void onHide(final String FID, String title) {
+    public void onHide(final String FID, String title, final int pos) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setMessage("Apa Anda yakin untuk menyembunyikan forum berjudul " + title + " ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
-                        presenter.onHide(FID, prefConfig.getMID());
+                        presenter.onHide(FID, prefConfig.getMID(), pos);
 
                     }
                 })
@@ -405,11 +459,56 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
     }
 
     @Override
+    public void onLoadLastKey(String last_key) {
+        this.last_key = last_key;
+    }
+
+    @Override
     public void onForumData(List<Forum> forums) {
-        forumLists.clear();
-        forumLists.addAll(forums);
-        threadAdapter.setForumList(forums);
-        threadAdapter.notifyDataSetChanged();
+        Log.e("asd", "Load - load");
+        if (forums != null && !last_node.equals("end")) {
+            if (forums.size() > 0) {
+                forumLists = forums;
+                last_node = forums.get(forums.size() - 1).getFid();
+            }
+
+            if (!last_node.equals(last_key)) {
+                if (forums.size() < 4 && ITEM_LOAD_COUNT < MAX_DATA && !FCID.equals("0")) {
+                    /*
+                     * Is a condition where merchant categorized and the result is zero
+                     * So it should make a recursion until the last data
+                     * If result of query is less then 5, it will recursion. Five is the minimum number of to take data.
+                     * If the number of recursion is over the limit, it will stop.
+                     * Recursion will occur if category is not general
+                     * */
+                    isLoading = false;
+                    ITEM_LOAD_COUNT += 4;
+                    getData();
+                    Log.e("asd", ITEM_LOAD_COUNT + " item load count..");
+                }
+                if (forumLists.size() > 3)
+                    forumLists.remove(forumLists.size() - 1);
+            } else
+                last_node = "end";
+            Log.e("asd", last_node);
+            isLoading = false;
+            threadAdapter.setForumList(forumLists);
+            threadAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void onMaxData() {
+        isLoading = false;
+        isMaxData = true;
+        Log.e("asd", "List is getting max!");
+    }
+
+    @Override
+    public void onMaxData(long max_data) {
+        this.MAX_DATA = max_data;
+        Log.e("asd", "This is max of data : " + MAX_DATA);
     }
 
     @Override
@@ -448,12 +547,9 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void onSuccessDeleteThread(int pos) {
-        /*
-         * This syntax below is no need, because we use add value event listener
-         * So the data will keep be update all time even the data is deleted
-         * */
-//        threadAdapter.deleteList(pos);
-//        threadAdapter.notifyDataSetChanged();
+        forumLists.remove(pos);
+        threadAdapter.setForumList(forumLists);
+        threadAdapter.notifyItemChanged(pos);
         Toast.makeText(mContext, mContext.getResources().getString(R.string.thread_deleted), Toast.LENGTH_SHORT).show();
     }
 
@@ -496,6 +592,13 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         Toast.makeText(mContext, mContext.getResources().getString(R.string.report_sent)
                 , Toast.LENGTH_SHORT).show();
         dialog_report.dismiss();
+    }
+
+    @Override
+    public void onHide(int pos) {
+        forumLists.remove(pos);
+        threadAdapter.setForumList(forumLists);
+        threadAdapter.notifyItemChanged(pos);
     }
 
     @Override
@@ -663,11 +766,19 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
         String category;
         if (pos == 0) {
             category = "All Category";
-            presenter.loadForum(prefConfig.getMID(), "0");
+            FCID = "0";
         } else {
             category = categoryList.get(pos - 1).getCategory_name();
-            presenter.loadForum(prefConfig.getMID(), categoryList.get(pos - 1).getFcid());
+            FCID = categoryList.get(pos - 1).getFcid();
         }
+        forumLists.clear();
+        threadAdapter.setForumList(forumLists);
+        threadAdapter.notifyDataSetChanged();
+        isMaxData = false;
+        isLoading = false;
+        ITEM_LOAD_COUNT = 5;
+        last_node = "";
+        getData();
         categoryAdapter.setPosition(pos);
         text_category.setText("Category: " + category);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

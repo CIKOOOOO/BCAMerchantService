@@ -103,6 +103,7 @@
                         android:id="@+id/recycler_image_thumbnail_main_forum"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
+                        android:scaleType="centerCrop"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1" />

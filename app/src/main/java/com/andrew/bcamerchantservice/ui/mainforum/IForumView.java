@@ -1,14 +1,19 @@
 package com.andrew.bcamerchantservice.ui.mainforum;
 
 import com.andrew.bcamerchantservice.model.Forum;
-import com.andrew.bcamerchantservice.model.ImagePicker;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
 
 import java.util.List;
 
 public interface IForumView {
+    void onLoadLastKey(String last_key);
+
     void onForumData(List<Forum> forums);
+
+    void onMaxData();
+
+    void onMaxData(long max_data);
 
     void onMerchantProfile(Merchant merchant);
 
@@ -27,4 +32,6 @@ public interface IForumView {
     void onSuccessLoadReport(List<Report> reportList);
 
     void onSuccessSendReport();
+
+    void onHide(int pos);
 }

@@ -27,7 +27,7 @@ public class LoginPresenter implements ILoginPresenter {
     @Override
     public void onLoadData() {
         dbLogin.child(Constant.DB_REFERENCE_MERCHANT_PROFILE)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Merchant> merchantList = new ArrayList<>();

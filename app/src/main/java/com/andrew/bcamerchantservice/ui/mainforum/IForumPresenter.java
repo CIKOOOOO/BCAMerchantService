@@ -5,12 +5,15 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.model.Report;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.List;
 import java.util.Map;
 
 public interface IForumPresenter {
-    void loadForum(String MID, String FCID);
+    void loadForum(String MID, String FCID, Query query);
+
+    void getLastKey();
 
     void loadShowCase();
 
@@ -26,5 +29,5 @@ public interface IForumPresenter {
 
     void onUpdateViewCount(Map<String, Object> map, Forum forum, Merchant merchant);
 
-    void onHide(String FID, String MID);
+    void onHide(String FID, String MID, int pos);
 }

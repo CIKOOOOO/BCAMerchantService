@@ -22,7 +22,6 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class SpendFragment extends Fragment implements ISpendView {
-
     private View v;
     private Context mContext;
     private PrefConfig prefConfig;
