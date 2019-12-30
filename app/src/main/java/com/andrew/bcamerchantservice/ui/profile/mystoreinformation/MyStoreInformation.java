@@ -104,9 +104,9 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         presenter.onLoadCatalog(prefConfig.getMID());
 
         if (prefConfig.isInformationHide()) {
-            text_hide_information.setText("Tampilkan Profile");
+            text_hide_information.setText("Tampilkan");
         } else {
-            text_hide_information.setText("Sembunyikan Profile");
+            text_hide_information.setText("Sembunyikan");
         }
 
         fab.setOnClickListener(this);
@@ -260,8 +260,8 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         merchant.setInformation_hide(isHide);
         prefConfig.insertMerchantData(merchant);
         if (isHide) {
-            text_hide_information.setText("Tampilkan Profile");
-        } else text_hide_information.setText("Sembunyikan Profile   ");
+            text_hide_information.setText("Tampilkan");
+        } else text_hide_information.setText("Sembunyikan");
     }
 
     @Override

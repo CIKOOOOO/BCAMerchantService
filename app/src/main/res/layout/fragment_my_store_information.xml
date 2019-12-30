@@ -15,263 +15,272 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <GridLayout
-                android:id="@+id/grid_my_information"
+            <LinearLayout
+                android:background="@drawable/rectangle_rounded_stroke_blue_5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:columnCount="5">
+                android:orientation="vertical">
+
+                <GridLayout
+                    android:id="@+id/grid_my_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:columnCount="5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="Pemilik"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text=":"
+                        android:textColor="@color/blackPalette" />
+
+                    <EditText
+                        android:id="@+id/edit_text_owner_store_information"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="false"
+                        android:fontFamily="@font/sniglet_font"
+                        android:inputType="textPersonName|textNoSuggestions"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_owner_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_check_owner_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="2dp"
+                        android:background="@drawable/ic_check_rectangle_blue"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="No. Telepon"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text=":"
+                        android:textColor="@color/blackPalette" />
+
+                    <EditText
+                        android:id="@+id/edit_text_phone_number_store_information"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="false"
+                        android:fontFamily="@font/sniglet_font"
+                        android:inputType="phone"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_phone_number_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_check_phone_number_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_check_rectangle_blue"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="Email"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text=":"
+                        android:textColor="@color/blackPalette" />
+
+                    <EditText
+                        android:id="@+id/edit_text_email_store_information"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="false"
+                        android:fontFamily="@font/sniglet_font"
+                        android:inputType="textEmailAddress|textNoSuggestions"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_email_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_check_email_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_check_rectangle_blue"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text="Alamat Toko"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sniglet_font"
+                        android:text=":"
+                        android:textColor="@color/blackPalette" />
+
+                    <EditText
+                        android:id="@+id/edit_text_address_store_information"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="false"
+                        android:fontFamily="@font/sniglet_font"
+                        android:inputType="textMultiLine|textNoSuggestions"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/blackPalette"
+                        android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_address_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/image_button_check_address_store_information"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ic_check_rectangle_blue"
+                        android:visibility="gone" />
+                </GridLayout>
 
                 <TextView
+                    android:id="@+id/text_hide_information_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/selection_rounded_blue"
                     android:fontFamily="@font/sniglet_font"
-                    android:text="Pemilik"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text=":"
-                    android:textColor="@color/blackPalette" />
-
-                <EditText
-                    android:id="@+id/edit_text_owner_store_information"
-                    android:layout_width="210dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:background="@null"
-                    android:cursorVisible="false"
-                    android:enabled="false"
-                    android:fontFamily="@font/sniglet_font"
-                    android:inputType="textPersonName|textNoSuggestions"
-                    android:maxLines="2"
+                    android:gravity="center"
                     android:paddingStart="10dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@+id/image_button_owner_store_information"
-                    android:layout_width="20dp"
-                    android:visibility="gone"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/image_button_check_owner_store_information"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="2dp"
-                    android:background="@drawable/ic_check_rectangle_blue"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text="No. Telepon"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text=":"
-                    android:textColor="@color/blackPalette" />
-
-                <EditText
-                    android:id="@+id/edit_text_phone_number_store_information"
-                    android:layout_width="210dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@null"
-                    android:cursorVisible="false"
-                    android:enabled="false"
-                    android:fontFamily="@font/sniglet_font"
-                    android:inputType="phone"
-                    android:maxLines="2"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@+id/image_button_phone_number_store_information"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/image_button_check_phone_number_store_information"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_check_rectangle_blue"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text="Email"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text=":"
-                    android:textColor="@color/blackPalette" />
-
-                <EditText
-                    android:id="@+id/edit_text_email_store_information"
-                    android:layout_width="210dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@null"
-                    android:cursorVisible="false"
-                    android:enabled="false"
-                    android:fontFamily="@font/sniglet_font"
-                    android:inputType="textEmailAddress|textNoSuggestions"
-                    android:maxLines="2"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@+id/image_button_email_store_information"
-                    android:visibility="gone"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/image_button_check_email_store_information"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_check_rectangle_blue"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text="Alamat Toko"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/sniglet_font"
-                    android:text=":"
-                    android:textColor="@color/blackPalette" />
-
-                <EditText
-                    android:id="@+id/edit_text_address_store_information"
-                    android:layout_width="210dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@null"
-                    android:cursorVisible="false"
-                    android:enabled="false"
-                    android:fontFamily="@font/sniglet_font"
-                    android:inputType="textMultiLine|textNoSuggestions"
-                    android:maxLines="2"
-                    android:paddingStart="10dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/blackPalette"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@+id/image_button_address_store_information"
-                    android:layout_width="20dp"
-                    android:visibility="gone"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/image_button_check_address_store_information"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_check_rectangle_blue"
-                    android:visibility="gone" />
-            </GridLayout>
-
-            <TextView
-                android:id="@+id/text_hide_information_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/selection_rounded_blue"
-                android:fontFamily="@font/sniglet_font"
-                android:gravity="center"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="Sembunyikan Profile"
-                android:textAllCaps="false"
-                android:textColor="@color/blue_palette" />
+                    android:text="Sembunyikan Profile"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue_palette" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
