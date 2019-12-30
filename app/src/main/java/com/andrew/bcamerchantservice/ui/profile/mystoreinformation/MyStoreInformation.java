@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,8 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     public static boolean isDescriptionClick;
 
+    private static final String MERCHANT_OWNER = "merchant_owner_name", MERCHANT_PHONE_NUMBER = "merchant_phone_number", MERCHANT_DESCRIPTION = "merchant_description", MERCHANT_EMAIL = "merchant_email", MERCHANT_ADDRESS = "merchant_address";
+
     private View v;
     private EditText edit_text_owner, edit_text_phone_number, edit_text_email, edit_text_address, edit_text_description;
     private ImageButton image_btn_check_owner, image_btn_check_phone_number, image_btn_check_email, image_btn_check_address, image_btn_check_description;
@@ -48,7 +49,6 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     private IMyStoreInformationPresenter presenter;
 
-    private static final String MERCHANT_OWNER = "merchant_owner_name", MERCHANT_PHONE_NUMBER = "merchant_phone_number", MERCHANT_DESCRIPTION = "merchant_description", MERCHANT_EMAIL = "merchant_email", MERCHANT_ADDRESS = "merchant_address";
 
     public MyStoreInformation() {
         // Required empty public constructor

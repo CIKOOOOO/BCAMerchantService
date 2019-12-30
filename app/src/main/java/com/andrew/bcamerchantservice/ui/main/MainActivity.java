@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.ui.home.HomeFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.LoyaltyFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.point_history.PointHistoryFragment;
 import com.andrew.bcamerchantservice.ui.loyalty.rewards.RewardsFragment;
@@ -44,7 +45,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     public static BottomNavigationView bottomNavigationView;
     public static FloatingActionButton floatingActionButton;
 
-    private IMainPresenter iMainPresenter;
+    private IMainPresenter presenter;
 
     public interface onBackPressFragment {
         void onBackPress(boolean check, Context context);
@@ -58,7 +59,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     }
 
     private void initVar() {
-        iMainPresenter = new MainPresenter(this);
+        presenter = new MainPresenter(this);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_main);
         floatingActionButton = findViewById(R.id.fab_add_main);
@@ -69,7 +70,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 //        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
-        iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+        presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
 
         int bot_nav_menu = getPrefConfig().getMerchantPosition().getPosition_id().equals("position_1") ? R.menu.bot_nav_cashier : R.menu.bot_nav_owner;
         bottomNavigationView.inflateMenu(bot_nav_menu);
@@ -92,7 +93,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 onBackPressFragment = new MainForum();
                 onBackPressFragment.onBackPress(false, fragment.getContext());
             } else
-                iMainPresenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
+                presenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof SelectedThread) {
             if (SelectedThread.trendingIsVisible) {
                 onBackPressFragment = new SelectedThread();
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 SelectedThread.frameIsVisible = false;
                 SelectedThread.frameLayout.setVisibility(View.GONE);
             } else
-                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+                presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof NewThread) {
             onBackPressFragment = new NewThread();
             switch (NewThread.THREAD_CONDITION) {
@@ -116,14 +117,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                     break;
             }
         } else if (fragment instanceof FavoriteFragment) {
-            iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+            presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof Profile) {
             onBackPressFragment = new Profile();
             if (MyStoreInformation.isDescriptionClick) {
                 onBackPressFragment.onBackPress(false, fragment.getContext());
             } else
                 finish();
-//                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+//                presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof TabPromoRequest) {
             onBackPressFragment = new ActivePromo();
             // Page = 1 adalah kondisi dimana viewpager menunjukkan Fragment Status Promosi
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             if (InformationProfile.isDescriptionClick)
                 onBackPressFragment.onBackPress(false, fragment.getContext());
             else
-                iMainPresenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+                presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof HiddenForumFragment) {
             Profile profile = new Profile();
             Bundle bundle = new Bundle();
@@ -153,7 +154,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             profile.setArguments(bundle);
             fragmentTransaction.commit();
         } else if (fragment instanceof CatalogFragment) {
-            iMainPresenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
+            presenter.changeFragment(new Profile(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof LoyaltyFragment) {
             Profile profile = new Profile();
             Bundle bundle = new Bundle();
@@ -169,13 +170,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             profile.setArguments(bundle);
             fragmentTransaction.commit();
         } else if (fragment instanceof RewardsFragment) {
-            iMainPresenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
+            presenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
         }else if(fragment instanceof PointHistoryFragment){
-            iMainPresenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
+            presenter.changeFragment(new LoyaltyFragment(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof StoryFragment) {
 
         } else if (fragment instanceof DetailRewardsFragment) {
-            iMainPresenter.changeFragment(new RewardsFragment(), getSupportFragmentManager().beginTransaction());
+            presenter.changeFragment(new RewardsFragment(), getSupportFragmentManager().beginTransaction());
         } else if (fragment instanceof PromoRequestFragment) {
             onBackPressFragment = new PromoRequestFragment();
             onBackPressFragment.onBackPress(false, this);
@@ -213,7 +214,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             case R.id.fab_add_main:
                 floatingActionButton.hide();
                 bottomNavigationView.setVisibility(View.GONE);
-                iMainPresenter.changeFragment(new NewThread(), getSupportFragmentManager().beginTransaction());
+                presenter.changeFragment(new NewThread(), getSupportFragmentManager().beginTransaction());
                 break;
         }
     }
@@ -229,20 +230,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 //                changeFragment(new TabPromoRequest());
                 break;
             case R.id.merchantforum:
-                iMainPresenter.changeFragment(new MainForum(), fragmentTransaction);
+                presenter.changeFragment(new MainForum(), fragmentTransaction);
                 floatingActionButton.show();
                 break;
             case R.id.bot_account:
-                iMainPresenter.changeFragment(new Profile(), fragmentTransaction);
+                presenter.changeFragment(new Profile(), fragmentTransaction);
                 break;
             case R.id.bot_forum:
-                iMainPresenter.changeFragment(new MainForum(), fragmentTransaction);
+                presenter.changeFragment(new MainForum(), fragmentTransaction);
                 break;
             case R.id.bot_submission:
                 if (getPrefConfig().getMerchantPosition().getPosition_id().equals("position_2"))
-                    iMainPresenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
+                    presenter.changeFragment(new TabPromoRequest(), fragmentTransaction);
                 break;
             case R.id.bot_home:
+                presenter.changeFragment(new HomeFragment(), fragmentTransaction);
                 break;
             case R.id.bot_transaction:
                 break;
