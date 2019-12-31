@@ -256,16 +256,14 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
     @Override
     public void onLoadImageForum(List<Forum.ForumImage> imageList) {
-        forumImageList.clear();
-        forumImageList.addAll(imageList);
+        forumImageList = imageList;
         imageGridAdapter.setForumImageList(imageList);
         imageGridAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSuccessLoadReport(List<Report> reportList) {
-        this.reportList.clear();
-        this.reportList.addAll(reportList);
+        this.reportList = reportList;
         reportAdapter.setReportList(reportList);
         reportAdapter.notifyDataSetChanged();
     }
@@ -293,10 +291,25 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
     @Override
     public void onSuccessDelete(int pos) {
+        frame_loading.setVisibility(View.GONE);
         int PAGE_POSITION = pos / AMOUNT_REPLY;
         if (replyList.size() > pos) setDeletedList(PAGE_POSITION);
         else if (PAGE_POSITION - 1 < 0) setDeletedList(PAGE_POSITION);
         else setDeletedList(PAGE_POSITION - 1);
+    }
+
+    @Override
+    public void onSuccessDeleteThread() {
+        MainForum mainForum = new MainForum();
+
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.replace(R.id.main_frame, mainForum);
+
+        transaction.commit();
+        Toast.makeText(mContext, mContext.getResources().getString(R.string.thread_deleted), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -544,10 +557,10 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
+                        frame_loading.setVisibility(View.VISIBLE);
                         Forum.ForumReply forumReply = replyList.get(pos);
-                        String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/"
-                                + Constant.DB_REFERENCE_FORUM_REPLY + "/" + forumReply.getFrid();
-                        presenter.onRemove(path, pos);
+
+                        presenter.onRemove(forum.getFid(), forumReply.getFrid(), pos);
                         Toast.makeText(mContext, mContext.getResources().getString(R.string.thread_deleted), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -738,18 +751,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid();
-                        presenter.onRemove(path);
-                        MainForum mainForum = new MainForum();
-
-                        FragmentManager manager = getFragmentManager();
-                        FragmentTransaction transaction = manager.beginTransaction();
-
-                        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                        transaction.replace(R.id.main_frame, mainForum);
-
-                        transaction.commit();
-                        Toast.makeText(mContext, mContext.getResources().getString(R.string.thread_deleted), Toast.LENGTH_SHORT).show();
+                        frame_loading.setVisibility(View.VISIBLE);
+                        presenter.onRemove(forum.getFid());
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {

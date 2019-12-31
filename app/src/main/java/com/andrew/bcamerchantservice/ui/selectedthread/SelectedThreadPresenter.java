@@ -30,13 +30,13 @@ import java.util.Random;
 
 public class SelectedThreadPresenter implements ISelectedThreadPresenter {
 
-    private ISelectedThreadView iSelectedThreadView;
+    private ISelectedThreadView view;
     private DatabaseReference dbRef;
     private StorageReference storageReference;
     private FirebaseStorage storage;
 
-    SelectedThreadPresenter(ISelectedThreadView iSelectedThreadView) {
-        this.iSelectedThreadView = iSelectedThreadView;
+    SelectedThreadPresenter(ISelectedThreadView view) {
+        this.view = view;
         dbRef = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -98,7 +98,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                                                 return;
                                             }
                                             merchantMap.put(forumReply.getMid(), s.getValue(Merchant.class));
-                                            iSelectedThreadView.onUpdateMerchant(merchantMap);
+                                            view.onUpdateMerchant(merchantMap);
                                         }
 
                                         @Override
@@ -129,10 +129,10 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                         }
 
                         if (images.size() > 0) {
-                            iSelectedThreadView.onLoadImageForum(images);
+                            view.onLoadImageForum(images);
                         }
 
-                        iSelectedThreadView.onLoadReply(forum, forums, map);
+                        view.onLoadReply(forum, forums, map);
                     }
 
                     @Override
@@ -152,7 +152,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        iSelectedThreadView.onFavorite(true);
+                        view.onFavorite(true);
                     }
                 });
     }
@@ -166,7 +166,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        iSelectedThreadView.onFavorite(false);
+                        view.onFavorite(false);
                     }
                 });
     }
@@ -178,9 +178,9 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getChildrenCount() == 0) {
-                            iSelectedThreadView.onFavorite(false);
+                            view.onFavorite(false);
                         } else {
-                            iSelectedThreadView.onFavorite(true);
+                            view.onFavorite(true);
                         }
                     }
 
@@ -197,19 +197,83 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
-    public void onRemove(String path) {
-        dbRef.child(path)
-                .removeValue();
+    public void onRemove(final String FID) {
+        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE).getChildren()) {
+                            Forum.ForumImage forumImage = snapshot.getValue(Forum.ForumImage.class);
+                            if (forumImage != null) {
+                                storageReference
+                                        .child(Constant.DB_REFERENCE_FORUM_IMAGE + "/" + forumImage.getImage_name())
+                                        .delete();
+                            }
+                        }
+
+                        if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).hasChildren()) {
+                            for (DataSnapshot reply_snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).getChildren()) {
+                                for (DataSnapshot snapshot : reply_snapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY).getChildren()) {
+                                    Forum.ForumImageReply forumImageReply = snapshot.getValue(Forum.ForumImageReply.class);
+                                    if (forumImageReply != null) {
+                                        storageReference
+                                                .child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY + "/" + forumImageReply.getImage_name())
+                                                .delete();
+                                    }
+                                }
+                            }
+                        }
+
+                        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
+                                .removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        view.onSuccessDeleteThread();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
-    public void onRemove(String path, final int pos) {
+    public void onRemove(String fid, String frid, final int pos) {
+        String path = Constant.DB_REFERENCE_FORUM + "/" + fid + "/"
+                + Constant.DB_REFERENCE_FORUM_REPLY + "/" + frid;
+
+        dbRef.child(path)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY).hasChildren()) {
+                            for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY).getChildren()) {
+                                Forum.ForumImageReply forumImageReply = snapshot.getValue(Forum.ForumImageReply.class);
+                                if (forumImageReply != null) {
+                                    storageReference.child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY + "/" + forumImageReply.getImage_name())
+                                            .delete();
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
         dbRef.child(path)
                 .removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        iSelectedThreadView.onSuccessDelete(pos);
+                        view.onSuccessDelete(pos);
                     }
                 });
     }
@@ -221,7 +285,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        iSelectedThreadView.onSuccessReply();
+                        view.onSuccessReply();
                     }
                 });
     }
@@ -271,7 +335,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                                                                 @Override
                                                                 public void onSuccess(Void aVoid) {
                                                                     if (finalI == imageReply.size() - 1) {
-                                                                        iSelectedThreadView.onSuccessReply();
+                                                                        view.onSuccessReply();
                                                                     }
                                                                 }
                                                             });
@@ -295,7 +359,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                             Log.e("asd", snapshot.getValue().toString());
                             reportList.add(snapshot.getValue(Report.class));
                         }
-                        iSelectedThreadView.onSuccessLoadReport(reportList);
+                        view.onSuccessLoadReport(reportList);
                     }
 
                     @Override
@@ -336,7 +400,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                                 }
 
                                 if (i == reportList.size() - 1)
-                                    iSelectedThreadView.onSuccessSendReport();
+                                    view.onSuccessSendReport();
                             }
                         }
                     });
@@ -346,7 +410,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            iSelectedThreadView.onSuccessSendReport();
+                            view.onSuccessSendReport();
                         }
                     });
     }
@@ -394,7 +458,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
 
                                     }
                                 });
-                        iSelectedThreadView.onSuccessHide();
+                        view.onSuccessHide();
                     }
                 });
     }
@@ -406,7 +470,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Forum.ForumCategory forumCategory = dataSnapshot.getValue(Forum.ForumCategory.class);
-                        iSelectedThreadView.onGetForum(forumCategory);
+                        view.onGetForum(forumCategory);
                     }
 
                     @Override

@@ -341,13 +341,46 @@ public class ForumPresenter implements IForumPresenter {
     }
 
     @Override
-    public void onRemoveThread(String FID, final int pos) {
+    public void onRemoveThread(final String FID, final int pos) {
         dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
-                .removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        view.onSuccessDeleteThread(pos);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE).getChildren()) {
+                            Forum.ForumImage forumImage = snapshot.getValue(Forum.ForumImage.class);
+                            if (forumImage != null) {
+                                storageRef
+                                        .child(Constant.DB_REFERENCE_FORUM_IMAGE + "/" + forumImage.getImage_name())
+                                        .delete();
+                            }
+                        }
+
+                        if (dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).hasChildren()) {
+                            for (DataSnapshot reply_snapshot : dataSnapshot.child(Constant.DB_REFERENCE_FORUM_REPLY).getChildren()) {
+                                for (DataSnapshot snapshot : reply_snapshot.child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY).getChildren()) {
+                                    Forum.ForumImageReply forumImageReply = snapshot.getValue(Forum.ForumImageReply.class);
+                                    if (forumImageReply != null) {
+                                        storageRef
+                                                .child(Constant.DB_REFERENCE_FORUM_IMAGE_REPLY + "/" + forumImageReply.getImage_name())
+                                                .delete();
+                                    }
+                                }
+                            }
+                        }
+
+                        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
+                                .removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        view.onSuccessDeleteThread(pos);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
     }
@@ -383,7 +416,8 @@ public class ForumPresenter implements IForumPresenter {
                     @Override
                     public void onSuccess(Void aVoid) {
                         view.onHide(pos);
-                        final String forum_favorite_path = Constant.DB_REFERENCE_FORUM + "/" + FID + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
+                        final String forum_favorite_path = Constant.DB_REFERENCE_FORUM + "/" + FID
+                                + "/" + Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID;
                         dbRef.child(forum_favorite_path)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override

@@ -318,6 +318,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
+                        frame_loading.setVisibility(View.VISIBLE);
                         presenter.onRemoveThread(forum.getFid(), pos);
                     }
                 })
@@ -547,6 +548,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
 
     @Override
     public void onSuccessDeleteThread(int pos) {
+        frame_loading.setVisibility(View.GONE);
         forumLists.remove(pos);
         threadAdapter.setForumList(forumLists);
         threadAdapter.notifyItemChanged(pos);
