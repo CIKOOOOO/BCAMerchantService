@@ -217,7 +217,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         RippleView rippleView;
         RelativeLayout relative_profile;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.recycler_title_main_forum);
             date = itemView.findViewById(R.id.recycler_date_main_forum);
