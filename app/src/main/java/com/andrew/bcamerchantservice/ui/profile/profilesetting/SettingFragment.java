@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +54,11 @@ public class SettingFragment extends Fragment implements ProfileAdapter.onClick 
     }
 
     private void initVar() {
-        List<ProfileModel> profileList = new ArrayList<>(Constant.getProfileModels());
-
         mContext = v.getContext();
 
         prefConfig = new PrefConfig(mContext);
+
+        List<ProfileModel> profileList = new ArrayList<>(Constant.getProfileModels());
 
         TextView text_email = v.findViewById(R.id.text_email_setting);
         TextView text_mid = v.findViewById(R.id.text_mid_setting);
@@ -83,10 +82,11 @@ public class SettingFragment extends Fragment implements ProfileAdapter.onClick 
             case 0:
                 changeFragment(new LoyaltyFragment());
                 break;
-            case 3:
+            case 4:
+                if (prefConfig.getMerchantPosition().getPosition_id().equals("position_2"))
                 changeFragment(new TabPromoRequest());
                 break;
-            case 4:
+            case 5:
                 changeFragment(new MainForum());
                 break;
             case 8:

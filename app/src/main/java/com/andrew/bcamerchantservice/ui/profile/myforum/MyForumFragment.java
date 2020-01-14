@@ -109,7 +109,7 @@ public class MyForumFragment extends Fragment implements IMyForumView, ThreadAda
 
     @Override
     public void onSuccessDeleteThread(int pos) {
-        Toast.makeText(mContext, "Hapus Thread Berhasil!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "Hapus Forum Berhasil!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

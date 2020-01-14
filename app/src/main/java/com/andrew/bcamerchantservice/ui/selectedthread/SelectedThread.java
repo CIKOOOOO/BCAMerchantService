@@ -553,7 +553,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     @Override
     public void onDelete(final int pos) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Apa Anda yakin untuk menghapus balasan thread ini?")
+        builder.setMessage("Apa Anda yakin untuk menghapus balasan forum ini?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
@@ -747,7 +747,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         switch (menuItem.getItemId()) {
             case R.id.menu_delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage("Apa anda yakin untuk menghapus thread ini?");
+                builder.setMessage("Apa anda yakin untuk menghapus forum ini?");
                 builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

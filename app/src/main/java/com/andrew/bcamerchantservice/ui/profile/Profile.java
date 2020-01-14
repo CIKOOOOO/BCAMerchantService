@@ -246,7 +246,7 @@ public class Profile extends Fragment implements
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data   ) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == MainActivity.RESULT_OK && data.getData() != null) {
             switch (requestCode) {

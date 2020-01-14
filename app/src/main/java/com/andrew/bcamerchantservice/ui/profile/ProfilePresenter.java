@@ -3,25 +3,14 @@ package com.andrew.bcamerchantservice.ui.profile;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.andrew.bcamerchantservice.model.Merchant.MerchantStory;
 import com.andrew.bcamerchantservice.utils.Constant;
-import com.andrew.bcamerchantservice.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 public class ProfilePresenter implements IProfilePresenter {
     private DatabaseReference dbRef;
