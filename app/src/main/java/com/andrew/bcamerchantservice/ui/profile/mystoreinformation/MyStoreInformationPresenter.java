@@ -44,7 +44,7 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
     }
 
     @Override
-    public void onLoadCatalog(String MID) {
+    public void loadCatalog(String MID) {
         dbRef.child(Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -91,7 +91,7 @@ public class MyStoreInformationPresenter implements IMyStoreInformationPresenter
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        view.onUpdateInformationProfile(isHide);
+                        view.onSuccessUpdateInformationProfile(isHide);
                     }
                 });
     }

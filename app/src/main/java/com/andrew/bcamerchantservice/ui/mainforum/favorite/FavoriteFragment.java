@@ -105,24 +105,6 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
-    public void onDelete(final int pos, final Forum forum) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Apa Anda yakin untuk menghapus thread berjudul " + forum.getForum_title() + " ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int a) {
-                        presenter.onRemoveThread(forum.getFid(), pos);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                }).show();
-    }
-
-    @Override
     public void profileOnClick(int pos, Merchant merchant) {
         OtherProfile otherProfile = new OtherProfile();
         Bundle bundle = new Bundle();
@@ -137,11 +119,6 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener, 
 
         otherProfile.setArguments(bundle);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onHide(String FID) {
-
     }
 
     @Override
@@ -179,16 +156,5 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener, 
 
         selectedThread.setArguments(bundle);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onSuccessDeleteThread(int pos) {
-        /*
-         * This syntax below is no need, because we use add value event listener
-         * So the data will keep be update all time even the data is deleted
-         * */
-//        threadAdapter.deleteList(pos);
-//        threadAdapter.notifyDataSetChanged();
-        Toast.makeText(mContext, mContext.getResources().getString(R.string.thread_deleted), Toast.LENGTH_SHORT).show();
     }
 }

@@ -11,5 +11,5 @@ public interface IMyStoreInformationView {
 
     void onSuccessDeleteCatalog(int pos);
 
-    void onUpdateInformationProfile(boolean isHide);
+    void onSuccessUpdateInformationProfile(boolean isHide);
 }

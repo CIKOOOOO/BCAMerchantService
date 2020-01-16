@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.ui.profile.hiddenforum;
+package com.andrew.bcamerchantservice.ui.profile.myforum.hiddenforum;
 
 public interface IHiddenForumPresenter {
     void loadHiddenForum(String MID);

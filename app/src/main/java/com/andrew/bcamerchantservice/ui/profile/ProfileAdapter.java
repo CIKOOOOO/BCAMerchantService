@@ -26,7 +26,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.Holder> 
         void onSettingClick(int pos);
     }
 
-    onClick onClick;
+    private onClick onClick;
 
     public ProfileAdapter(Context context, List<ProfileModel> profileModels, onClick onClick) {
         this.context = context;

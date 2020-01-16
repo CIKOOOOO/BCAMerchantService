@@ -27,7 +27,6 @@ public class FavoritePresenter implements IFavoritePresenter {
         dbRef = FirebaseDatabase.getInstance().getReference();
     }
 
-
     @Override
     public void onGetFavoriteList(final String MID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID)
@@ -122,18 +121,6 @@ public class FavoritePresenter implements IFavoritePresenter {
                     @Override
                     public void onSuccess(Void aVoid) {
                         view.onSuccessUpdateViewCount(forum, merchant);
-                    }
-                });
-    }
-
-    @Override
-    public void onRemoveThread(String FID, final int pos) {
-        dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
-                .removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        view.onSuccessDeleteThread(pos);
                     }
                 });
     }

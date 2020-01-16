@@ -1,4 +1,4 @@
-package com.andrew.bcamerchantservice.ui.profile.hiddenforum;
+package com.andrew.bcamerchantservice.ui.profile.myforum.hiddenforum;
 
 import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;

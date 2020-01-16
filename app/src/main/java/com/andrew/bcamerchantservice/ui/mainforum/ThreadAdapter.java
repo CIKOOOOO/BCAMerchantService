@@ -51,11 +51,11 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         this.map = map;
     }
 
-    public void addAll(List<Forum> forumList) {
-        initSize = this.forumList.size();
-        this.forumList.addAll(forumList);
-        notifyItemRangeChanged(initSize, forumList.size());
-    }
+//    public void addAll(List<Forum> forumList) {
+//        initSize = this.forumList.size();
+//        this.forumList.addAll(forumList);
+//        notifyItemRangeChanged(initSize, forumList.size());
+//    }
 
     public interface onItemClick {
         void onClick(int pos);

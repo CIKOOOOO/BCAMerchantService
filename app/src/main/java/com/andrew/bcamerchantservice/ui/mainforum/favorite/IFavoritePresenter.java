@@ -9,6 +9,4 @@ public interface IFavoritePresenter {
     void onGetFavoriteList(String MID);
 
     void onUpdateViewCount(Map<String, Object> map, final Forum forum, final Merchant merchant);
-
-    void onRemoveThread(String FID, final int pos);
 }

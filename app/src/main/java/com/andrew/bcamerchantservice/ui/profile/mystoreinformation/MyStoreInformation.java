@@ -49,7 +49,6 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     private IMyStoreInformationPresenter presenter;
 
-
     public MyStoreInformation() {
         // Required empty public constructor
     }
@@ -101,7 +100,7 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         adapter = new CatalogAdapter(mContext, true, this);
 //        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
 
-        presenter.onLoadCatalog(prefConfig.getMID());
+        presenter.loadCatalog(prefConfig.getMID());
 
         if (prefConfig.isInformationHide()) {
             text_hide_information.setText("Tampilkan");
@@ -255,7 +254,7 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onUpdateInformationProfile(boolean isHide) {
+    public void onSuccessUpdateInformationProfile(boolean isHide) {
         Merchant merchant = prefConfig.getMerchantData();
         merchant.setInformation_hide(isHide);
         prefConfig.insertMerchantData(merchant);

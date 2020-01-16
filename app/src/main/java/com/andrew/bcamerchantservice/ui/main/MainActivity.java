@@ -25,7 +25,7 @@ import com.andrew.bcamerchantservice.ui.newthread.NewThread;
 import com.andrew.bcamerchantservice.ui.otherprofile.OtherProfile;
 import com.andrew.bcamerchantservice.ui.otherprofile.baseinformation.InformationProfile;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
-import com.andrew.bcamerchantservice.ui.profile.hiddenforum.HiddenForumFragment;
+import com.andrew.bcamerchantservice.ui.profile.myforum.hiddenforum.HiddenForumFragment;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;

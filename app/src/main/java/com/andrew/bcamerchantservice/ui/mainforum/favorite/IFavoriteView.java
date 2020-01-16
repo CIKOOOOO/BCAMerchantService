@@ -11,6 +11,4 @@ public interface IFavoriteView {
     void onLoadForum(List<Forum> forumList);
 
     void onSuccessUpdateViewCount(Forum forum, Merchant merchant);
-
-    void onSuccessDeleteThread(int pos);
 }

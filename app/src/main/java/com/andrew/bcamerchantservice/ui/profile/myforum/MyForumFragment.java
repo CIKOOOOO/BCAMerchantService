@@ -21,7 +21,7 @@ import com.andrew.bcamerchantservice.model.Forum;
 import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.mainforum.ThreadAdapter;
 import com.andrew.bcamerchantservice.ui.newthread.NewThread;
-import com.andrew.bcamerchantservice.ui.profile.hiddenforum.HiddenForumFragment;
+import com.andrew.bcamerchantservice.ui.profile.myforum.hiddenforum.HiddenForumFragment;
 import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 

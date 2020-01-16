@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_color"
-    tools:context=".ui.profile.hiddenforum.HiddenForumFragment">
+    tools:context=".ui.profile.myforum.hiddenforum.HiddenForumFragment">
 
     <ImageButton
         android:id="@+id/image_button_back_hidden_forum"
