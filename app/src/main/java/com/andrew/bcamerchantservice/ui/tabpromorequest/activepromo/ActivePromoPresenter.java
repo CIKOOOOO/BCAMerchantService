@@ -96,11 +96,11 @@ public class ActivePromoPresenter implements IActivePromoPresenter {
                                             .getValue(PromoRequest.PromoType.class);
 
                                     if (promoStatus != null && promoType != null)
-                                        view.loadPromoType(promoType, promoStatus);
+                                        view.onLoadPromoType(promoType, promoStatus);
                                 }
                             }
                         }
-                        view.loadData(promoRequestList);
+                        view.onLoadData(promoRequestList);
                     }
 
                     @Override

@@ -151,7 +151,7 @@ public class NewThreadPresenter implements INewThreadPresenter {
     }
 
     @Override
-    public void onLoadImage(String path) {
+    public void loadImage(String path) {
         dbRef.child(path)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

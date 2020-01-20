@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IPromoStatusView {
 
-    void loadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus);
+    void onLoadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus);
 
-    void loadData(List<PromoRequest> promoRequests);
+    void onLoadData(List<PromoRequest> promoRequests);
 
 }

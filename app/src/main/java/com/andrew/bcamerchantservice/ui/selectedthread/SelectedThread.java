@@ -88,12 +88,12 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     public static boolean trendingIsVisible, frameIsVisible;
     public static FrameLayout frameLayout;
 
-    private static Map<String, List<Forum.ForumImageReply>> forumImageReplyMap;
-
     private static final int STATE_LINEAR_VERTICAL = 1;
     private static final int STATE_GRID = 2;
     private static final int STATE_LINEAR_HORIZONTAL = 3;
     private static final int AMOUNT_REPLY = 5;
+
+    private static Map<String, List<Forum.ForumImageReply>> forumImageReplyMap;
 
     @SuppressLint("StaticFieldLeak")
     private static List<ImagePicker> imageList, imageReply;

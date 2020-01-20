@@ -29,7 +29,7 @@ public class PromoStatusPresenter implements IPromoStatusPresenter {
     }
 
     @Override
-    public void onLoadData(String MID, int MCC) {
+    public void loadData(String MID, int MCC) {
         final String path = Constant.DB_REFERENCE_PROMO_REQUEST + "/" + Constant.DB_REFERENCE_MERCHANT_PROMO_REQUEST + "/" + MCC + "/" + MID;
         dbRef.child(path)
                 .addValueEventListener(new ValueEventListener() {
@@ -61,7 +61,7 @@ public class PromoStatusPresenter implements IPromoStatusPresenter {
                                                                 + "/" + promoRequest.getPromo_status()).getValue(PromoRequest.PromoStatus.class);
 
                                                         if (promoType != null && promoStatus != null)
-                                                            view.loadPromoType(promoType, promoStatus);
+                                                            view.onLoadPromoType(promoType, promoStatus);
                                                     }
 
                                                     @Override
@@ -82,7 +82,7 @@ public class PromoStatusPresenter implements IPromoStatusPresenter {
                                 }
                             }
                         }
-                        view.loadData(promoRequestList);
+                        view.onLoadData(promoRequestList);
                     }
 
                     @Override

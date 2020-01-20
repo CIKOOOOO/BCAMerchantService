@@ -101,7 +101,7 @@ public class ActivePromo extends Fragment implements MainActivity.onBackPressFra
     }
 
     @Override
-    public void loadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus) {
+    public void onLoadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus) {
         if (!promoTypeMap.containsKey(promoType.getPromo_type_id())) {
             promoTypeMap.put(promoType.getPromo_type_id(), promoType);
             promoStatusAdapter.setPromoTypeMap(promoTypeMap);
@@ -116,7 +116,7 @@ public class ActivePromo extends Fragment implements MainActivity.onBackPressFra
     }
 
     @Override
-    public void loadData(List<PromoRequest> promoRequests) {
+    public void onLoadData(List<PromoRequest> promoRequests) {
         promoStatusAdapter.setPromoRequestList(promoRequests);
         promoStatusAdapter.notifyDataSetChanged();
     }

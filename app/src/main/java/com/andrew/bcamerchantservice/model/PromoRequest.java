@@ -192,14 +192,6 @@ public class PromoRequest implements Parcelable {
         public Facilities() {
         }
 
-        public void setFacilities_id(String facilities_id) {
-            this.facilities_id = facilities_id;
-        }
-
-        public void setFacilities_name(String facilities_name) {
-            this.facilities_name = facilities_name;
-        }
-
         public String getFacilities_id() {
             return facilities_id;
         }

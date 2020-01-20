@@ -26,7 +26,7 @@ public class InformationProfilePresenter implements IInformationProfilePresenter
 
 
     @Override
-    public void onLoadCatalog(String MID) {
+    public void loadCatalog(String MID) {
         dbRef.child(Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override

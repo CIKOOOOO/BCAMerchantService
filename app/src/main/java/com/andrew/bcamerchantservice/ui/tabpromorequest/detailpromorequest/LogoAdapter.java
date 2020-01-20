@@ -16,11 +16,11 @@ import java.util.List;
 
 public class LogoAdapter  extends RecyclerView.Adapter<LogoAdapter.Holder> {
     private Context mContext;
-    private List<PromoRequest.Logo> imagePickerList;
+    private List<PromoRequest.Logo> logoList;
 
-    public LogoAdapter(Context mContext, List<PromoRequest.Logo> imagePickerList) {
+    public LogoAdapter(Context mContext, List<PromoRequest.Logo> logoList) {
         this.mContext = mContext;
-        this.imagePickerList = imagePickerList;
+        this.logoList = logoList;
     }
 
     @NonNull
@@ -32,7 +32,7 @@ public class LogoAdapter  extends RecyclerView.Adapter<LogoAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        PromoRequest.Logo imagePicker = imagePickerList.get(i);
+        PromoRequest.Logo imagePicker = logoList.get(i);
         Picasso.get()
                 .load(imagePicker.getMerchant_logo_url())
                 .into(holder.imageView);
@@ -40,7 +40,7 @@ public class LogoAdapter  extends RecyclerView.Adapter<LogoAdapter.Holder> {
 
     @Override
     public int getItemCount() {
-        return imagePickerList.size();
+        return logoList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

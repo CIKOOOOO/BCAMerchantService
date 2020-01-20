@@ -16,11 +16,11 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Holder> {
     private Context mContext;
-    private List<PromoRequest.Product> imagePickerList;
+    private List<PromoRequest.Product> productList;
 
-    public ProductAdapter(Context mContext, List<PromoRequest.Product> imagePickerList) {
+    public ProductAdapter(Context mContext, List<PromoRequest.Product> productList) {
         this.mContext = mContext;
-        this.imagePickerList = imagePickerList;
+        this.productList = productList;
     }
 
     @NonNull
@@ -32,7 +32,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Holder> 
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
-        PromoRequest.Product imagePicker = imagePickerList.get(i);
+        PromoRequest.Product imagePicker = productList.get(i);
         Picasso.get()
                 .load(imagePicker.getMerchant_product_url())
                 .into(holder.imageView);
@@ -40,7 +40,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Holder> 
 
     @Override
     public int getItemCount() {
-        return imagePickerList.size();
+        return productList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

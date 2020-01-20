@@ -86,9 +86,11 @@ public class SearchFragment extends Fragment implements TextWatcher, View.OnClic
         searchCategoryAdapter = new SearchCategoryAdapter(Constant.CATEGORY_SEARCH, mContext, this);
 
         edit_search.requestFocus();
+
         recycler_category.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         recycler_search_profile.setLayoutManager(new LinearLayoutManager(mContext));
         recycler_forum_search.setLayoutManager(new LinearLayoutManager(mContext));
+
         recycler_search_profile.setAdapter(searchProfileAdapter);
         recycler_forum_search.setAdapter(searchAdapter);
         recycler_category.setAdapter(searchCategoryAdapter);

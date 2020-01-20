@@ -23,7 +23,7 @@ public interface INewThreadPresenter {
     void onSendNewThread(String key, StorageReference reference, Forum forum
             , List<ImagePicker> imagePickers, PrefConfig prefConfig);
 
-    void onLoadImage(String path);
+    void loadImage(String path);
 
     void onEditThreadReply(Map<String, Object> map);
 

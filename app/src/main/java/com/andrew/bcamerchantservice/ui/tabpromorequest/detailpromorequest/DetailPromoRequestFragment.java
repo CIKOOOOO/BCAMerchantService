@@ -62,7 +62,6 @@ public class DetailPromoRequestFragment extends Fragment implements IDetailPromo
     public static final String PROMO_REQUEST_ID = "promo_request_id";
     public static final String CORRECTION_FLOW = "correction_flow"; // flow edit untuk pengajuan koreksi
 
-
     private View v;
     private Context mContext;
     private Activity mActivity;

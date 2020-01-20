@@ -64,7 +64,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
 
         recycler_promo_status.setLayoutManager(new LinearLayoutManager(mContext));
 
-        presenter.onLoadData(prefConfig.getMID(), prefConfig.getMCC());
+        presenter.loadData(prefConfig.getMID(), prefConfig.getMCC());
 
         recycler_promo_status.setAdapter(promoStatusAdapter);
 
@@ -79,7 +79,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
     }
 
     @Override
-    public void loadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus) {
+    public void onLoadPromoType(PromoRequest.PromoType promoType, PromoRequest.PromoStatus promoStatus) {
         if (!promoTypeMap.containsKey(promoType.getPromo_type_id())) {
             promoTypeMap.put(promoType.getPromo_type_id(), promoType);
             promoStatusAdapter.setPromoTypeMap(promoTypeMap);
@@ -94,7 +94,7 @@ public class PromoStatusFragment extends Fragment implements IPromoStatusView, P
     }
 
     @Override
-    public void loadData(List<PromoRequest> promoRequests) {
+    public void onLoadData(List<PromoRequest> promoRequests) {
         promoStatusAdapter.setPromoRequestList(promoRequests);
         promoStatusAdapter.notifyDataSetChanged();
     }

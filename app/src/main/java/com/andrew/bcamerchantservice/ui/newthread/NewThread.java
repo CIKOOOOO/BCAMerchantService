@@ -224,7 +224,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                             .into(image_thumbnail);
 
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/" + Constant.DB_REFERENCE_FORUM_IMAGE;
-                    presenter.onLoadImage(path);
+                    presenter.loadImage(path);
                 }
 
                 tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
@@ -242,7 +242,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                 String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/"
                         + Constant.DB_REFERENCE_FORUM_REPLY + "/" + forumReply.getFrid() + "/"
                         + Constant.DB_REFERENCE_FORUM_IMAGE_REPLY;
-                presenter.onLoadImage(path);
+                presenter.loadImage(path);
                 tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
             } else if (bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD) != null) {
                 forum = bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD);
@@ -596,13 +596,13 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
         return fileName;
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
         Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 1000, 1000, true);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null);
         return Uri.parse(path);
     }
 
-    public String getRealPathFromURI(Uri uri) {
+    private String getRealPathFromURI(Uri uri) {
         String path = "";
         if (mContext.getContentResolver() != null) {
             Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
