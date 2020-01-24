@@ -30,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -130,7 +131,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private List<Report> reportList;
     private Map<String, Merchant> merchantMap;
 
-    private boolean isCheck, isReply, isFavorite, check;
+    private boolean isCheck, isReply, forumIsFavorite, check, forumIsLike;
 
     public SelectedThread() {
         // Required empty public constructor
@@ -153,7 +154,6 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
     private void initVar() {
         mContext = v.getContext();
         trendingIsVisible = false;
-        isFavorite = false;
         frameIsVisible = false;
         isCheck = false;
         isReply = false;
@@ -245,6 +245,33 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
         new AsyncTasks().doInBackground();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI(v.findViewById(R.id.coordinator_selected_thread));
+    }
+
+    public void setupUI(View view) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Utils.hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
 
     @Override
     public void onUpdateMerchant(Map<String, Merchant> merchantMap) {
@@ -365,12 +392,25 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
     @Override
     public void onFavorite(boolean isFavorite) {
-        this.isFavorite = isFavorite;
+        this.forumIsFavorite = isFavorite;
         if (isFavorite) {
             img_favorite.setBackground(mContext.getResources().getDrawable(R.drawable.icon_love_fill));
         } else
             img_favorite.setBackground(mContext.getResources().getDrawable(R.drawable.icon_love));
 
+    }
+
+    @Override
+    public void onLike(boolean isLike, int amount_likes) {
+        this.forumIsLike = isLike;
+        forum.setForum_like(amount_likes);
+        if(!forumIsLike){
+            img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile));
+        }
+        else{
+            img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile_press));
+        }
+        amount_like.setText(amount_likes+"");
     }
 
     @Override
@@ -381,11 +421,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         switch (view.getId()) {
             case R.id.img_smile_thread:
                 Map<String, Object> map = new HashMap<>();
-                if (!forum.isLike()) {
-                    img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile_press));
-                    amount_like.setText(Integer.parseInt(amount_like.getText().toString()) + 1 + "");
-                    forum.setLike(false);
-
+                if (!forumIsLike) {
                     map.put("forum_like", forum.getForum_like() + 1);
 
                     Map<String, Object> maps = new HashMap<>();
@@ -395,14 +431,11 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_like_by/" + prefConfig.getMID();
                     presenter.onUpdateLike(path, maps);
                 } else {
-                    img_like.setBackground(mContext.getResources().getDrawable(R.drawable.smile));
-                    amount_like.setText(Integer.parseInt(amount_like.getText().toString()) - 1 + "");
-                    forum.setLike(true);
 
                     map.put("forum_like", forum.getForum_like() - 1);
 
                     String path = Constant.DB_REFERENCE_FORUM + "/" + forum.getFid() + "/forum_like_by/" + prefConfig.getMID();
-                    presenter.onRemove(path);
+                    presenter.onRemoveLike(path);
                 }
                 presenter.onUpdateLike(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid(), map);
                 break;
@@ -502,7 +535,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                 }
                 break;
             case R.id.image_button_favorite_selected_thread:
-                if (!isFavorite)
+                if (!forumIsFavorite)
                     presenter.onFavoriteThread(prefConfig.getMID(), forum.getFid());
                 else
                     presenter.onRemoveFavoriteThread(prefConfig.getMID(), forum.getFid());
@@ -703,7 +736,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
             map.put("forum_like_amount", forumReply.getForum_like_amount() - 1);
             presenter.onUpdateLike(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()
                     + "/forum_reply/" + forumReply.getFrid(), map);
-            presenter.onRemove(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()
+            presenter.onRemoveLike(Constant.DB_REFERENCE_FORUM + "/" + forum.getFid()
                     + "/forum_reply/" + forumReply.getFrid() + "/forum_like_by/" + prefConfig.getMID());
         }
     }

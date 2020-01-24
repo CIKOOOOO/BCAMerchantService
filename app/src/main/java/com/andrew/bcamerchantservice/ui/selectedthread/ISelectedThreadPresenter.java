@@ -19,6 +19,8 @@ public interface ISelectedThreadPresenter {
 
     void onUpdateLike(String path, Map<String, Object> map);
 
+    void onRemoveLike(String path);
+
     void onRemove(String path);
 
     void onRemove(String fid, String frid, int pos);

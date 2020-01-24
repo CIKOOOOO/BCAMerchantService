@@ -14,6 +14,8 @@ public interface ISelectedThreadView {
 
     void onFavorite(boolean isFavorite);
 
+    void onLike(boolean isLike, int amount_like);
+
     void onUpdateMerchant(Map<String, Merchant> merchantMap);
 
     void onLoadImageForum(List<Forum.ForumImage> imageList);

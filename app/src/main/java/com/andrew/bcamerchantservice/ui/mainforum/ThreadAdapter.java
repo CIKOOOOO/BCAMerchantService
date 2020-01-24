@@ -93,9 +93,9 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view;
-//        if (viewType == 0)
-//            view = LayoutInflater.from(context).inflate(R.layout.nothing_found, viewGroup, false);
-//        else
+        if (viewType == 0)
+            view = LayoutInflater.from(context).inflate(R.layout.custom_loading, viewGroup, false);
+        else
         view = LayoutInflater.from(context).inflate(R.layout.recycler_thread_mainforum, viewGroup, false);
         return new ViewHolder(view);
     }
@@ -206,7 +206,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return forumList.size();
+        return forumList.size() == 0 ? 1 : forumList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

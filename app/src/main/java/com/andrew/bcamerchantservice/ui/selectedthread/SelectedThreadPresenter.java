@@ -172,7 +172,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
-    public void onCheckFavorite(String MID, String FID) {
+    public void onCheckFavorite(final String MID, String FID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM_FAVORITE + "/" + MID + "/" + FID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -189,11 +189,40 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
 
                     }
                 });
+
+        String path = Constant.DB_REFERENCE_FORUM + "/" + FID + "/forum_like_by";
+
+        dbRef.child(path)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        boolean isLike = false;
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            if (snapshot.getKey().equals(MID)) {
+                                isLike = true;
+                                break;
+                            }
+                        }
+                        view.onLike(isLike, (int) dataSnapshot.getChildrenCount());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
     public void onUpdateLike(String path, Map<String, Object> map) {
-        dbRef.child(path).updateChildren(map);
+        dbRef.child(path)
+                .updateChildren(map);
+    }
+
+    @Override
+    public void onRemoveLike(String path) {
+        dbRef.child(path)
+                .removeValue();
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -117,6 +118,7 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
 
         ((TextView) v.findViewById(R.id.text_title_toolbar_back)).setText("Pengajuan Promo");
         ((TextView) v.findViewById(R.id.text_current_info_sheet)).setText(mContext.getResources().getString(R.string.info_tnc));
+        ((RadioButton) v.findViewById(R.id.radio_button_description_tnc)).setChecked(true);
 
         if (flow_status.equals(DetailPromoRequestFragment.CORRECTION_FLOW)) {
             PromoRequest promoRequest = init_bundle.getParcelable(PromoRequestFragment.GET_PROMO_DATA);
@@ -133,7 +135,6 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
                     ((TextView) v.findViewById(R.id.text_max_character_description_tnc)).setText(promoRequest.getPromo_tnc().length() + "/500");
                     edit_text_description.setEnabled(true);
                     edit_text_description.setText(promoRequest.getPromo_tnc());
-                    ((RadioButton) v.findViewById(R.id.radio_button_description_tnc)).setChecked(true);
                 } else {
                     if (init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT) != null) {
                         uri_selected_data = Uri.parse(init_bundle.getString(LogoRequestFragment.GET_ATTACHMENT));
@@ -176,6 +177,32 @@ public class TNCRequestFragment extends Fragment implements View.OnClickListener
         img_btn_open_sheet.setOnClickListener(this);
         btn_next.setOnClickListener(this);
         coordinatorLayout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI(v.findViewById(R.id.coordinator_tnc));
+    }
+
+    public void setupUI(View view) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Utils.hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 
     @Override

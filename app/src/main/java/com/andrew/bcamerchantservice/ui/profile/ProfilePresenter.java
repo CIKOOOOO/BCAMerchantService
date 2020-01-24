@@ -25,8 +25,10 @@ public class ProfilePresenter implements IProfilePresenter {
 
     @Override
     public void onUploadImage(final String name, final String MID, final String child, byte[] byteData) {
+
         final UploadTask uploadTask = storageReference.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/" + name)
                 .putBytes(byteData);
+
         storageReference.child(Constant.DB_REFERENCE_MERCHANT_PROFILE + "/" + MID + "/" + name)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

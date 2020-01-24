@@ -106,20 +106,20 @@ public class HiddenForumFragment extends Fragment implements IHiddenForumView, H
 
     @Override
     public void onClick(Forum forum, Merchant merchant) {
-        SelectedThread selectedThread = new SelectedThread();
-        Bundle bundle = new Bundle();
-        FragmentManager fragmentManager = getFragmentManager();
-
-        bundle.putParcelable(SelectedThread.GET_THREAD_OBJECT, forum);
-        bundle.putParcelable(SelectedThread.GET_MERCHANT, merchant);
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.main_frame, selectedThread);
-
-        selectedThread.setArguments(bundle);
-        fragmentTransaction.commit();
+//        SelectedThread selectedThread = new SelectedThread();
+//        Bundle bundle = new Bundle();
+//        FragmentManager fragmentManager = getFragmentManager();
+//
+//        bundle.putParcelable(SelectedThread.GET_THREAD_OBJECT, forum);
+//        bundle.putParcelable(SelectedThread.GET_MERCHANT, merchant);
+//
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+//        fragmentTransaction.replace(R.id.main_frame, selectedThread);
+//
+//        selectedThread.setArguments(bundle);
+//        fragmentTransaction.commit();
     }
 
     @Override

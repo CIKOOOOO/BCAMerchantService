@@ -10,7 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.home.HomeFragment;
@@ -38,6 +42,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRe
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
+import com.andrew.bcamerchantservice.utils.Utils;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
         , IMainView, View.OnClickListener {
@@ -66,6 +71,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
+        FrameLayout main_frame = findViewById(R.id.main_frame);
 
 //        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());

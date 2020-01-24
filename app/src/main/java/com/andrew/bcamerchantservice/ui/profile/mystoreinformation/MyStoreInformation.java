@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -131,6 +132,32 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
         image_btn_check_email.setOnClickListener(this);
         image_btn_check_address.setOnClickListener(this);
         image_btn_check_description.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI(v.findViewById(R.id.relative_my_store_information));
+    }
+
+    public void setupUI(View view) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Utils.hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
     }
 
     @Override

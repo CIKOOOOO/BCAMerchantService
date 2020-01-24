@@ -57,7 +57,7 @@ public class DetailRewardsFragment extends Fragment implements View.OnClickListe
     private LinearLayout linear_custom_redeem_point, linear_voucher_code;
     private Merchant.Rewards merchant_rewards;
 
-    private DetailRewardsPresenter presenter;
+    private IDetailRewardsPresenter presenter;
 
     private String condition;
     private boolean isVoucherVisible;

@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/text_title_report_forum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -96,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
-            android:buttonTint="@color/toolbar_base"
+            android:buttonTint="@color/blue_palette"
             android:fontFamily="@font/sniglet_font"
             android:text="@string/check_other"
             android:textColor="@color/blackPalette" />

@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.Pro
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
+import com.andrew.bcamerchantservice.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -195,6 +197,33 @@ public class PromoRequestFragment extends Fragment implements IPromoRequestView,
         btn_next.setOnClickListener(this);
         lazy_btn.setOnClickListener(this);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI(v.findViewById(R.id.coordinator_promo_request));
+    }
+
+    public void setupUI(View view) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Utils.hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
 
     private void changeFragment(Context context, Fragment fragment) {
         AppCompatActivity activity = (AppCompatActivity) context;

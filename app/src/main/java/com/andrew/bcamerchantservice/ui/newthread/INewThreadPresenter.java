@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface INewThreadPresenter {
-    void onLoadCategory();
+    void loadCategory();
 
     void onFirebaseRemoveValue(String path);
 

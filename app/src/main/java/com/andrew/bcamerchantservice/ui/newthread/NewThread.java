@@ -28,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -184,7 +183,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
 
         setRecyclerView();
 
-        presenter.onLoadCategory();
+        presenter.loadCategory();
 
         submit.setOnClickListener(this);
         photo.setOnClickListener(this);
@@ -243,7 +242,7 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                         + Constant.DB_REFERENCE_FORUM_REPLY + "/" + forumReply.getFrid() + "/"
                         + Constant.DB_REFERENCE_FORUM_IMAGE_REPLY;
                 presenter.loadImage(path);
-                tvTitle.setText(mContext.getResources().getString(R.string.edit_thread));
+                tvTitle.setText("Sunting Balasan Forum");
             } else if (bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD) != null) {
                 forum = bundle.getParcelable(ExampleThreadFragment.GET_NEW_THREAD);
 
@@ -265,6 +264,32 @@ public class NewThread extends Fragment implements View.OnClickListener, View.On
                     imageList.addAll(bundle.<ImagePicker>getParcelableArrayList(ExampleThreadFragment.GET_ARRAY_OF_IMAGE));
                     imagePickerAdapter.setImageList(imageList);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI(v.findViewById(R.id.coordinator_new_thread));
+    }
+
+    public void setupUI(View view) {
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    Utils.hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
             }
         }
     }

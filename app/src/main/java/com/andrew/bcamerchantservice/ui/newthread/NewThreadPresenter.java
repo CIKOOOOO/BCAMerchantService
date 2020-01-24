@@ -45,7 +45,7 @@ public class NewThreadPresenter implements INewThreadPresenter {
     }
 
     @Override
-    public void onLoadCategory() {
+    public void loadCategory() {
         dbRef.child(Constant.DB_REFERENCE_FORUM_CATEGORY)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
