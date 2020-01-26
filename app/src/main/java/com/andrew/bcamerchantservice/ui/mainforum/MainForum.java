@@ -356,7 +356,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
-                        presenter.onHide(FID, prefConfig.getMID(), pos);
+                        presenter.hideForum(FID, prefConfig.getMID(), pos);
 
                     }
                 })

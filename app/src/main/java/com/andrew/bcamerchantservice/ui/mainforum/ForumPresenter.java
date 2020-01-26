@@ -397,7 +397,7 @@ public class ForumPresenter implements IForumPresenter {
     }
 
     @Override
-    public void onHide(final String FID, final String MID, final int pos) {
+    public void hideForum(final String FID, final String MID, final int pos) {
         final String key = dbRef.push().getKey();
         final Forum.ForumHidden forumHidden = new Forum.ForumHidden(key, FID, Utils.getTime("dd/MM/yyyy HH:mm"));
 
