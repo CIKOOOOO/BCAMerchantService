@@ -3,7 +3,9 @@ package com.andrew.bcamerchantservice.ui.profile;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,6 +17,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,17 +38,17 @@ import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.main.MainActivity;
 import com.andrew.bcamerchantservice.ui.profile.myforum.MyForumFragment;
 import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.MyStoreInformation;
+import com.andrew.bcamerchantservice.ui.profile.mystoreinformation.catalog.CatalogFragment;
 import com.andrew.bcamerchantservice.ui.profile.profilesetting.SettingFragment;
-import com.andrew.bcamerchantservice.utils.TabAdapter;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
+import com.andrew.bcamerchantservice.utils.TabAdapter;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,16 +65,17 @@ public class Profile extends Fragment implements
     private static final int PROFILE_REQUEST_CODE = 1003;
     private static final int HOME_REQUEST_CODE = 1004;
 
+    private static FrameLayout frame_loading;
+
+    private static IProfilePresenter presenter;
+
+    private static PrefConfig prefConfig;
+
     private ImageView profilePic;
     private RoundedImageView homePic;
     private ScaleDrawable scaleDrawable;
     private Context mContext;
     private Activity mActivity;
-    private FrameLayout frame_loading;
-
-    private IProfilePresenter presenter;
-
-    private PrefConfig prefConfig;
 
     public Profile() {
     }
@@ -144,16 +150,22 @@ public class Profile extends Fragment implements
         homeAdd.setOnClickListener(this);
     }
 
-    public static void showDescriptionCatalog(Merchant.MerchantCatalog merchantCatalog) {
+    public static void showDescriptionCatalog(final Merchant.MerchantCatalog merchantCatalog) {
         MainActivity.bottomNavigationView.setVisibility(View.GONE);
         Profile.view_description.setVisibility(View.VISIBLE);
         TextView text_title, text_price, text_description;
         ImageView image_catalog;
+        ImageButton edit, delete;
 
+        edit = v.findViewById(R.id.image_button_edit_catalog_custom);
+        delete = v.findViewById(R.id.image_button_delete_catalog_custom);
         text_title = v.findViewById(R.id.text_title_catalog_custom);
         text_price = v.findViewById(R.id.text_price_catalog_custom);
         text_description = v.findViewById(R.id.text_description_catalog_custom);
         image_catalog = v.findViewById(R.id.image_catalog_custom);
+
+        edit.setVisibility(View.VISIBLE);
+        delete.setVisibility(View.VISIBLE);
 
         text_title.setText(merchantCatalog.getCatalog_name());
         text_price.setText("Price: Rp " + Utils.priceFormat(merchantCatalog.getCatalog_price()));
@@ -161,6 +173,46 @@ public class Profile extends Fragment implements
         Picasso.get()
                 .load(merchantCatalog.getCatalog_image())
                 .into(image_catalog);
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CatalogFragment catalogFragment = new CatalogFragment();
+                FragmentActivity activity = (FragmentActivity) v.getContext();
+                FragmentManager manager = activity.getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(CatalogFragment.GET_DATA, merchantCatalog);
+                catalogFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.main_frame, catalogFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage("Apa Anda yakin untuk menghapus katalog " + merchantCatalog.getCatalog_name() + " ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int a) {
+                                frame_loading.setVisibility(View.VISIBLE);
+                                String[] split = merchantCatalog.getCatalog_image().split("alt");
+                                String[] split2 = split[0].split("merchant_catalog");
+                                String final_name = "merchant_catalog" + split2[2].substring(0, split2[2].length() - 1);
+                                presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), final_name);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
+            }
+        });
     }
 
     @Override
@@ -299,6 +351,14 @@ public class Profile extends Fragment implements
 
         MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         frame_loading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onSuccessDeleteCatalog() {
+        view_description.setVisibility(View.GONE);
+        frame_loading.setVisibility(View.GONE);
+        MainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        Toast.makeText(mContext, "Katalog berhasil dihapus!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

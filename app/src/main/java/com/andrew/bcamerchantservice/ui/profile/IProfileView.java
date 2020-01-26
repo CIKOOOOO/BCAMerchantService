@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IProfileView {
     void onSuccessUpload(String pictureType, String URL);
+
+    void onSuccessDeleteCatalog();
 }

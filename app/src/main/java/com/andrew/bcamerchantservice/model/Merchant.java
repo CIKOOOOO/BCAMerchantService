@@ -187,7 +187,7 @@ public class Merchant implements Parcelable {
         }
     }
 
-    public static class MerchantCatalog {
+    public static class MerchantCatalog implements Parcelable {
         private String cid, catalog_name, catalog_description, catalog_image, catalog_date;
         private int catalog_price;
 
@@ -202,6 +202,27 @@ public class Merchant implements Parcelable {
 
         public MerchantCatalog() {
         }
+
+        protected MerchantCatalog(Parcel in) {
+            cid = in.readString();
+            catalog_name = in.readString();
+            catalog_description = in.readString();
+            catalog_image = in.readString();
+            catalog_date = in.readString();
+            catalog_price = in.readInt();
+        }
+
+        public static final Creator<MerchantCatalog> CREATOR = new Creator<MerchantCatalog>() {
+            @Override
+            public MerchantCatalog createFromParcel(Parcel in) {
+                return new MerchantCatalog(in);
+            }
+
+            @Override
+            public MerchantCatalog[] newArray(int size) {
+                return new MerchantCatalog[size];
+            }
+        };
 
         public String getCid() {
             return cid;
@@ -225,6 +246,21 @@ public class Merchant implements Parcelable {
 
         public String getCatalog_date() {
             return catalog_date;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(cid);
+            parcel.writeString(catalog_name);
+            parcel.writeString(catalog_description);
+            parcel.writeString(catalog_image);
+            parcel.writeString(catalog_date);
+            parcel.writeInt(catalog_price);
         }
     }
 

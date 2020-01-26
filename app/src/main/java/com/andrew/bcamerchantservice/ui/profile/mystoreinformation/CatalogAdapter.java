@@ -102,23 +102,23 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.Holder> 
                 }
             });
 
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (lastPosition == pos)
-                        return true;
-
-                    if (lastPosition != -1) {
-                        int tempLast = lastPosition;
-                        notifyItemChanged(tempLast);
-                    }
-
-                    lastPosition = pos;
-                    linear_height = holder.itemView.getHeight();
-                    notifyItemChanged(lastPosition);
-                    return true;
-                }
-            });
+//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    if (lastPosition == pos)
+//                        return true;
+//
+//                    if (lastPosition != -1) {
+//                        int tempLast = lastPosition;
+//                        notifyItemChanged(tempLast);
+//                    }
+//
+//                    lastPosition = pos;
+//                    linear_height = holder.itemView.getHeight();
+//                    notifyItemChanged(lastPosition);
+//                    return true;
+//                }
+//            });
         }
     }
 

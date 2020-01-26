@@ -60,10 +60,11 @@ public class MyRewardsFragment extends Fragment implements IMyRewardsView, MyRew
         presenter = new MyRewardsPresenter(this);
         myRewardsAdapter = new MyRewardsAdapter(mContext, this);
 
-        presenter.loadRewards(prefConfig.getMID(), prefConfig.getMerchantPosition().getPosition_id());
         recycler_my_rewards.setLayoutManager(new LinearLayoutManager(mContext));
 
         recycler_my_rewards.setAdapter(myRewardsAdapter);
+
+        presenter.loadRewards(prefConfig.getMID(), prefConfig.getMerchantPosition().getPosition_id());
     }
 
     @Override

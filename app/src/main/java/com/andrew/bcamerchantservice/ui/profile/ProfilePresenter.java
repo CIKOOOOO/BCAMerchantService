@@ -105,4 +105,19 @@ public class ProfilePresenter implements IProfilePresenter {
                     }
                 });
     }
+
+    @Override
+    public void onDeleteCatalog(String MID, String CID, String catalog_name) {
+        final String path = Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID + "/" + catalog_name;
+        storageReference.child(path)
+                .delete();
+        dbRef.child(Constant.DB_REFERENCE_MERCHANT_CATALOG + "/" + MID + "/" + CID)
+                .removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        view.onSuccessDeleteCatalog();
+                    }
+                });
+    }
 }

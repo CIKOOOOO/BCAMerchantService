@@ -276,8 +276,8 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     @Override
     public void onSuccessDeleteCatalog(int pos) {
-        adapter.setLastPosition(-1);
-        adapter.notifyItemChanged(pos);
+//        adapter.setLastPosition(-1);
+//        adapter.notifyItemChanged(pos);
     }
 
     @Override
@@ -298,10 +298,10 @@ public class MyStoreInformation extends Fragment implements View.OnClickListener
 
     @Override
     public void onDelete(Merchant.MerchantCatalog merchantCatalog, int pos) {
-        String[] split = merchantCatalog.getCatalog_image().split("alt");
-        String[] split2 = split[0].split("merchant_catalog");
-        String final_name = "merchant_catalog" + split2[2].substring(0, split2[2].length() - 1);
-
-        presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), pos, final_name);
+//        String[] split = merchantCatalog.getCatalog_image().split("alt");
+//        String[] split2 = split[0].split("merchant_catalog");
+//        String final_name = "merchant_catalog" + split2[2].substring(0, split2[2].length() - 1);
+//
+//        presenter.onDeleteCatalog(prefConfig.getMID(), merchantCatalog.getCid(), pos, final_name);
     }
 }

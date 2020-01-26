@@ -31,11 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andrew.bcamerchantservice.R;
+import com.andrew.bcamerchantservice.model.Merchant;
 import com.andrew.bcamerchantservice.ui.profile.Profile;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
 import com.andrew.bcamerchantservice.utils.Utils;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 
@@ -43,6 +45,8 @@ import java.io.FileNotFoundException;
  * A simple {@link Fragment} subclass.
  */
 public class CatalogFragment extends Fragment implements View.OnClickListener, ICatalogView {
+
+    public static final String GET_DATA = "get_data";
 
     private View v;
     private Context mContext;
@@ -52,10 +56,12 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
     private TextView text_counter;
     private FrameLayout frame_loading;
     private PrefConfig prefConfig;
+    private Merchant.MerchantCatalog merchantCatalog;
 
     private ICatalogPresenter presenter;
 
     private Bitmap catalog_bitmap;
+    private boolean catalogIsEdit;
 
     public CatalogFragment() {
         // Required empty public constructor
@@ -78,6 +84,7 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
     private void initVar() {
         mContext = v.getContext();
         catalog_bitmap = null;
+        catalogIsEdit = false;
         presenter = new CatalogPresenter(this);
         prefConfig = new PrefConfig(mContext);
 
@@ -91,6 +98,21 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
         edit_description = v.findViewById(R.id.edit_text_description_catalog);
         text_counter = v.findViewById(R.id.text_counter_catalog);
         frame_loading = v.findViewById(R.id.frame_loading_catalog);
+
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.getParcelable(GET_DATA) != null) {
+            merchantCatalog = bundle.getParcelable(GET_DATA);
+            if (merchantCatalog != null) {
+                catalogIsEdit = true;
+                Picasso.get()
+                        .load(merchantCatalog.getCatalog_image())
+                        .into(image_catalog);
+                edit_name.setText(merchantCatalog.getCatalog_name());
+                edit_description.setText(merchantCatalog.getCatalog_description());
+                edit_price.setText(merchantCatalog.getCatalog_price() + "");
+                text_counter.setText(merchantCatalog.getCatalog_description().length() + "/160");
+            }
+        }
 
         btn_cancel.setOnClickListener(this);
         btn_send.setOnClickListener(this);
@@ -171,12 +193,15 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
                     edit_price.setError("Invalid Price");
                 } else if (desc.isEmpty()) {
                     edit_description.setError("This field cannot be empty");
-                } else if (catalog_bitmap == null) {
+                } else if (catalog_bitmap == null && !catalogIsEdit) {
                     text_error.setVisibility(View.VISIBLE);
                 } else {
                     frame_loading.setVisibility(View.VISIBLE);
                     int price = edit_price.getText().toString().isEmpty() ? 0 : Integer.parseInt(edit_price.getText().toString());
-                    presenter.sendCatalog(prefConfig.getMID(), name, desc, price, catalog_bitmap);
+                    if (catalogIsEdit) {
+                        presenter.sendEditedCatalog(prefConfig.getMID(), name, desc, price, catalog_bitmap, merchantCatalog);
+                    } else
+                        presenter.sendCatalog(prefConfig.getMID(), name, desc, price, catalog_bitmap);
                 }
                 break;
             case R.id.btn_cancel_catalog:
@@ -230,9 +255,9 @@ public class CatalogFragment extends Fragment implements View.OnClickListener, I
     }
 
     @Override
-    public void onSuccessSendCatalog() {
+    public void onSuccessSendCatalog(String msg) {
         frame_loading.setVisibility(View.GONE);
-        Toast.makeText(mContext, "Upload catalog success", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         FragmentManager fragmentManager = getFragmentManager();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
