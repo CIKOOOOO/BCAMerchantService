@@ -31,7 +31,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -61,7 +60,6 @@ import com.andrew.bcamerchantservice.ui.selectedthread.SelectedThread;
 import com.andrew.bcamerchantservice.utils.Constant;
 import com.andrew.bcamerchantservice.utils.DecodeBitmap;
 import com.andrew.bcamerchantservice.utils.PrefConfig;
-import com.andrew.bcamerchantservice.utils.Utils;
 import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.FirebaseDatabase;
@@ -233,6 +231,26 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                     getData();
                     isLoading = true;
                 }
+            }
+        });
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                switch (i) {
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        ((View) v.findViewById(R.id.view_blur_main_forum)).setVisibility(View.VISIBLE);
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        ((View) v.findViewById(R.id.view_blur_main_forum)).setVisibility(View.GONE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
             }
         });
 

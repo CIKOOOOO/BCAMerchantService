@@ -203,7 +203,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         }
     }
 
-
     @Override
     public int getItemCount() {
         return forumList.size() == 0 ? 1 : forumList.size();
