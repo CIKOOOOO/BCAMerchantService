@@ -66,7 +66,7 @@ public class MyForumPresenter implements IMyForumPresenter {
     }
 
     @Override
-    public void onDelete(final String FID, final int pos) {
+    public void onRemoveForum(final String FID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -98,7 +98,7 @@ public class MyForumPresenter implements IMyForumPresenter {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        view.onSuccessDeleteThread(pos);
+                                        view.onSuccessDeleteThread();
                                     }
                                 });
                     }

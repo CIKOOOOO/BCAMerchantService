@@ -375,8 +375,8 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
         replyList.addAll(forumReplies);
         presenter.getCategoryName(forum.getFcid());
 
-        replyAdapter.setList(forumReplies, map);
-        replyAdapter.notifyDataSetChanged();
+//        replyAdapter.setList(forumReplies, map);
+//        replyAdapter.notifyDataSetChanged();
 
         if (replyList.size() > 0) {
             relative_page_number.setVisibility(View.VISIBLE);
@@ -631,9 +631,9 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
 
         name.setText(merchant.getMerchant_name());
 
-        presenter.onLoadReportList();
-
         recyclerView.setAdapter(reportAdapter);
+
+        presenter.onLoadReportList();
 
         thread.setVisibility(View.GONE);
         threadTitle.setVisibility(View.GONE);
@@ -785,7 +785,7 @@ public class SelectedThread extends Fragment implements ISelectedThreadView, Vie
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         frame_loading.setVisibility(View.VISIBLE);
-                        presenter.onRemove(forum.getFid());
+                        presenter.onRemoveForum(forum.getFid());
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {

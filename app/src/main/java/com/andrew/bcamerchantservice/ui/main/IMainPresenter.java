@@ -7,4 +7,6 @@ public interface IMainPresenter {
     void onBackPressFragment();
 
     void changeFragment(Fragment fragment, FragmentTransaction fragmentTransaction);
+
+    void checkConnectionInternet();
 }

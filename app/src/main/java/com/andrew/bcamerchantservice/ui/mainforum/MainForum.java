@@ -321,7 +321,7 @@ public class MainForum extends Fragment implements ThreadAdapter.onItemClick
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
                         frame_loading.setVisibility(View.VISIBLE);
-                        presenter.onRemoveThread(forum.getFid(), pos);
+                        presenter.onRemoveForum(forum.getFid(), pos);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

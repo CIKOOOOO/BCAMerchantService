@@ -108,7 +108,7 @@ public class MyForumFragment extends Fragment implements IMyForumView, ThreadAda
     }
 
     @Override
-    public void onSuccessDeleteThread(int pos) {
+    public void onSuccessDeleteThread() {
         Toast.makeText(mContext, "Hapus Forum Berhasil!", Toast.LENGTH_SHORT).show();
     }
 
@@ -128,7 +128,7 @@ public class MyForumFragment extends Fragment implements IMyForumView, ThreadAda
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int a) {
-                        presenter.onDelete(forum.getFid(), pos);
+                        presenter.onRemoveForum(forum.getFid());
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

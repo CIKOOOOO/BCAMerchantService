@@ -72,11 +72,11 @@ public class InformationProfile extends Fragment implements IInformationProfileV
             int visible = merchant.isInformation_hide() ? View.GONE : View.VISIBLE;
             ((GridLayout) v.findViewById(R.id.grid_information_other_profile)).setVisibility(visible);
 
-            presenter.loadCatalog(merchant.getMid());
-
             catalogAdapter = new CatalogAdapter(mContext, false, this);
             recycler_information_profile.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             recycler_information_profile.setAdapter(catalogAdapter);
+
+            presenter.loadCatalog(merchant.getMid());
         }
     }
 

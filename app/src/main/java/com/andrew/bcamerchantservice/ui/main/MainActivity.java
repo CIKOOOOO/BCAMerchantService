@@ -4,17 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.andrew.bcamerchantservice.R;
 import com.andrew.bcamerchantservice.ui.home.HomeFragment;
@@ -42,7 +42,6 @@ import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.logo.LogoRe
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.product.ProductFragment;
 import com.andrew.bcamerchantservice.ui.tabpromorequest.promorequest.tncrequest.TNCRequestFragment;
 import com.andrew.bcamerchantservice.utils.BaseActivity;
-import com.andrew.bcamerchantservice.utils.Utils;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener
         , IMainView, View.OnClickListener {
@@ -51,6 +50,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     public static FloatingActionButton floatingActionButton;
 
     private IMainPresenter presenter;
+    private BottomSheetBehavior bottomSheetBehavior;
+
+    @Override
+    public void onConnectedToInternet(Boolean isConnected) {
+        int visible = !isConnected ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED;
+        bottomSheetBehavior.setState(visible);
+    }
 
     public interface onBackPressFragment {
         void onBackPress(boolean check, Context context);
@@ -71,18 +77,49 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         CoordinatorLayout.LayoutParams layoutParams2 = (CoordinatorLayout.LayoutParams) floatingActionButton.getLayoutParams();
+        LinearLayout linear_no_inet = findViewById(R.id.bottom_sheet_no_internet);
         FrameLayout main_frame = findViewById(R.id.main_frame);
+        Button close_bottom_sheet = findViewById(R.id.btn_close_no_internet_sheet);
 
 //        layoutParams2.setBehavior(new FloatingActionButtonBehavior());
 //        layoutParams.setBehavior(new BottomNavigationViewBehavior());
 
+        bottomSheetBehavior = BottomSheetBehavior.from(linear_no_inet);
+
         presenter.changeFragment(new MainForum(), getSupportFragmentManager().beginTransaction());
+        presenter.checkConnectionInternet();
 
         int bot_nav_menu = getPrefConfig().getMerchantPosition().getPosition_id().equals("position_1") ? R.menu.bot_nav_cashier : R.menu.bot_nav_owner;
         bottomNavigationView.inflateMenu(bot_nav_menu);
 
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                switch (i) {
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        ((View) findViewById(R.id.view_blur_main)).setVisibility(View.VISIBLE);
+                        bottomNavigationView.setVisibility(View.GONE);
+                        floatingActionButton.hide();
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        ((View) findViewById(R.id.view_blur_main)).setVisibility(View.GONE);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+                        floatingActionButton.show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         floatingActionButton.setOnClickListener(this);
+        close_bottom_sheet.setOnClickListener(this);
+        ((View) findViewById(R.id.view_blur_main)).setOnClickListener(this);
 
         bottomNavigationView.setVisibility(View.VISIBLE);
         floatingActionButton.show();
@@ -221,6 +258,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
                 floatingActionButton.hide();
                 bottomNavigationView.setVisibility(View.GONE);
                 presenter.changeFragment(new NewThread(), getSupportFragmentManager().beginTransaction());
+                break;
+            case R.id.btn_close_no_internet_sheet:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 break;
         }
     }

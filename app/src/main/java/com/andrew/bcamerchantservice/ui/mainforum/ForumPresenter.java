@@ -341,7 +341,7 @@ public class ForumPresenter implements IForumPresenter {
     }
 
     @Override
-    public void onRemoveThread(final String FID, final int pos) {
+    public void onRemoveForum(final String FID, final int pos) {
         dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

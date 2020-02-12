@@ -35,4 +35,16 @@
         app:itemTextColor="@drawable/bottom_nav_color"
         app:labelVisibilityMode="labeled" />
     <!--app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"-->
+
+    <View
+        android:id="@+id/view_blur_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="@color/blackPalette"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/bottom_sheet_no_internet"
+        layout="@layout/bottom_sheet_no_internet" />
 </android.support.design.widget.CoordinatorLayout>

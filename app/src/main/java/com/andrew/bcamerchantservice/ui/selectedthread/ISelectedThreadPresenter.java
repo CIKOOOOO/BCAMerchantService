@@ -21,7 +21,7 @@ public interface ISelectedThreadPresenter {
 
     void onRemoveLike(String path);
 
-    void onRemove(String path);
+    void onRemoveForum(String path);
 
     void onRemove(String fid, String frid, int pos);
 

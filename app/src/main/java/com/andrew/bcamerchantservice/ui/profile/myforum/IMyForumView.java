@@ -10,5 +10,5 @@ public interface IMyForumView {
 
     void onSuccessUpdateViewCount(Forum forum, Merchant merchant);
 
-    void onSuccessDeleteThread(int pos);
+    void onSuccessDeleteThread();
 }

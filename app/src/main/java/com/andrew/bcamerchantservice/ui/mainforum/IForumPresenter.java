@@ -25,7 +25,7 @@ public interface IForumPresenter {
 
     void onUploadShowCase(String MID, int randomNumber, byte[] byteData);
 
-    void onRemoveThread(String FID, int pos);
+    void onRemoveForum(String FID, int pos);
 
     void onUpdateViewCount(Map<String, Object> map, Forum forum, Merchant merchant);
 

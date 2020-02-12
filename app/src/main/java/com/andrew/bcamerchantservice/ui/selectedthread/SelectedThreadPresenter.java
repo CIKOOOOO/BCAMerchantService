@@ -226,7 +226,7 @@ public class SelectedThreadPresenter implements ISelectedThreadPresenter {
     }
 
     @Override
-    public void onRemove(final String FID) {
+    public void onRemoveForum(final String FID) {
         dbRef.child(Constant.DB_REFERENCE_FORUM + "/" + FID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

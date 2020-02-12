@@ -10,6 +10,6 @@ public interface IMyForumPresenter {
 
     void onUpdateViewCount(Map<String, Object> map, final Forum forum, final Merchant merchant);
 
-    void onDelete(String FID, int pos);
+    void onRemoveForum(String FID);
 
 }
